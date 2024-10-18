@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EnFlex.IT Agent Example
+Bundle-SymbolicName: de.enflexit.awb.agentSample
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: de.enflexit.common,
+ org.agentgui.lib.jade,
+ org.agentgui.core
+Bundle-Vendor: EnFlex.IT
+Automatic-Module-Name: de.enflexit.awb.agentSample
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Service-Component: OSGI-INF/awbClassLoadService.xml
