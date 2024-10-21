@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EnFlex.IT Agent Example
-Bundle-SymbolicName: de.enflexit.awb.agentSample
+Bundle-Name: [BundleName]
+Bundle-SymbolicName: [SymBundleName]
+Automatic-Module-Name: [SymBundleName]
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: de.enflexit.common,
  org.agentgui.lib.jade,

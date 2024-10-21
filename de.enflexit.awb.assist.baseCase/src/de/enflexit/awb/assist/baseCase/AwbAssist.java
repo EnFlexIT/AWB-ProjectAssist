@@ -4,9 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AwbAssist.
+ */
 public class AwbAssist {
 
 	// --- Exercise ---
@@ -18,33 +24,106 @@ public class AwbAssist {
 	 * Eine Classe hinzufügen, die die Argumente in Variabeln packt?
 	 */
 
+	/** The Constant MANIFEST_FILE_PATH. */
+	private static final String MANIFEST_FILE_PATH = "\\META-INF\\MANIFEST.MF" ;
+	
+	/** The Constant BLUEPRINT_DIRECTORY. */
+	private static final String BLUEPRINT_DIRECTORY ="D:\\Git\\AWB-ProjectAssist\\de.enflexit.awb.assist.baseCase\\projectBlueprints";
+	
+	private ArrayList<ProjectBlueprint> projectBlueprints;
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
-
+	
+		AwbAssist assist = new AwbAssist() ;
+	
+		// create a list that contains the files to be modified based on the blueprint templates.
+		ProjectBlueprint blueprintExample = new ProjectBlueprint();
+		blueprintExample.setName("sample agent project");
+		blueprintExample.setDescription("This blueprint provides a basic structure for an agent project.");
+		blueprintExample.setBaseFolder("de.enflexit.awb.agentSample");
+		blueprintExample.addReplacementString("[SymBundleName]");
+		blueprintExample.addReplacementString("[BundleName]");
+		
+		assist.getProjectBlueprints().add(blueprintExample);
+		
+		String symBunName = args[1];
+		String targetDirectory = args[2];
+		
+		HashMap<String, String> replacements = new HashMap<String, String>();
+		replacements.put("[BundleName]", "Sample agent project");
+		replacements.put("[SymBundleName]", "de.enflexit.awb.agentSample");
+		
+		assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
+		
+	}
+	
+	/**
+	 * Creates the project from blueprint.
+	 * 
+	 * First is the projectpath set as a combination of the project name and the project directory
+	 * Using a combination of three methods the project folder is created using its name and 
+	 *
+	 * @param projectName the project name
+	 * @param symBunName the sym bun name
+	 * @param targetDirectory the target directory
+	 */
+	//public void createProjectFromBlueprint(String projectName, String symBunName, String targetDirectory, String bluePrintDirectory) {
+	public void createProjectFromBlueprint(ProjectBlueprint bluePrint, String targetDirectory, String symbBunName, HashMap<String, String> replacements) {	
+		
+		String projectDirectory= targetDirectory +File.separatorChar+ symbBunName;
+		Path projectPath = Paths.get(projectDirectory);
+		
+		String sourceFolderPath = BLUEPRINT_DIRECTORY + File.separator + bluePrint.getBaseFolder();
+		Path filePath1 = Paths.get(projectDirectory + MANIFEST_FILE_PATH);
+		
+		
+		this.createTargetFolder(projectPath);
+		this.copyBlueprintStructure(projectDirectory, sourceFolderPath);
+		for (String replacementString : bluePrint.getReplacementStrings()) {
+			this.doTextReplacement(replacementString, replacements.get(replacementString), filePath1);
+		}
+			
+	}
+	
+	/**
+	 * Creates the target folder.
+	 *
+	 * @param projectPath the project path
+	 */
+	private void createTargetFolder(Path projectPath) {
+		
 		// define the folder path
-		File folder = new File(args[2] + args[0]);
-
+		File folder = projectPath.toFile();
+		
 		// Check whether the folder is already existing before proceeding with the creation
 		if (folder.exists()) {
 			System.out.println("The folder is already exisiting");
 		} else {
 			// Create the folder
-			if (folder.mkdirs()) {
-				// mkdirs creates the directory and returns the result of the operation as a
-				// boolean value
-				// Is the confirmation of the creation needed?
-				// System.out.println("Folder created successfully");
-			} else {
+			boolean success = folder.mkdirs();
+			if (success == false) {
 				System.out.println("Failed to create the folder");
 			}
 		}
+	}
 
+	/**
+	 * Copy blueprint structure.
+	 *
+	 * @param projectDirectory the project directory
+	 */
+	private void copyBlueprintStructure(String projectDirectory, String bluePrintDirectory) {
 		// Copy the content of the folder baseCase under the new folder created above
 		// Step 1: Defining the source and target directories
-		Path sourceDir = Paths.get(args[3]);
-		Path targetDir = Paths.get(args[2] + args[0]);
+		Path sourceDir = Paths.get(bluePrintDirectory);
+		Path targetDir = Paths.get(projectDirectory);
 		System.out.println("The Target Directory is: " + targetDir);
 		System.out.println("The source directory is: " + sourceDir);
-
+	
 		try {
 			copyDirectory(sourceDir, targetDir);
 		} catch (IOException e) {
@@ -52,46 +131,44 @@ public class AwbAssist {
 			e.printStackTrace();
 		}
 
-		// Text replacement
-		// Step 1: Define the file path
-		Path filePath = Paths.get(args[2] + args[0] + args[4]);
-
-		// optional
-		String filepath = (args[2] + args[0] + args[4]);
-		System.out.println("the file path is : " + filepath);
-
-		// Step 2: Define the text to be replaced and the new text
-		String oldText1 = "[BundleName]";
-		String newText1 = (args[0]);
-		String oldText2 = "[SymBundleName]";
-		String newText2 = (args[1]);
-
+	}
+	
+	/**
+	 * Do text replacement.
+	 * 
+	 * The method looks for a defined text in a text with a given path and replaces it with another given text
+	 *
+	 * @param oldText the old text
+	 * @param newText the new text
+	 * @param filePath the file path
+	 */
+	private void doTextReplacement(String oldText, String newText, Path filePath) {
+	
 		try {
-			// Step 3: Read all lines from the file into a List
+			// Step 1: Read all lines from the file into a List
 			List<String> fileContent = Files.readAllLines(filePath);
-
-			// Step 4: Replace the text blocks
-			List<String> modifiedContent = fileContent.stream().map(line -> line.replace(oldText1, newText1))
-					.map(line -> line.replace(oldText2, newText2)).collect(Collectors.toList());
-
-			// Step 5: Write the modified content back to the same file (or a different
-			// file)
+	
+			// Step 2: Replace the text blocks
+			List<String> modifiedContent = fileContent.stream().map(line -> line.replace(oldText, newText)).collect(Collectors.toList());
+	
+			// Step 3: Write the modified content back to the same file (or a different file)
 			Files.write(filePath, modifiedContent);
-
+	
 			System.out.println("Text replacement completed successfully.");
 		} catch (IOException e1) {
 			System.out.println("An error occurred while processing the file: " + e1.getMessage());
 		}
+		
 	}
-
 	/**
 	 * Copy directory.
-	 *+
+	 *The substructure of a folder is copied from the given source directory to the target directory
+	 *
 	 * @param sourceDir the source dir
 	 * @param targetDir the target dir
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
+	private static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
 		// Walk through the file tree starting from the source directory
 		Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
 
@@ -119,4 +196,12 @@ public class AwbAssist {
 			}
 		});
 	}
+	
+	public ArrayList<ProjectBlueprint> getProjectBlueprints() {
+		if (projectBlueprints==null) {
+			projectBlueprints= new ArrayList<ProjectBlueprint>();
+		}
+		return projectBlueprints;
+	}
+
 }
