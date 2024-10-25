@@ -12,6 +12,8 @@ public class ProjectBlueprint {
 	private String description;
 	private String baseFolder;
 	private ArrayList<String> replacementStrings;
+	private ArrayList<String> replacementFilesDirectories;
+
 	
 	/**
 	 * Gets the name.
@@ -96,4 +98,25 @@ public class ProjectBlueprint {
 		this.getReplacementStrings().add(replacementString);
 	}
 
+	/**
+	 * Gets the replacement files directories.
+	 *
+	 * @return the replacement files directories
+	 */
+	public ArrayList<String> getReplacementFilesDirectories() {
+		if(replacementFilesDirectories==null) {
+			replacementFilesDirectories=new ArrayList<String>();
+		}
+		return replacementFilesDirectories;
+			
+	}
+	
+	public void setReplacementFilesDirectories(ArrayList<String> replacementFilesDirectories) {
+		this.replacementFilesDirectories = replacementFilesDirectories;
+	}
+
+	public void addReplacementFilesDirectory(String replacementFilesDirectory) {
+		this.getReplacementFilesDirectories().add(replacementFilesDirectory);
+	}
+	
 }

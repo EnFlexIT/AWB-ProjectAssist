@@ -30,6 +30,8 @@ public class AwbAssist {
 	/** The Constant BLUEPRINT_DIRECTORY. */
 	private static final String BLUEPRINT_DIRECTORY ="D:\\Git\\AWB-ProjectAssist\\de.enflexit.awb.assist.baseCase\\projectBlueprints";
 	
+	// ArrayList could automatically extend and shrink when changing its content. It is more dynamic compared to List
+	// In our case the ArrayList is storing objects of type <ProjectBlueprint>
 	private ArrayList<ProjectBlueprint> projectBlueprints;
 	/**
 	 * The main method.
@@ -38,27 +40,42 @@ public class AwbAssist {
 	 */
 	public static void main(String[] args) {
 	
+		// this instance is a key for having access to the methods and fields of the class AwbAssist.
 		AwbAssist assist = new AwbAssist() ;
 	
+		// To do
 		// create a list that contains the files to be modified based on the blueprint templates.
+		
+		// A new instance of the class ProjectBlueprint is created
 		ProjectBlueprint blueprintExample = new ProjectBlueprint();
+		
+		
 		blueprintExample.setName("sample agent project");
 		blueprintExample.setDescription("This blueprint provides a basic structure for an agent project.");
 		blueprintExample.setBaseFolder("de.enflexit.awb.agentSample");
 		blueprintExample.addReplacementString("[SymBundleName]");
 		blueprintExample.addReplacementString("[BundleName]");
+		blueprintExample.addReplacementFilesDirectory(".project");
+		blueprintExample.addReplacementFilesDirectory(MANIFEST_FILE_PATH);
 		
+		// Here the getProjectBlueprint method is called to create the ArrayList projectBlueprints if it is not existing. 
+		// Afterwards the object blueprintExample is added to the ArrayList projectBlueprints.
 		assist.getProjectBlueprints().add(blueprintExample);
 		
+		// Associating arguments with constants. The order with which arguments are given need to be kept unchanged.
 		String symBunName = args[1];
 		String targetDirectory = args[2];
 		
+		// Here an object called replacements of type HashMap is created. 
+		//Pairs are manually stored in the HashMap.
 		HashMap<String, String> replacements = new HashMap<String, String>();
 		replacements.put("[BundleName]", "Sample agent project");
 		replacements.put("[SymBundleName]", "de.enflexit.awb.agentSample");
 		
-		assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
+		System.out.println(replacements);
 		
+		//assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
+		assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
 	}
 	
 	/**
@@ -78,13 +95,16 @@ public class AwbAssist {
 		Path projectPath = Paths.get(projectDirectory);
 		
 		String sourceFolderPath = BLUEPRINT_DIRECTORY + File.separator + bluePrint.getBaseFolder();
+		
 		Path filePath1 = Paths.get(projectDirectory + MANIFEST_FILE_PATH);
 		
 		
 		this.createTargetFolder(projectPath);
 		this.copyBlueprintStructure(projectDirectory, sourceFolderPath);
+		//For 
 		for (String replacementString : bluePrint.getReplacementStrings()) {
 			this.doTextReplacement(replacementString, replacements.get(replacementString), filePath1);
+			//The get method of the HashMap retrieves the value that corresponds to the replacementString key.
 		}
 			
 	}
@@ -134,6 +154,43 @@ public class AwbAssist {
 	}
 	
 	/**
+	 * Copy directory.
+	 *The substructure of a folder is copied from the given source directory to the target directory
+	 *
+	 * @param sourceDir the source dir
+	 * @param targetDir the target dir
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	private static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
+		// Walk through the file tree starting from the source directory
+		Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
+			
+			@Override
+			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+				// Create target directory by resolving its path relative to the source
+				// directory
+				Path targetPath = targetDir.resolve(sourceDir.relativize(dir));
+				Files.createDirectories(targetPath); // Create directories as needed
+				return FileVisitResult.CONTINUE;
+			}
+			
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				// Copy each file from the source to the target directory
+				Path targetPath = targetDir.resolve(sourceDir.relativize(file));
+				Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
+				return FileVisitResult.CONTINUE;
+			}
+			
+			@Override
+			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+				System.err.println("Failed to copy file: " + file + " - " + exc.getMessage());
+				return FileVisitResult.CONTINUE;
+			}
+		});
+	}
+	
+	/**
 	 * Do text replacement.
 	 * 
 	 * The method looks for a defined text in a text with a given path and replaces it with another given text
@@ -159,42 +216,6 @@ public class AwbAssist {
 			System.out.println("An error occurred while processing the file: " + e1.getMessage());
 		}
 		
-	}
-	/**
-	 * Copy directory.
-	 *The substructure of a folder is copied from the given source directory to the target directory
-	 *
-	 * @param sourceDir the source dir
-	 * @param targetDir the target dir
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	private static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
-		// Walk through the file tree starting from the source directory
-		Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
-
-			@Override
-			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-				// Create target directory by resolving its path relative to the source
-				// directory
-				Path targetPath = targetDir.resolve(sourceDir.relativize(dir));
-				Files.createDirectories(targetPath); // Create directories as needed
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				// Copy each file from the source to the target directory
-				Path targetPath = targetDir.resolve(sourceDir.relativize(file));
-				Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-				System.err.println("Failed to copy file: " + file + " - " + exc.getMessage());
-				return FileVisitResult.CONTINUE;
-			}
-		});
 	}
 	
 	public ArrayList<ProjectBlueprint> getProjectBlueprints() {
