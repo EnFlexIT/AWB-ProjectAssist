@@ -1,0 +1,13 @@
+{
+  "blueprintexample": 
+	{
+		"name":"sample agent project",
+		"description":"This blueprint provides a basic structure for an agent project",
+		"baseFolder":"de.enflexit.awb.agentSample",
+		"targetDirectory":"D:",
+		"replacementStrings":[{"replacementString1":"SymBundleName","replacementString2":"BundleName"}],
+		"newStrings":[{"newString1":"de.enflexit.awb.agentSample", "newString2":"Sample agent project"}]
+	}
+	
+}
+  

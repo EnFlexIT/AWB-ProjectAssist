@@ -2,7 +2,12 @@ package de.enflexit.awb.assist.baseCase;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +28,6 @@ public class AwbAssist {
 	 * & Zielverzeichnis) sollen als Startargumente übergeben werden können
 	 * Eine Classe hinzufügen, die die Argumente in Variabeln packt?
 	 */
-
-	/** The Constant MANIFEST_FILE_PATH. */
-	private static final String MANIFEST_FILE_PATH = "\\META-INF\\MANIFEST.MF" ;
 	
 	/** The Constant BLUEPRINT_DIRECTORY. */
 	private static final String BLUEPRINT_DIRECTORY ="D:\\Git\\AWB-ProjectAssist\\de.enflexit.awb.assist.baseCase\\projectBlueprints";
@@ -39,7 +41,13 @@ public class AwbAssist {
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
-	
+		
+		if (args.length<3) {
+			//Todo: write what should be given as arguments
+			System.out.println("Not enough arguments are given");
+			return;
+		}
+		
 		// this instance is a key for having access to the methods and fields of the class AwbAssist.
 		AwbAssist assist = new AwbAssist() ;
 	
@@ -47,35 +55,37 @@ public class AwbAssist {
 		// create a list that contains the files to be modified based on the blueprint templates.
 		
 		// A new instance of the class ProjectBlueprint is created
-		ProjectBlueprint blueprintExample = new ProjectBlueprint();
+				
+		ProjectBlueprint blueprintTest = ProjectBlueprint.load(Path.of("D:\\learning\\Testing java product.json"));
 		
-		
-		blueprintExample.setName("sample agent project");
-		blueprintExample.setDescription("This blueprint provides a basic structure for an agent project.");
-		blueprintExample.setBaseFolder("de.enflexit.awb.agentSample");
-		blueprintExample.addReplacementString("[SymBundleName]");
-		blueprintExample.addReplacementString("[BundleName]");
-		blueprintExample.addReplacementFilesDirectory(".project");
-		blueprintExample.addReplacementFilesDirectory(MANIFEST_FILE_PATH);
 		
 		// Here the getProjectBlueprint method is called to create the ArrayList projectBlueprints if it is not existing. 
 		// Afterwards the object blueprintExample is added to the ArrayList projectBlueprints.
-		assist.getProjectBlueprints().add(blueprintExample);
+		assist.getProjectBlueprints().add(blueprintTest);
+		
+		
+		// @Omar: Just playing around
+		//String bundlNameFromBlueprint = blueprintTest.getName();
+		//System.out.println("the bundle name is :  "+bundlNameFromBlueprint);
+		// Playing ends here. The lines in between could be removed without affecting the functionalities of the script
+		
 		
 		// Associating arguments with constants. The order with which arguments are given need to be kept unchanged.
+		String bundleName = args[0];
 		String symBunName = args[1];
 		String targetDirectory = args[2];
+		//symBunName.matches(targetDirectory)
 		
 		// Here an object called replacements of type HashMap is created. 
 		//Pairs are manually stored in the HashMap.
 		HashMap<String, String> replacements = new HashMap<String, String>();
-		replacements.put("[BundleName]", "Sample agent project");
-		replacements.put("[SymBundleName]", "de.enflexit.awb.agentSample");
+		replacements.put("[BundleName]", bundleName);
+		replacements.put("[SymBundleName]", symBunName);
 		
 		System.out.println(replacements);
 		
 		//assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
-		assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
+		assist.createProjectFromBlueprint(blueprintTest, targetDirectory, symBunName, replacements);
 	}
 	
 	/**
@@ -96,16 +106,17 @@ public class AwbAssist {
 		
 		String sourceFolderPath = BLUEPRINT_DIRECTORY + File.separator + bluePrint.getBaseFolder();
 		
-		Path filePath1 = Paths.get(projectDirectory + MANIFEST_FILE_PATH);
-		
-		
 		this.createTargetFolder(projectPath);
 		this.copyBlueprintStructure(projectDirectory, sourceFolderPath);
-		//For 
-		for (String replacementString : bluePrint.getReplacementStrings()) {
-			this.doTextReplacement(replacementString, replacements.get(replacementString), filePath1);
-			//The get method of the HashMap retrieves the value that corresponds to the replacementString key.
+		//For
+		
+		try {
+			this.doTextReplacementToDirectory(projectPath, replacements);
+		} catch (IOException e) {
+		System.err.println("Text replacement failed");
+			e.printStackTrace();
 		}
+
 			
 	}
 	
@@ -176,9 +187,12 @@ public class AwbAssist {
 			
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				
 				// Copy each file from the source to the target directory
+				
 				Path targetPath = targetDir.resolve(sourceDir.relativize(file));
 				Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
+								
 				return FileVisitResult.CONTINUE;
 			}
 			
@@ -186,6 +200,21 @@ public class AwbAssist {
 			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
 				System.err.println("Failed to copy file: " + file + " - " + exc.getMessage());
 				return FileVisitResult.CONTINUE;
+			}
+		});
+	}
+	
+	private void doTextReplacementToDirectory(Path rootDirectory, HashMap<String, String> replacements) throws IOException {
+		Files.walkFileTree(rootDirectory, new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				// TODO Auto-generated method stub
+				for (String replacementString : replacements.keySet()) {
+					AwbAssist.this.doTextReplacement(replacementString, replacements.get(replacementString), file);
+					//The get method of the HashMap retrieves the value that corresponds to the replacementString key.
+				}
+				return FileVisitResult.CONTINUE;
+				
 			}
 		});
 	}
@@ -211,7 +240,6 @@ public class AwbAssist {
 			// Step 3: Write the modified content back to the same file (or a different file)
 			Files.write(filePath, modifiedContent);
 	
-			System.out.println("Text replacement completed successfully.");
 		} catch (IOException e1) {
 			System.out.println("An error occurred while processing the file: " + e1.getMessage());
 		}
