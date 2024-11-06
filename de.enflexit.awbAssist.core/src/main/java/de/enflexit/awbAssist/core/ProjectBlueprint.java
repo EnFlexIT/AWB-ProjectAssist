@@ -9,18 +9,31 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class defines the general structure of a project blueprint.
  * @author Omar Ben Chobba - EnFlex.IT GmbH
  */
 public class ProjectBlueprint {
 	
+	/** The name. */
 	private String name;
+	
+	/** The description. */
 	private String description;
+	
+	/** The base folder. */
 	private String baseFolder;
-	private String targetDirectory;
+	
+	/** The replacement strings. */
 	private ArrayList<String> replacementStrings;
+	
+	/** The required arguments. */
+	private ArrayList<String> requiredArguments;
 
+	// add a list that contains the required arguments for the corresponding blueprint.
+	//
+	
 	
 	/**
 	 * Gets the name.
@@ -65,21 +78,6 @@ public class ProjectBlueprint {
 	 */
 	public void setBaseFolder(String baseFolder) {
 		this.baseFolder = baseFolder;
-	}
-	
-	/**
-	 * Gets the target directory.
-	 * @return the target directory
-	 */
-	public String getTargetDirectory() {
-		return targetDirectory;
-	}
-	/**
-	 * Sets the target directory.
-	 * @param targetDirectory the new target directory
-	 */
-	public void setTargetDirectory(String targetDirectory) {
-		this.targetDirectory = targetDirectory;
 	}
 	
 	/**
@@ -152,6 +150,37 @@ public class ProjectBlueprint {
 			e.printStackTrace();
         }
 		return blueprintEntry;
+	}
+	
+	/**
+	 * Gets the required arguments.
+	 *
+	 * @return the required arguments
+	 */
+	public ArrayList<String> getRequiredArguments() {
+		if (requiredArguments==null) {
+			requiredArguments=new ArrayList<String>();
+		}
+		return requiredArguments;
+	}
+	
+	/**
+	 * Sets the replacement strings.
+	 *
+	 * @param requiredArguments the new required arguments
+	 */
+	public void setRequiredArguments(ArrayList<String> requiredArguments) {
+		this.requiredArguments = requiredArguments;
+	}
+	
+	
+	/**
+	 * Adds the required arguments.
+	 *
+	 * @param requiredArguments the required arguments
+	 */
+	public void addRequiredArguments(String requiredArgument) {
+		this.getRequiredArguments().add(requiredArgument);
 	}
 	
 }

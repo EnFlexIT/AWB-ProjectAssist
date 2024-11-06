@@ -2,17 +2,11 @@ package de.enflexit.awbAssist.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -29,10 +23,19 @@ public class AwbAssist {
 	 * Eine Classe hinzufügen, die die Argumente in Variabeln packt?
 	 */
 	
-	/** The Constant BLUEPRINT_DIRECTORY. */
-	private static final String BLUEPRINT_DIRECTORY ="D:\\Git\\AWB-ProjectAssist\\de.enflexit.awb.assist.baseCase\\projectBlueprints";
+	// TODO create a class that defines from a list of strings "arguments" for each arguments whether it is mandatory or optional
+	// TODO check whether the blueprint name is given. (if not return error)
+	// TODO put this in a separate method
+	// TODO  a search method that looks for a blueprint based on the given argument, regardless of the case sensitivity
+	// TODO create the path out of the blueprint name : convention -->
+	// TODO read the json file 
+	// TODO get the list of the required arguments
+	// TODO give the list of required arguments to argumentsChekcer (use reference list)
+	// TODO do the check as already planned with the class arguments checker.
 	
-	// ArrayList could automatically extend and shrink when changing its content. It is more dynamic compared to List
+	//TODO replace hard-coded absolute path with a relative path to the project root
+	private static final String BLUEPRINT_DIRECTORY ="D:\\Git\\AWB-ProjectAssist\\de.enflexit.awbAssist.core\\src\\main\\resources\\blueprints";
+	
 	// In our case the ArrayList is storing objects of type <ProjectBlueprint>
 	private ArrayList<ProjectBlueprint> projectBlueprints;
 	/**
@@ -42,51 +45,53 @@ public class AwbAssist {
 	 */
 	public static void main(String[] args) {
 		
-		if (args.length<3) {
-			//Todo: write what should be given as arguments
-			System.out.println("Not enough arguments are given");
+		// this instance is a key for having access to the methods and fields of the class AwbAssist.
+		AwbAssist assist = new AwbAssist() ;
+		// a check is performed to verify that a blueprint was mentioned in the arguments
+		String bluePrint = checkBlueprintArgument(args);
+		if (bluePrint.length() == 0 ) {
+				System.err.println("no blue print name is given in the arguments");
 			return;
 		}
 		
-		// this instance is a key for having access to the methods and fields of the class AwbAssist.
-		AwbAssist assist = new AwbAssist() ;
-	
-		// To do
-		// create a list that contains the files to be modified based on the blueprint templates.
+		// Here a path is created under which the required arguments are to be found
+		Path pathOfJsonFile = Paths.get(BLUEPRINT_DIRECTORY + File.separator + bluePrint + File.separator + "BlueprintStructure.json");
+
+		// The json file is read to get the attributes of blueprintToBeUsed as defined in the ProjectBlueprint class.
+		ProjectBlueprint blueprintToBeUsed = ProjectBlueprint.load(pathOfJsonFile);
 		
-		// A new instance of the class ProjectBlueprint is created
-				
-		ProjectBlueprint blueprintTest = ProjectBlueprint.load(Path.of("D:\\learning\\Testing java product.json"));
+		// out of the attributes of blueprintToBeUsed we get the required arguments using the getRequiredArguments method-
+		ArrayList<String> requiredArgs = blueprintToBeUsed.getRequiredArguments();
+
+		// The array list of required arguments is given together with the arguments to the check method
+		// in order to see whether it is possible to associate a value for each required argument using the given arguments.
+		HashMap<String, String> arguments = ArgumentsChecker.check(args, requiredArgs);
+		if (arguments == null) {
+			System.out.println("Arguments are not correct / Arguments are missing");
+			return;
+		}
 		
-		
-		// Here the getProjectBlueprint method is called to create the ArrayList projectBlueprints if it is not existing. 
-		// Afterwards the object blueprintExample is added to the ArrayList projectBlueprints.
-		assist.getProjectBlueprints().add(blueprintTest);
-		
-		
-		// @Omar: Just playing around
-		//String bundlNameFromBlueprint = blueprintTest.getName();
-		//System.out.println("the bundle name is :  "+bundlNameFromBlueprint);
-		// Playing ends here. The lines in between could be removed without affecting the functionalities of the script
-		
-		
-		// Associating arguments with constants. The order with which arguments are given need to be kept unchanged.
-		String bundleName = args[0];
-		String symBunName = args[1];
-		String targetDirectory = args[2];
-		//symBunName.matches(targetDirectory)
-		
-		// Here an object called replacements of type HashMap is created. 
+		// -------- the values of required arguments are extracted from the HashMap and manually put in separate objects ----  
+		// TODO check whether it is possible to replace manual input with automated input
+		String bundleName = arguments.get("bundleName");
+		String symBunName = arguments.get("symBunName");
+		String targetDirectory = arguments.get("targetDir");
 		//Pairs are manually stored in the HashMap.
 		HashMap<String, String> replacements = new HashMap<String, String>();
 		replacements.put("[BundleName]", bundleName);
 		replacements.put("[SymBundleName]", symBunName);
 		
-		System.out.println(replacements);
+		System.out.println("the replacements are " + replacements);
 		
-		//assist.createProjectFromBlueprint(blueprintExample, targetDirectory, symBunName, replacements);
-		assist.createProjectFromBlueprint(blueprintTest, targetDirectory, symBunName, replacements);
+		// the creation of the project out of the blueprintToBeUsed is handed to 
+		boolean resultCreateProjectFromBluePRint = assist.createProjectFromBlueprint(blueprintToBeUsed, targetDirectory, symBunName, replacements);
+		if(resultCreateProjectFromBluePRint == false) {
+			System.err.println("project creation was not successfull");
+		}
 	}
+	
+	//TODO create a method to check whether the target folder already exists
+	// --> end the process and write that the folder already exists
 	
 	/**
 	 * Creates the project from blueprint.
@@ -99,47 +104,52 @@ public class AwbAssist {
 	 * @param targetDirectory the target directory
 	 */
 	//public void createProjectFromBlueprint(String projectName, String symBunName, String targetDirectory, String bluePrintDirectory) {
-	public void createProjectFromBlueprint(ProjectBlueprint bluePrint, String targetDirectory, String symbBunName, HashMap<String, String> replacements) {	
-		
+	public boolean createProjectFromBlueprint(ProjectBlueprint bluePrint, String targetDirectory, String symbBunName, HashMap<String, String> replacements) {	
 		String projectDirectory= targetDirectory +File.separatorChar+ symbBunName;
 		Path projectPath = Paths.get(projectDirectory);
 		
 		String sourceFolderPath = BLUEPRINT_DIRECTORY + File.separator + bluePrint.getBaseFolder();
+		//TODO verifying each of the three methods whether it worked correctly or not using a boolean variable. 
+		boolean resultCreateTargetFolder = this.createTargetFolder(projectPath);
+		if (resultCreateTargetFolder == false) {
+			System.out.println("Failed to create the target folder");
+			return false;
+		}
 		
-		this.createTargetFolder(projectPath);
-		this.copyBlueprintStructure(projectDirectory, sourceFolderPath);
-		//For
+		boolean resultCopyBlueprintStructure = this.copyBlueprintStructure(projectDirectory, sourceFolderPath, symbBunName);
+		if (resultCopyBlueprintStructure == false) {
+			return false;
+		}
+		//if the copying didn't work --> end the method
 		
 		try {
-			this.doTextReplacementToDirectory(projectPath, replacements);
+			return this.doTextReplacementToDirectory(projectPath, replacements);
 		} catch (IOException e) {
-		System.err.println("Text replacement failed");
+			System.err.println("Text replacement failed");
 			e.printStackTrace();
+			return false;
 		}
-
-			
 	}
 	
 	/**
 	 * Creates the target folder.
 	 *
-	 * @param projectPath the project path
+	 * @param projectPath the project path and returns whether the folder already exists and whether a failure occurred while creating the new folder
+	 * 
 	 */
-	private void createTargetFolder(Path projectPath) {
-		
-		// define the folder path
+	private boolean createTargetFolder(Path projectPath) {
+		// Define the folder path
 		File folder = projectPath.toFile();
-		
 		// Check whether the folder is already existing before proceeding with the creation
-		if (folder.exists()) {
-			System.out.println("The folder is already exisiting");
-		} else {
+		boolean success = true;
+		if (folder.exists() == false) {
 			// Create the folder
-			boolean success = folder.mkdirs();
-			if (success == false) {
-				System.out.println("Failed to create the folder");
-			}
-		}
+			success = folder.mkdirs();
+//			if (success == false) {
+//				System.out.println("Failed to create the folder");
+//			}
+		}	
+		return success;
 	}
 
 	/**
@@ -147,21 +157,23 @@ public class AwbAssist {
 	 *
 	 * @param projectDirectory the project directory
 	 */
-	private void copyBlueprintStructure(String projectDirectory, String bluePrintDirectory) {
+	
+	//TODO : return a boolean value to  tell whether the method succeeded copying the structure or not statement is temporary
+	private boolean copyBlueprintStructure(String projectDirectory, String bluePrintDirectory, String symBundleName) {
 		// Copy the content of the folder baseCase under the new folder created above
 		// Step 1: Defining the source and target directories
 		Path sourceDir = Paths.get(bluePrintDirectory);
 		Path targetDir = Paths.get(projectDirectory);
 		System.out.println("The Target Directory is: " + targetDir);
 		System.out.println("The source directory is: " + sourceDir);
-	
 		try {
-			copyDirectory(sourceDir, targetDir);
+			copyDirectory(sourceDir, targetDir, symBundleName);
+			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-
 	}
 	
 	/**
@@ -172,85 +184,60 @@ public class AwbAssist {
 	 * @param targetDir the target dir
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
+	private static void copyDirectory(Path sourceDir, Path targetDir, String symBunName) throws IOException {
 		// Walk through the file tree starting from the source directory
-		Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
-			
-			@Override
-			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-				// Create target directory by resolving its path relative to the source
-				// directory
-				Path targetPath = targetDir.resolve(sourceDir.relativize(dir));
-				Files.createDirectories(targetPath); // Create directories as needed
-				return FileVisitResult.CONTINUE;
-			}
-			
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				
-				// Copy each file from the source to the target directory
-				
-				Path targetPath = targetDir.resolve(sourceDir.relativize(file));
-				Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
-								
-				return FileVisitResult.CONTINUE;
-			}
-			
-			@Override
-			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-				System.err.println("Failed to copy file: " + file + " - " + exc.getMessage());
-				return FileVisitResult.CONTINUE;
-			}
-		});
+		CopyDirectoryVisitor copyVisitor = new CopyDirectoryVisitor(symBunName, sourceDir, targetDir);
+		Files.walkFileTree(sourceDir, copyVisitor);
 	}
 	
-	private void doTextReplacementToDirectory(Path rootDirectory, HashMap<String, String> replacements) throws IOException {
-		Files.walkFileTree(rootDirectory, new SimpleFileVisitor<Path>() {
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				// TODO Auto-generated method stub
-				for (String replacementString : replacements.keySet()) {
-					AwbAssist.this.doTextReplacement(replacementString, replacements.get(replacementString), file);
-					//The get method of the HashMap retrieves the value that corresponds to the replacementString key.
-				}
-				return FileVisitResult.CONTINUE;
-				
-			}
-		});
+	// This method looks for the last folder in the given path, replaces its name with the given symbolic bundle name 
+	// while also replacing points in the symbolic bundle name by file separators and returns the result as a path object
+//	private static Path correctFilePath(Path dir, String symBunName) {
+//		String dirAsString = dir.toString();
+//		int indexLastSeparator = dirAsString.lastIndexOf(File.separator);
+//		String dirAsStringFirstPart = dirAsString.substring(0, indexLastSeparator);
+//		String dirAsStringSecondPart = symBunName.replace(".", File.separator);
+//		String dirAsStringModified = dirAsStringFirstPart + dirAsStringSecondPart;
+//		Path dirModified = Paths.get(dirAsStringModified);
+	
+//		return dirModified;
+//	}
+	
+	private boolean doTextReplacementToDirectory(Path rootDirectory, HashMap<String, String> replacements) throws IOException {
+		TextReplacementFileVisitor replacementVisitor = new TextReplacementFileVisitor(replacements);
+		Files.walkFileTree(rootDirectory, replacementVisitor);
+		return replacementVisitor.isReplacementSuccess();
 	}
 	
-	/**
-	 * Do text replacement.
-	 * 
-	 * The method looks for a defined text in a text with a given path and replaces it with another given text
-	 *
-	 * @param oldText the old text
-	 * @param newText the new text
-	 * @param filePath the file path
-	 */
-	private void doTextReplacement(String oldText, String newText, Path filePath) {
-	
-		try {
-			// Step 1: Read all lines from the file into a List
-			List<String> fileContent = Files.readAllLines(filePath);
-	
-			// Step 2: Replace the text blocks
-			List<String> modifiedContent = fileContent.stream().map(line -> line.replace(oldText, newText)).collect(Collectors.toList());
-	
-			// Step 3: Write the modified content back to the same file (or a different file)
-			Files.write(filePath, modifiedContent);
-	
-		} catch (IOException e1) {
-			System.out.println("An error occurred while processing the file: " + e1.getMessage());
-		}
-		
-	}
 	
 	public ArrayList<ProjectBlueprint> getProjectBlueprints() {
 		if (projectBlueprints==null) {
 			projectBlueprints= new ArrayList<ProjectBlueprint>();
 		}
 		return projectBlueprints;
+	}
+	
+	/**
+	 * this method looks for a blueprint name given as an argument while ignoring small and capital letter differences
+	 * if found the name is returned as string otherwise an empty string is returned
+	 * 
+	 *
+	 * @param args the args
+	 * @return the string
+	 */
+	private static String checkBlueprintArgument(String[] args) {
+	int i=0;
+	String bluePrint="";
+	while (i < args.length) {
+		if(args[i].equalsIgnoreCase("-blueprint")) {
+			if (i+1 < args.length) {
+				bluePrint = args[i+1];
+				return bluePrint;
+			}
+		}
+		i++;	
+	}
+	return bluePrint;
 	}
 
 }

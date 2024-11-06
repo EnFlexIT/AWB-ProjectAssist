@@ -1,0 +1,11 @@
+{
+  "name": "AgentProject",
+  "description": "This blueprint provides a basic structure for an agent project.",
+  "baseFolder": "SampleAgent",
+  "replacementStrings": [
+    "[SymBundleName]",
+    "[BundleName]"
+  ],
+  "requiredArguments": [
+"bundleName", "symBunName", "targetDir"]
+}
