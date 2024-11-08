@@ -45,6 +45,9 @@ public class AwbAssist {
 	 */
 	public static void main(String[] args) {
 		
+		// I
+		InternalResourceHandler.test();
+		
 		// this instance is a key for having access to the methods and fields of the class AwbAssist.
 		AwbAssist assist = new AwbAssist() ;
 		// a check is performed to verify that a blueprint was mentioned in the arguments
