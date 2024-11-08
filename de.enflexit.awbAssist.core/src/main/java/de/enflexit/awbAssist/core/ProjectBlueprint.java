@@ -12,32 +12,18 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class defines the general structure of a project blueprint.
  * @author Omar Ben Chobba - EnFlex.IT GmbH
  */
 public class ProjectBlueprint {
 	
-	/** The name. */
 	private String name;
-	
-	/** The description. */
 	private String description;
-	
-	/** The base folder. */
 	private String baseFolder;
-	
-	/** The replacement strings. */
 	private ArrayList<String> replacementStrings;
-	
-	/** The required arguments. */
-	private ArrayList<String> requiredArguments;
+	private ArrayList<StartArgument> requiredArguments;
 
-	// add a list that contains the required arguments for the corresponding blueprint.
-	//
-	
-	
 	/**
 	 * Gets the name.
 	 * @return the name
@@ -117,7 +103,6 @@ public class ProjectBlueprint {
 	}
 	/**
 	 * Saves the specified {@link ProjectBlueprint} to a specified path.
-	 *
 	 * @param bluePrint the blue print
 	 * @param file the destination file
 	 */
@@ -133,8 +118,7 @@ public class ProjectBlueprint {
 	}
 	
 	/**
-	 * Loads {@link ProjectBlueprint} from the specified path.
-	 *
+	 * Loads {@link ProjectBlueprint} from the specified path in a json file.
 	 * @param file the file
 	 * @return the project blueprint
 	 */
@@ -180,32 +164,29 @@ public class ProjectBlueprint {
 	
 	/**
 	 * Gets the required arguments.
-	 *
 	 * @return the required arguments
 	 */
-	public ArrayList<String> getRequiredArguments() {
+	public ArrayList<StartArgument> getRequiredArguments() {
 		if (requiredArguments==null) {
-			requiredArguments=new ArrayList<String>();
+			requiredArguments=new ArrayList<StartArgument>();
 		}
 		return requiredArguments;
 	}
 	
 	/**
 	 * Sets the replacement strings.
-	 *
 	 * @param requiredArguments the new required arguments
 	 */
-	public void setRequiredArguments(ArrayList<String> requiredArguments) {
+	public void setRequiredArguments(ArrayList<StartArgument> requiredArguments) {
 		this.requiredArguments = requiredArguments;
 	}
 	
 	
 	/**
 	 * Adds the required arguments.
-	 *
 	 * @param requiredArguments the required arguments
 	 */
-	public void addRequiredArguments(String requiredArgument) {
+	public void addRequiredArguments(StartArgument requiredArgument) {
 		this.getRequiredArguments().add(requiredArgument);
 	}
 	

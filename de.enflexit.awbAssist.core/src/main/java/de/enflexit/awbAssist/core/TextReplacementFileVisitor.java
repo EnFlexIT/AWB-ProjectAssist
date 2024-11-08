@@ -34,7 +34,6 @@ public class TextReplacementFileVisitor extends SimpleFileVisitor<Path> {
 
 	/**
 	 * Visit file.
-	 *
 	 * @param file the file
 	 * @param attrs the attrs
 	 * @return the file visit result
@@ -48,14 +47,12 @@ public class TextReplacementFileVisitor extends SimpleFileVisitor<Path> {
 			if (resultDoTextReplacement == false) {
 				this.replacementSuccess = false;
 			}
-			//The get method of the HashMap retrieves the value that corresponds to the replacementString key.
 		}
 		return FileVisitResult.CONTINUE;
 	}
 	
 	/**
 	 * Do text replacement replaces a given old text with a new one in a specific file.
-	 *
 	 * @param oldText the old text
 	 * @param newText the new text
 	 * @param filePath the file path

@@ -7,5 +7,20 @@
     "[BundleName]"
   ],
   "requiredArguments": [
-"bundleName", "symBunName", "targetDir"]
+    {
+      "argumentName": "bundleName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "symBunName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "targetDir",
+      "mandatory": true,
+      "defaultValue": ""
+    }
+  ]
 }
