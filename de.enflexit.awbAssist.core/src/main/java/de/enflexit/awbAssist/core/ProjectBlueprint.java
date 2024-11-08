@@ -3,6 +3,9 @@ package de.enflexit.awbAssist.core;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
@@ -148,6 +151,29 @@ public class ProjectBlueprint {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+        }
+		return blueprintEntry;
+	}
+	
+	/**
+	 * Loads {@link ProjectBlueprint} from the specified path.
+	 *
+	 * @param file the file
+	 * @return the project blueprint
+	 */
+	public static ProjectBlueprint load(String relativePackagePath) {
+		
+		// Initialize Gson
+		Gson gson = new Gson();
+		ProjectBlueprint blueprintEntry = null;
+		try {
+			// Parse JSON to BlueprintEntry object
+			InputStream stream = ProjectBlueprint.class.getClassLoader().getResourceAsStream(relativePackagePath);
+			InputStreamReader streamReader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+			blueprintEntry = gson.fromJson(streamReader, ProjectBlueprint.class);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
         }
 		return blueprintEntry;
 	}
