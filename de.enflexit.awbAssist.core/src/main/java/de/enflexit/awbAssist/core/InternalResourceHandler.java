@@ -1,7 +1,9 @@
 package de.enflexit.awbAssist.core;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,14 +13,13 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-
 /**
  * The Class InternalResourceHandler.
  *
  * @author Christian Derksen - SOFTEC - ICB - University of Duisburg-Essen
  */
 public class InternalResourceHandler {
-
+	
 	/**
 	 * Just a test method .
 	 */
@@ -150,6 +151,55 @@ public class InternalResourceHandler {
 			}
 		}
 		return resoucesFound;
+	}
+	
+	/**
+	 * Extracts a file from a bundle project.
+	 * @param internalPath the internal path
+	 * @param destinationPath the destination path
+	 */
+	public static void extractFromBundle(String internalPath, File destinationPath) {
+		
+		boolean debug = false;
+
+		if (debug) {
+			System.out.println("Extracting '" + internalPath + "' to " + destinationPath.toString());
+		}
+		
+		InputStream is = null;
+		FileOutputStream fos = null;
+		try {
+			URL fileURL = InternalResourceHandler.class.getResource(internalPath);
+			if (fileURL!=null) {
+				// --- Write file to directory ------------
+				is = fileURL.openStream();
+				fos = new FileOutputStream(destinationPath);
+				byte[] buffer = new byte[1024];
+				int len;
+				while ((len = is.read(buffer)) != -1) {
+					fos.write(buffer, 0, len);
+				}
+				
+			} else {
+				// --- Could not find fileURL -------------
+				System.err.println(InternalResourceHandler.class.getSimpleName() + " could not find resource for '" + internalPath + "'");
+			}
+			
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+		} finally {
+			try {
+				if (fos!=null) fos.close();
+			} catch (IOException ioEx) {
+				ioEx.printStackTrace();
+			}
+			try {
+				if (is!=null) is.close();
+			} catch (IOException ioEx) {
+				ioEx.printStackTrace();
+			}
+		}
+		
 	}
 	
 }

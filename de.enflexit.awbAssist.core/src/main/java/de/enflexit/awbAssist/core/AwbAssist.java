@@ -41,7 +41,7 @@ public class AwbAssist {
 		// a check is performed to verify that a blueprint was mentioned in the arguments
 		String bluePrint = checkBlueprintArgument(args);
 		if (bluePrint.length() == 0 ) {
-				System.err.println("no blue print name is given in the arguments");
+			System.err.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
 			return;
 		}
 		
@@ -72,7 +72,7 @@ public class AwbAssist {
 		
 		HashMap<String, String> arguments = ArgumentsChecker.check(args, requiredArgumentEsxtract);
 		if (arguments == null) {
-			System.out.println("Arguments are not correct / Arguments are missing");
+			System.out.println("[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
 			return;
 		}
 		
@@ -90,7 +90,7 @@ public class AwbAssist {
 		// the creation of the project out of the blueprintToBeUsed is then handed to a separate method.
 		boolean resultCreateProjectFromBluePRint = assist.createProjectFromBlueprint(blueprintToBeUsed, targetDirectory, symBunName, replacements);
 		if(resultCreateProjectFromBluePRint == false) {
-			System.err.println("project creation was not successfull");
+			System.err.println("[" + AwbAssist.class.getSimpleName() + "] Project creation was not successfull");
 		}
 	}
 	
