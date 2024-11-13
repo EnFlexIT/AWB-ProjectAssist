@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,27 +19,11 @@ import com.google.gson.GsonBuilder;
  */
 public class ProjectBlueprint {
 	
-	private String name;
 	private String description;
 	private String baseFolder;
-	private ArrayList<String> replacementStrings;
+	private HashMap<String, String> textReplacements;
 	private ArrayList<StartArgument> requiredArguments;
 
-	/**
-	 * Gets the name.
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * Sets the name.
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	/**
 	 * Gets the description.
 	 * @return the description
@@ -67,31 +52,6 @@ public class ProjectBlueprint {
 	 */
 	public void setBaseFolder(String baseFolder) {
 		this.baseFolder = baseFolder;
-	}
-	
-	/**
-	 * Gets the replacement strings.
-	 * @return the replacement strings
-	 */
-	public ArrayList<String> getReplacementStrings() {
-		if (replacementStrings==null) {
-			replacementStrings=new ArrayList<String>();
-		}
-		return replacementStrings;
-	}
-	/**
-	 * Sets the replacement strings.
-	 * @param replacementStrings the new replacement strings
-	 */
-	public void setReplacementStrings(ArrayList<String> replacementStrings) {
-		this.replacementStrings = replacementStrings;
-	}
-	/**
-	 * Adds a new replacement string to the list.
-	 * @param replacementString the replacement string
-	 */
-	public void addReplacementString(String replacementString) {
-		this.getReplacementStrings().add(replacementString);
 	}
 	
 	/**
@@ -166,7 +126,7 @@ public class ProjectBlueprint {
 	 * Gets the required arguments.
 	 * @return the required arguments
 	 */
-	public ArrayList<StartArgument> getRequiredArguments() {
+	public ArrayList<StartArgument> getStartArguments() {
 		if (requiredArguments==null) {
 			requiredArguments=new ArrayList<StartArgument>();
 		}
@@ -187,7 +147,14 @@ public class ProjectBlueprint {
 	 * @param requiredArguments the required arguments
 	 */
 	public void addRequiredArguments(StartArgument requiredArgument) {
-		this.getRequiredArguments().add(requiredArgument);
+		this.getStartArguments().add(requiredArgument);
+	}
+	
+	public HashMap<String, String> getTextReplacements() {
+		if (textReplacements==null) {
+			textReplacements = new HashMap<String, String>();
+		}
+		return textReplacements;
 	}
 	
 }

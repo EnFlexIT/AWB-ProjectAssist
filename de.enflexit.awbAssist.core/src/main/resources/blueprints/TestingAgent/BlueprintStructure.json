@@ -1,6 +1,6 @@
 {
   "description": "This blueprint provides a basic structure for an agent project.",
-  "baseFolder": "SampleAgent",
+  "baseFolder": "TestingAgent",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName"

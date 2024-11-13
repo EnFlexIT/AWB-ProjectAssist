@@ -1,12 +1,16 @@
 package de.enflexit.awbAssist.core;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Class AwbAssist.
@@ -21,11 +25,12 @@ public class AwbAssist {
 	 * & Zielverzeichnis) sollen als Startargumente übergeben werden können
 	 * Eine Classe hinzufügen, die die Argumente in Variabeln packt?
 	 */
+
+	// TODO old arguments : -blueprint SampleAgent -bundleName "Sample agent project" -symBunName de.enflexit.awb.agentSample -targetDir D:
+	// TODO new arguments : -showBlueprints
+	// print the available blueprints 
+	// INTERACTIVE : type the blue print name together with the old arguments and the process continues as it was
 	
-	// TODO replace hard-coded absolute path with a relative path to the project root
-	private static final String BLUEPRINT_DIRECTORY ="D:\\Git\\AWB-ProjectAssist\\de.enflexit.awbAssist.core\\src\\main\\resources\\blueprints";
-	
-	// In our case the ArrayList is storing objects of type <ProjectBlueprint>
 	private ArrayList<ProjectBlueprint> projectBlueprints;
 	/**
 	 * The main method.
@@ -33,100 +38,159 @@ public class AwbAssist {
 	 */
 	public static void main(String[] args) {
 		
-		// I
-		InternalResourceHandler.test();
-		
 		// this instance is a key for having access to the methods and fields of the class AwbAssist.
 		AwbAssist assist = new AwbAssist() ;
 		// a check is performed to verify that a blueprint was mentioned in the arguments
-		String bluePrint = checkBlueprintArgument(args);
+		String bluePrint = ArgumentsChecker.checkBlueprintArgument(args);
 		if (bluePrint.length() == 0 ) {
 			System.err.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
 			return;
 		}
+		// call the createProjectFromBlueprint method 
+		assist.createProjectFromBlueprint(bluePrint, args);
+	}
+	
+	private void createProjectFromBlueprint(String blueprintName, String[] args) {
 		
-		// Here a path is created under which the required arguments are to be found
-		Path pathOfJsonFile = Paths.get(BLUEPRINT_DIRECTORY + File.separator + bluePrint + File.separator + "BlueprintStructure.json");
-
-		// The json file is read to get the attributes of blueprintToBeUsed as defined in the ProjectBlueprint class.
-		ProjectBlueprint blueprintToBeUsed = ProjectBlueprint.load(pathOfJsonFile);
-		
-		// out of the attributes of blueprintToBeUsed we get the required arguments using the getRequiredArguments method-
-		ArrayList<StartArgument> requiredArguments = blueprintToBeUsed.getRequiredArguments();
-		
-		// ---- Arguments that need to be given (mandatory arguments) are extracted and handed to the arguments checker. ----
-		// TODO The presence of optional arguments is not checked - does this need to change?? 
-		int i=0;
-		ArrayList<String> requiredArgumentEsxtract = new ArrayList<>();
-		while (i < requiredArguments.size()) {
-			String argName = requiredArguments.get(i).getArgumentName();
-			if (requiredArguments.get(i).isMandatory()) {
-				requiredArgumentEsxtract.add(argName);
-			}
-			i++;
+		// Check whether a blueprint template corresponds to the given blueprintName
+		// using the getProjectBlueprintFound method
+		// Load he blueprint template corresponding to the given blueprint name.
+		ProjectBlueprint blueprintToBeUsed = getFoundProjectBlueprint(blueprintName);
+		if (blueprintToBeUsed == null) {
+			System.err.println("no blue print was found with name " + blueprintName);
+			return;
 		}
-
-		// The array list of required arguments is given together with the arguments to the check method
-		// in order to see whether it is possible to associate a value for each required argument using the given arguments.
-		// TODO not only (requiredArgumentEsxtract.add(argName) is required but also default values --> input of ArgumentsChecker.check should be of type StartArgument
 		
-		HashMap<String, String> arguments = ArgumentsChecker.check(args, requiredArgumentEsxtract);
+		// Required arguments and given arguments are given to the check method
+		// in order to see whether it is possible to associate a value for each required mandatory argument using the given arguments.
+		HashMap<String, String> arguments = ArgumentsChecker.check(args, blueprintToBeUsed.getStartArguments());
 		if (arguments == null) {
 			System.out.println("[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
 			return;
 		}
 		
 		// -------- the values of required arguments are extracted from the HashMap and manually put in separate objects ----  
-		String bundleName = arguments.get("bundleName");
+		// the strings should be automatically generated from the HahMap arguments (go through the HashMap)
+//		String bundleName = arguments.get("bundleName");
 		String symBunName = arguments.get("symBunName");
 		String targetDirectory = arguments.get("targetDir");
-		//Pairs are manually stored in the HashMap.
+		
+		// A HashMap of replacement strings is generated using the blueprint template
+		// keys are kept as they are while values are extracted indirectly from the given arguments 
+		// using the HashMap "arguments"
 		HashMap<String, String> replacements = new HashMap<String, String>();
-		replacements.put("[BundleName]", bundleName);
-		replacements.put("[SymBundleName]", symBunName);
-		
-		System.out.println("the replacements are " + replacements);
-		
-		// the creation of the project out of the blueprintToBeUsed is then handed to a separate method.
-		boolean resultCreateProjectFromBluePRint = assist.createProjectFromBlueprint(blueprintToBeUsed, targetDirectory, symBunName, replacements);
-		if(resultCreateProjectFromBluePRint == false) {
-			System.err.println("[" + AwbAssist.class.getSimpleName() + "] Project creation was not successfull");
+		for (Map.Entry<String, String> entry : blueprintToBeUsed.getTextReplacements().entrySet()) {
+			replacements.put(entry.getKey(), arguments.get(entry.getValue()));
 		}
+		
+		// The folder called symBundleName is to be replaced with a folder structure based on the given argument (symbolic bundle name) 
+		String folderToBeChanged = "symBundleName";
+		String folderAfterChangements = symBunName.replace(".", File.separator);
+		
+		// Get a list of relative paths that represent the substructure of the blueprint template
+		// Generate the relative search path to be used as reference
+		String relativeSearchPath = "blueprints/" + blueprintToBeUsed.getBaseFolder(); 
+		List<String> blueprintRelativeResources = InternalResourceHandler.findResources(relativeSearchPath);
+		
+		// create the target folder that should become the blueprint's substructure
+		Boolean resultCreateMainFolder = this.createTargetFolder(Path.of(targetDirectory + File.separator + symBunName));
+		if (resultCreateMainFolder == false) {
+			System.err.println(" the main folder couldn't be created");
+		}
+		
+		
+		// TODO main folder has to be created first since the first element in the blueprintRelativeResources is a file located under the main folder.
+		int i=0;
+		String currentLocalTargetDirectory = new String();
+		String currentRelativeResource = new String();
+		while (i < blueprintRelativeResources.size()) {
+			List<String> howManyResourcesAreHere = InternalResourceHandler.findResources(blueprintRelativeResources.get(i));
+			if (howManyResourcesAreHere.size() == 0 ) {
+				//we have a file 
+				// extract to a specific directory and perform text replacements.
+				// The json file is not extracted
+				currentLocalTargetDirectory = getCurrentLocaltargetDirectory(i, blueprintRelativeResources,  folderToBeChanged,  relativeSearchPath,  targetDirectory,  symBunName,  folderAfterChangements);
+				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources, folderToBeChanged);
+				if (currentLocalTargetDirectory.contains("BlueprintStructure.json") == false ) {
+					File currentFilePath = new File(currentLocalTargetDirectory);
+					InternalResourceHandler.extractFromBundle(currentRelativeResource, currentFilePath);
+					doTextReplacement(currentFilePath, replacements);
+				}
+				
+			} else {
+				//we have a folder
+				// try creating the folder
+				currentLocalTargetDirectory = getCurrentLocaltargetDirectory(i, blueprintRelativeResources,  folderToBeChanged,  relativeSearchPath,  targetDirectory,  symBunName,  folderAfterChangements);
+				Boolean resultCreateFolder = this.createTargetFolder(Path.of(currentLocalTargetDirectory));
+				if (resultCreateFolder == false) {
+					System.out.println("the folder " + currentLocalTargetDirectory + " already exists");
+				}
+			}
+			i++;
+		}	
 	}
-	
+
 	/**
-	 * Creates the project from blueprint and returns a boolean value regarding the operation success.
-	 * under the given target directory a folder named with the given symbolic bundle name is created by calling the createTargetFolder method. 
-	 * under the project directory a modified copy of the used blueprint's structure is pasted according to the copyBlueprintStructure method.
-	 * Text replacement is performed under the project path and for the replacements HashMap by calling the doTextReplacementToDirectory method.
-	 * each of the methods called return a boolean value that stops the process in case a false is returned.
-	 * @param projectName the project name
-	 * @param symBunName the sym bun name
-	 * @param targetDirectory the target directory
+	 * Gets the relative resource of the element i of the given list.
+	 *
+	 * @param i the i
+	 * @param blueprintRelativeResources the blueprint relative resources
+	 * @param folderToBeChanged the folder to be changed
+	 * @return the current relative resource
 	 */
-	public boolean createProjectFromBlueprint(ProjectBlueprint bluePrint, String targetDirectory, String symbBunName, HashMap<String, String> replacements) {	
-		String projectDirectory= targetDirectory +File.separatorChar+ symbBunName;
-		Path projectPath = Paths.get(projectDirectory);
-		String sourceFolderPath = BLUEPRINT_DIRECTORY + File.separator + bluePrint.getBaseFolder();
-		
-		boolean resultCreateTargetFolder = this.createTargetFolder(projectPath);
-		if (resultCreateTargetFolder == false) {
-			System.out.println("Failed to create the target folder");
-			return false;
+	private String getCurrentRelativeResource(int i, List<String> blueprintRelativeResources, String folderToBeChanged) {
+		String currentRelativeResource = null;
+		if (blueprintRelativeResources.get(i).contains(folderToBeChanged)) {
+			currentRelativeResource = "/" + blueprintRelativeResources.get(i);
+		} else {
+			currentRelativeResource = "/" + blueprintRelativeResources.get(i);
 		}
-		boolean resultCopyBlueprintStructure = this.copyBlueprintStructure(projectDirectory, sourceFolderPath, symbBunName);
-		if (resultCopyBlueprintStructure == false) {
-			return false;
-		}
-		try {
-			return this.doTextReplacementToDirectory(projectPath, replacements);
-		} catch (IOException e) {
-			System.err.println("Text replacement failed");
-			e.printStackTrace();
-			return false;
-		}
+		return currentRelativeResource;
 	}
-	
+
+	/** Gives back the target directory to copy the element i of the given list at.
+	 * The directory creation includes modifying the folder structure
+	 * @param i
+	 * @param blueprintRelativeResources
+	 * @param folderToBeChanged
+	 * @param relativeSearchPath
+	 * @param targetDirectory
+	 * @param symBunName
+	 * @param folderAfterChangements
+	 * @return
+	 */
+	private String getCurrentLocaltargetDirectory(int i, List<String> blueprintRelativeResources, String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName, String folderAfterChangements) {
+		String currentLocalTargetDirectory = null;
+		if (blueprintRelativeResources.get(i).contains(folderToBeChanged)) {
+			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator).replace(folderToBeChanged, folderAfterChangements);
+		} else {
+			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator);
+		}
+		return currentLocalTargetDirectory;
+	}
+
+	/**
+	 * Checks if a blueprint template is found, that has the name
+	 * given as argument to the method and return it as ProjectBlueprint
+	 *
+	 * @param blueprintName the blueprint name
+	 * @return true, if is blueprint found
+	 */
+	private ProjectBlueprint getFoundProjectBlueprint(String blueprintName) {
+		// call the getProjectBlueprintsAvailable method to get the list of available local blueprints first
+		List<ProjectBlueprint> availableBlueprints;
+		availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
+
+		// use the blueprint name given as argument to look for the required blueprint
+		for (ProjectBlueprint pbp : availableBlueprints) {
+			if (pbp.getBaseFolder().equalsIgnoreCase(blueprintName) == true) {
+				
+				return pbp;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Creates the target folder.
 	 * If the file doesn't already exist, a try to create the folder is performed. The result of the try is returned as boolean.
@@ -140,55 +204,39 @@ public class AwbAssist {
 		}	
 		return success;
 	}
+	
+	/**
+	 * Reads a file and do text replacement in it
+	 * @param file
+	 * @param targetText
+	 * @param replacementText
+	 */
+	private static void doTextReplacement(File file, HashMap<String, String> replacements) {
+        // Read the content of the file and replace target text
+        try {
+            // Read file content
+            StringBuilder content = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Replace target text with replacement text
+            	for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            		String oldText = entry.getKey();
+            		String newText = entry.getValue();
+            		line = line.replace(oldText, newText);
+            	}
+            	content.append(line).append(System.lineSeparator());
+            }
+            reader.close();
 
-	/**
-	 * Copy blueprint structure and paste it under project directory while changing it according to the 
-	 * copyDirectory method. A boolean is returned as a result of the operation
-	 * @param projectDirectory the project directory
-	 */
-	
-	private boolean copyBlueprintStructure(String projectDirectory, String bluePrintDirectory, String symBundleName) {
-		// The input strings are converted to paths before handing them to the copyDirectory method
-		Path sourceDir = Paths.get(bluePrintDirectory);
-		Path targetDir = Paths.get(projectDirectory);
-		System.out.println("The Target Directory is: " + targetDir);
-		System.out.println("The source directory is: " + sourceDir);
-		try {
-			copyDirectory(sourceDir, targetDir, symBundleName);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	/**
-	 * Copy directory.
-	 * The substructure of a folder is copied from the given source directory to the target directory
-	 * @param sourceDir the source dir
-	 * @param targetDir the target dir
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	private static void copyDirectory(Path sourceDir, Path targetDir, String symBunName) throws IOException {
-		// Walk through the file tree starting from the source directory
-		CopyDirectoryVisitor copyVisitor = new CopyDirectoryVisitor(symBunName, sourceDir, targetDir);
-		Files.walkFileTree(sourceDir, copyVisitor);
-	}
-	
-	/**
-	 * Do text replacement to directory.
-	 * Each file is visited and texts, which are matching the keys of the replacements HashMap
-	 * are replaced with the corresponding values.
-	 * @param rootDirectory the root directory
-	 * @param replacements the replacements
-	 * @return true, if successful
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	private boolean doTextReplacementToDirectory(Path rootDirectory, HashMap<String, String> replacements) throws IOException {
-		TextReplacementFileVisitor replacementVisitor = new TextReplacementFileVisitor(replacements);
-		Files.walkFileTree(rootDirectory, replacementVisitor);
-		return replacementVisitor.isReplacementSuccess();
-	}
+            // Write the modified content back to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	/**
 	 * Gets the project blueprints.
@@ -200,27 +248,4 @@ public class AwbAssist {
 		}
 		return projectBlueprints;
 	}
-	
-
-	/**
-	 * Check whether a blueprint name is present among the arguments.
-	 *
-	 * @param args the args
-	 * @return the string
-	 */
-	private static String checkBlueprintArgument(String[] args) {
-		int i = 0;
-		String bluePrint = "";
-		while (i < args.length) {
-			if (args[i].equalsIgnoreCase("-blueprint")) {
-				if (i + 1 < args.length) {
-					bluePrint = args[i + 1];
-					return bluePrint;
-				}
-			}
-			i++;
-		}
-		return bluePrint;
-	}
-
 }
