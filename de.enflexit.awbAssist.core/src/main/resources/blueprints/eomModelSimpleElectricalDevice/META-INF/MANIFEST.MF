@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: multiRakeBarScreen
+Bundle-SymbolicName: [SymBundleName]
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: de.enflexit.eom.core,
+ org.agentgui.lib.jade,
+ de.enflexit.common
+Bundle-Vendor: EnFlex.IT
+Automatic-Module-Name: [SymBundleName]
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Service-Component: OSGI-INF/eomClassLoadService.xml
+EOM-TechnicalSystem: EOM-INF/[technical system name].xml
+Export-Package: [SymBundleName].calculations,
+ [SymBundleName].classLoadService,
+ [SymBundleName].staticModel,
+ [SymBundleName].strategies

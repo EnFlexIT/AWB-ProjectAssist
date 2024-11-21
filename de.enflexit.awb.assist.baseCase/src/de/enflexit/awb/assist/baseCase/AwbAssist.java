@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AwbAssist.
  */
@@ -43,7 +42,6 @@ public class AwbAssist {
 	public static void main(String[] args) {
 		
 		if (args.length<3) {
-			//Todo: write what should be given as arguments
 			System.out.println("Not enough arguments are given");
 			return;
 		}
