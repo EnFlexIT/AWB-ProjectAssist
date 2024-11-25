@@ -1,10 +1,10 @@
 {
-  "description": "This blueprint provides a basic structure for a eom model.",
-  "baseFolder": "eomModelSimpleElectricalDevice",
+  "description": "This blueprint provides a basic structure for a main project.",
+  "baseFolder": "featureBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName",
-    "[technical system name]" : "technical system name"
+    "[Project Name]" : "projectName"
   },
   "requiredArguments": [
     {
@@ -21,11 +21,6 @@
       "argumentName": "targetDir",
       "mandatory": true,
       "defaultValue": ""
-    },
-	{
-	  "argumentName": "technical system name",
-	  "mandatory": true,
-	  "defaultValue": ""
-	}			
+    }		
   ]
 }

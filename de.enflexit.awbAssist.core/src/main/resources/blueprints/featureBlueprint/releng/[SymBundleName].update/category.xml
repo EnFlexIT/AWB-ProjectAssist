@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="[SymBundleName].feature" os="linux,macosx,win32" arch="x86,x86_64">
+      <category name="[SymBundleName]"/>
+   </feature>
+    <feature id="[SymBundleName].feature.source">
+      <category name="[SymBundleName]"/>
+   </feature>
+   <category-def name="[SymBundleName]" label="[BundleName]"/>
+</site>

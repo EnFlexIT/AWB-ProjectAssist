@@ -1,0 +1,31 @@
+{
+  "description": "This blueprint provides a basic structure for a eom model.",
+  "baseFolder": "eomModelBlueprint",
+  "textReplacements": {
+    "[SymBundleName]": "symBunName",
+    "[BundleName]" : "bundleName",
+    "[technical system name]" : "technical system name"
+  },
+  "requiredArguments": [
+    {
+      "argumentName": "bundleName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "symBunName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "targetDir",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+	{
+	  "argumentName": "technical system name",
+	  "mandatory": true,
+	  "defaultValue": ""
+	}			
+  ]
+}

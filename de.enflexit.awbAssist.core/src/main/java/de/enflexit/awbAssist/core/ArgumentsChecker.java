@@ -21,17 +21,17 @@ public class ArgumentsChecker {
 	 * @param referenceList the reference list
 	 * @return the hash map
 	 */
-	public static HashMap<String, String> check(String[] args, ArrayList<StartArgument> referenceList){
+	public static HashMap<String, String> check(String[] args, ProjectBlueprint referenceBlueprint){
 		HashMap<String, String> arguments = new HashMap<String, String>();
 		
 		// This loop associates each of the given arguments to the correspondent argument name.
-		for (StartArgument currentReference : referenceList) {
+		for (StartArgument currentReference : referenceBlueprint.getStartArguments()) {
 			int i=0;
 			while (i < args.length) {
 				String currentArg = args[i].substring(1);
-				if (currentArg.equals(currentReference.getArgumentName())) {
+				if (currentArg.equalsIgnoreCase(currentReference.getArgumentName())) {
 					if ((i+1) < args.length) {
-						arguments.put(currentReference.getArgumentName(), removeSpacesAndStartWithCapitalLetters(args[i+1]));
+						arguments.put(currentReference.getArgumentName(), removeSpacesAndSetACapitalLetter(args[i+1]));
 						break;
 					} else { 
 						System.err.println("no value is found for the argument " + currentReference.getArgumentName());
@@ -46,7 +46,7 @@ public class ArgumentsChecker {
 		}
 		
 		// This loop checks whether all mandatory arguments are given. 
-		for (StartArgument currentReference : referenceList) {
+		for (StartArgument currentReference : referenceBlueprint.getStartArguments()) {
 			if (currentReference.isMandatory() == true ) {
 				if (arguments.get(currentReference.getArgumentName()) == null) {
 					// Default values are checked if no value is given as argument. 
@@ -60,11 +60,25 @@ public class ArgumentsChecker {
 				}
 			}
 		}
+		
+		//----------- This part is designed for the blueprint "feature"-------------
+		// For this blueprint the required arguments are bundleName, symBundleName and targetDir
+		// The replacement strings include bundleName, symBundleName as well as projectName
+		// projectName isn't requested from the user but it's interpreted out of the bundleName in this part
+		// ----------------------------------------------------------------------------
+		if (referenceBlueprint.getBaseFolder().equals("featureBlueprint")) {
+			String currentBundleName = arguments.get("bundleName");
+			String bundleNameStartWithSmallLetter = currentBundleName.substring(0,1).toLowerCase() + currentBundleName.substring(1);
+			String bundleNameStartWithCapitalLEtter = currentBundleName.substring(0,1).toUpperCase() + currentBundleName.substring(1);
+			arguments.replace("bundleName", currentBundleName, bundleNameStartWithSmallLetter);
+			arguments.put("projectName", bundleNameStartWithCapitalLEtter);
+		}
+	
 		return arguments;
 	}
 	
 	
-	private static String removeSpacesAndStartWithCapitalLetters(String setOfWords) {
+	private static String removeSpacesAndSetACapitalLetter(String setOfWords) {
 		for (int i=0 ; i < setOfWords.length(); i++) {
 			if(setOfWords.charAt(i) == ' ') {
 				if ((i+1) < setOfWords.length()) {
@@ -107,9 +121,12 @@ public class ArgumentsChecker {
 		boolean helpNeeded = false;
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
-				System.out.println("The current file enables you to create a new project based on an existing blueprint \n to get the list of available blueprints, please give  -bp  as argument"
-						+ "\n for lunching the new project creation, arguments have to be given as a sequence of keywords followed by the respective values as in the following example: "
-						+ "\n -blueprint TestingAgent -bundleName \"FlexAqua Assistant Agent\" -symBunName de.enflexit.flexAqua.assistantAgent -targetDir D:");
+				System.out.println("The current file enables you to create a new project based on an existing blueprint (a template) through giving the name of the blueprint to be used and its required arguments \n "
+						+ "These have to be given in key/value sets in order to be recognized. Keys have to be preceeded by a - \n"
+						+ " An example on how the arguments should look like is given in the following line"
+						+ "\n -blueprint TestingAgent -bundleName \"FlexAqua Assistant Agent\" -symBunName de.enflexit.flexAqua.assistantAgent -targetDir D:"
+						+ "\n In this example bundlename, symBundleName and targetDir were needed to create a project with a similar structure to which of the blueprint TestingAgent"
+						+ "\n To get the list of available blueprints and the required arguments for each of them, please give -bp as argument");
 				helpNeeded = true;
 				return helpNeeded;
 			}

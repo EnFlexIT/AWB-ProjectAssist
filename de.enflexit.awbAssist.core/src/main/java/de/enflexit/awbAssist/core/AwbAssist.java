@@ -42,6 +42,7 @@ public class AwbAssist {
 			availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 			for (int i = 0; i < availableBlueprints.size(); i++) {
 				System.out.println(availableBlueprints.get(i).getBaseFolder());
+				System.out.println("This blueprint requires the following arguments: \n" + availableBlueprints.get(i).getStartArguments() + "\n");
 			}
 			return;
 		}
@@ -70,7 +71,7 @@ public class AwbAssist {
 		// Required arguments and given arguments are transfered to the check method
 		// in order to see whether it is possible to associate a value for each required
 		// mandatory argument.
-		HashMap<String, String> arguments = ArgumentsChecker.check(args, blueprintToBeUsed.getStartArguments());
+		HashMap<String, String> arguments = ArgumentsChecker.check(args, blueprintToBeUsed);
 		if (arguments == null) {
 			System.out.println(
 					"[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
@@ -119,7 +120,7 @@ public class AwbAssist {
 				// extract to a specific directory and perform text replacements.
 				// The json file is not extracted
 				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,	folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
-				currentLocalTargetDirectoryAfterRenameCheck = fileRenameCheck(currentLocalTargetDirectory, replacements);
+				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
 				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources, folderToBeChanged);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
 					File currentFilePath = new File(currentLocalTargetDirectoryAfterRenameCheck);
@@ -131,9 +132,10 @@ public class AwbAssist {
 				// we have a folder
 				// try creating the folder
 				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
-				Boolean resultCreateFolder = this.createTargetFolder(Path.of(currentLocalTargetDirectory));
+				currentLocalTargetDirectoryAfterRenameCheck = this.renameCheck(currentLocalTargetDirectory, replacements);
+				Boolean resultCreateFolder = this.createTargetFolder(Path.of(currentLocalTargetDirectoryAfterRenameCheck));
 				if (resultCreateFolder == false) {
-					System.out.println("the folder " + currentLocalTargetDirectory + " already exists");
+					System.out.println("the folder " + currentLocalTargetDirectoryAfterRenameCheck + " already exists");
 				}
 			}
 			i++;
@@ -147,7 +149,7 @@ public class AwbAssist {
 	 * @param replacements the replacements
 	 * @return the string
 	 */
-	private String fileRenameCheck(String currentLocalTargetDirectory, HashMap<String, String> replacements) {
+	private String renameCheck(String currentLocalTargetDirectory, HashMap<String, String> replacements) {
 		for (Map.Entry<String, String> entry : replacements.entrySet()) {
 			if (currentLocalTargetDirectory.contains(entry.getKey())) {
 				currentLocalTargetDirectory = currentLocalTargetDirectory.replace(entry.getKey(), entry.getValue());
