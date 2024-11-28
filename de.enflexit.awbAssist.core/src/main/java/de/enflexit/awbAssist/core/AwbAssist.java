@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * The Class AwbAssist.
  */
+
 public class AwbAssist {
 
 	// ------------------
@@ -50,8 +51,7 @@ public class AwbAssist {
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
 		String bluePrint = ArgumentsChecker.getBlueprintArgument(args);
 		if (bluePrint.length() == 0) {
-			System.err
-					.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
+			System.err.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
 			return;
 		}
 		// call the createProjectFromBlueprint method
@@ -149,7 +149,7 @@ public class AwbAssist {
 	 * @param replacements the replacements
 	 * @return the string
 	 */
-	private String renameCheck(String currentLocalTargetDirectory, HashMap<String, String> replacements) {
+	public String renameCheck(String currentLocalTargetDirectory, HashMap<String, String> replacements) {
 		for (Map.Entry<String, String> entry : replacements.entrySet()) {
 			if (currentLocalTargetDirectory.contains(entry.getKey())) {
 				currentLocalTargetDirectory = currentLocalTargetDirectory.replace(entry.getKey(), entry.getValue());
@@ -165,7 +165,7 @@ public class AwbAssist {
 	 * @param blueprintRelativeResources the blueprint relative resources
 	 * @return the current relative resource
 	 */
-	private String getCurrentRelativeResource(int i, List<String> blueprintRelativeResources) {
+	public String getCurrentRelativeResource(int i, List<String> blueprintRelativeResources) {
 			String currentRelativeResource = "/" + blueprintRelativeResources.get(i);
 		return currentRelativeResource;
 	}
@@ -183,12 +183,10 @@ public class AwbAssist {
 	 * @param folderAfterChangements
 	 * @return
 	 */
-	private String getCurrentLocaltargetDirectory(int i, List<String> blueprintRelativeResources,
-			String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName,String folderAfterChangements) {
+	public String getCurrentLocaltargetDirectory(int i, List<String> blueprintRelativeResources, String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName,String folderAfterChangements) {
 		String currentLocalTargetDirectory = null;
 		if (blueprintRelativeResources.get(i).contains(folderToBeChanged)) {
-			currentLocalTargetDirectory = blueprintRelativeResources.get(i)
-					.replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace(folderToBeChanged, folderAfterChangements).replace("/", File.separator);
+			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace(folderToBeChanged, folderAfterChangements).replace("/", File.separator);
 		} else {
 			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator);
 		}

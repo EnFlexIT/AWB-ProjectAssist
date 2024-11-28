@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 
 class ArgumentsCheckerTest {
 	
+	//TODO format: after the method declaration an empty line should be inserted before starting with the content 
+
+	
 	// Here is the name of the blueprint to be used as reference
 	String nameOfBlueprintUsedFortesting = "featureBlueprint";
 
@@ -41,6 +44,7 @@ class ArgumentsCheckerTest {
         assertEquals("test.sym", result.get("symBunName"));
         assertEquals("/test/dir", result.get("targetDir"));
 	}
+	
 	
 	@Test
 	// in case a mandatory argument is missing the check method should return null
@@ -139,6 +143,25 @@ class ArgumentsCheckerTest {
 		String result = ArgumentsChecker.getBlueprintArgument(args);
 		assertNotNull(result);
         assertEquals("   firstBlueprint   ", result);
+	}
+	
+	// TODO rename the two methods 
+	@Test
+	void testing_Check_WithMandatoryArgumentsEmpty() {
+		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "-symBunName", "-targetDir", "/test/dir"};
+		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
+		
+		HashMap<String, String> result = ArgumentsChecker.check(args, referenceBlueprint);
+		assertNull(result);
+	}
+	
+	@Test
+	void testing_Check_WithMultipleMandatoryArgumentsEmpty() {
+		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "-targetDir", "/test/dir"};
+		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
+		
+		HashMap<String, String> result = ArgumentsChecker.check(args, referenceBlueprint);
+		assertNull(result);
 	}
 	
 }
