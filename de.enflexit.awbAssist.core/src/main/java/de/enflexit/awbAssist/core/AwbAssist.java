@@ -42,13 +42,13 @@ public class AwbAssist {
 			availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 			for (int i = 0; i < availableBlueprints.size(); i++) {
 				System.out.println(availableBlueprints.get(i).getBaseFolder());
-				System.out.println("This blueprint requires the following arguments: \n" + availableBlueprints.get(i).getStartArguments() + "\n");
+				System.out.println("This blueprint requires the following arguments: \n" + availableBlueprints.get(i).getRequiredArguments() + "\n");
 			}
 			return;
 		}
 		AwbAssist assist = new AwbAssist();
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
-		String bluePrint = ArgumentsChecker.checkBlueprintArgument(args);
+		String bluePrint = ArgumentsChecker.getBlueprintArgument(args);
 		if (bluePrint.length() == 0) {
 			System.err
 					.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
@@ -121,7 +121,7 @@ public class AwbAssist {
 				// The json file is not extracted
 				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,	folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
-				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources, folderToBeChanged);
+				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
 					File currentFilePath = new File(currentLocalTargetDirectoryAfterRenameCheck);
 					InternalResourceHandler.extractFromBundle(currentRelativeResource, currentFilePath);
@@ -163,17 +163,10 @@ public class AwbAssist {
 	 *
 	 * @param i                          the i
 	 * @param blueprintRelativeResources the blueprint relative resources
-	 * @param folderToBeChanged          the folder to be changed
 	 * @return the current relative resource
 	 */
-	private String getCurrentRelativeResource(int i, List<String> blueprintRelativeResources,
-			String folderToBeChanged) {
-		String currentRelativeResource = null;
-		if (blueprintRelativeResources.get(i).contains(folderToBeChanged)) {
-			currentRelativeResource = "/" + blueprintRelativeResources.get(i);
-		} else {
-			currentRelativeResource = "/" + blueprintRelativeResources.get(i);
-		}
+	private String getCurrentRelativeResource(int i, List<String> blueprintRelativeResources) {
+			String currentRelativeResource = "/" + blueprintRelativeResources.get(i);
 		return currentRelativeResource;
 	}
 
@@ -191,16 +184,13 @@ public class AwbAssist {
 	 * @return
 	 */
 	private String getCurrentLocaltargetDirectory(int i, List<String> blueprintRelativeResources,
-			String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName,
-			String folderAfterChangements) {
+			String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName,String folderAfterChangements) {
 		String currentLocalTargetDirectory = null;
 		if (blueprintRelativeResources.get(i).contains(folderToBeChanged)) {
 			currentLocalTargetDirectory = blueprintRelativeResources.get(i)
-					.replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator)
-					.replace(folderToBeChanged, folderAfterChangements);
+					.replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace(folderToBeChanged, folderAfterChangements).replace("/", File.separator);
 		} else {
-			currentLocalTargetDirectory = blueprintRelativeResources.get(i)
-					.replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator);
+			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator);
 		}
 		return currentLocalTargetDirectory;
 	}

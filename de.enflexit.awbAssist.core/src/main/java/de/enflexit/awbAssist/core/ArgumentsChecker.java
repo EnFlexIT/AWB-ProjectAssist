@@ -3,7 +3,6 @@ package de.enflexit.awbAssist.core;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ArgumentsChecker.
  *
@@ -15,7 +14,6 @@ public class ArgumentsChecker {
 	 * This method gets an ArrayList of "expected arguments", puts them in a HashMap as keys
 	 * Using the given arguments it looks for the corresponding value for each key and puts it in the HashMap
 	 * It returns then HashMap back either completely filled with keys and values or null in case a value is missing.
-	 * TODO if the given values for the required arguments contain spaces than remove the spaces and start each word with capital letter  
 	 *
 	 * @param args the args
 	 * @param referenceList the reference list
@@ -25,39 +23,42 @@ public class ArgumentsChecker {
 		HashMap<String, String> arguments = new HashMap<String, String>();
 		
 		// This loop associates each of the given arguments to the correspondent argument name.
-		for (StartArgument currentReference : referenceBlueprint.getStartArguments()) {
+		for (StartArgument currentReference : referenceBlueprint.getRequiredArguments()) {
 			int i=0;
 			while (i < args.length) {
 				String currentArg = args[i].substring(1);
 				if (currentArg.equalsIgnoreCase(currentReference.getArgumentName())) {
-					if ((i+1) < args.length) {
-						arguments.put(currentReference.getArgumentName(), removeSpacesAndSetACapitalLetter(args[i+1]));
+					if ((i+1) < args.length && args[i+1].startsWith("-")==false) {
+						arguments.put(currentReference.getArgumentName(), args[i+1]);
 						break;
 					} else { 
 						System.err.println("no value is found for the argument " + currentReference.getArgumentName());
 					}
 				}
 				i++;
-				if ( i == args.length) {
-					System.err.println("(-" + currentReference.getArgumentName() + ") couldn't be found in the given arguments");
-					return null;
-				}
+//				if ( i == args.length) {
+//					System.err.println("(-" + currentReference.getArgumentName() + ") couldn't be found in the given arguments");
+//					return null;
+//				}
 			}
 		}
 		
 		// This loop checks whether all mandatory arguments are given. 
-		for (StartArgument currentReference : referenceBlueprint.getStartArguments()) {
-			if (currentReference.isMandatory() == true ) {
-				if (arguments.get(currentReference.getArgumentName()) == null) {
-					// Default values are checked if no value is given as argument. 
-					if ( currentReference.getDefaultValue() != null) {
-						arguments.put(currentReference.getArgumentName(), currentReference.getDefaultValue());
-					} else {
-						System.err.println("Missing required argument " + currentReference.getArgumentName());
-						return null;
-					}
-					
-				}
+		//TODO ---- question ---- should the default value used as value for non given mandatory arguments 
+		for (StartArgument currentReference : referenceBlueprint.getRequiredArguments()) {
+			if (currentReference.isMandatory() == true && arguments.containsKey(currentReference.getArgumentName()) == false) {
+				System.err.println("Missing required argument: " + currentReference.getArgumentName());
+				return null;
+//				if (arguments.get(currentReference.getArgumentName()) == null) {
+//					// Default values are checked if no value is given as argument. 
+//					if ( currentReference.getDefaultValue() != null) {
+//						arguments.put(currentReference.getArgumentName(), currentReference.getDefaultValue());
+//					} else {
+//						System.err.println("Missing required argument " + currentReference.getArgumentName());
+//						return null;
+//					}
+//					
+//				}
 			}
 		}
 		
@@ -65,6 +66,7 @@ public class ArgumentsChecker {
 		// For this blueprint the required arguments are bundleName, symBundleName and targetDir
 		// The replacement strings include bundleName, symBundleName as well as projectName
 		// projectName isn't requested from the user but it's interpreted out of the bundleName in this part
+		// and added to the HashMap arguments in this part
 		// ----------------------------------------------------------------------------
 		if (referenceBlueprint.getBaseFolder().equals("featureBlueprint")) {
 			String currentBundleName = arguments.get("bundleName");
@@ -73,43 +75,29 @@ public class ArgumentsChecker {
 			arguments.replace("bundleName", currentBundleName, bundleNameStartWithSmallLetter);
 			arguments.put("projectName", bundleNameStartWithCapitalLEtter);
 		}
-	
 		return arguments;
 	}
 	
-	
-	private static String removeSpacesAndSetACapitalLetter(String setOfWords) {
-		for (int i=0 ; i < setOfWords.length(); i++) {
-			if(setOfWords.charAt(i) == ' ') {
-				if ((i+1) < setOfWords.length()) {
-					setOfWords = setOfWords.substring(0, i+1) + Character.toUpperCase(setOfWords.charAt(i+1)) + setOfWords.substring(i + 2);
-				}
-			}
-		}
-		setOfWords = setOfWords.replace(" ", "");
-		return setOfWords;
-	}
-
-
 	/**
 	 * This method checks whether a blueprint name is present among the arguments.
 	 *
 	 * @param args the args
 	 * @return the string
 	 */
-	public static String checkBlueprintArgument(String[] args) {
+	public static String getBlueprintArgument(String[] args) {
 		int i = 0;
 		String bluePrint = "";
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-blueprint")) {
-				if (i + 1 < args.length) {
+				if (i + 1 < args.length && args[i+1].startsWith("-") == false ) {
 					bluePrint = args[i + 1];
 					return bluePrint;
 				}
 			}
 			i++;
 		}
-		return bluePrint;
+		System.err.println("no blueprint name was given as argument");
+		return null;
 	}
 	
 	/** Checks whether the user needs instructions on how to use the code

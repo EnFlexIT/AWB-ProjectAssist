@@ -156,7 +156,6 @@ public class AwbAssist {
 		try {
 			copyDirectory(sourceDir, targetDir);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -206,7 +205,6 @@ public class AwbAssist {
 		Files.walkFileTree(rootDirectory, new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				// TODO Auto-generated method stub
 				for (String replacementString : replacements.keySet()) {
 					AwbAssist.this.doTextReplacement(replacementString, replacements.get(replacementString), file);
 					//The get method of the HashMap retrieves the value that corresponds to the replacementString key.

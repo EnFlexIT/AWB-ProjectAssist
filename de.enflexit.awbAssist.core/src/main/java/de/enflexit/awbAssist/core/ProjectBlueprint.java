@@ -126,7 +126,7 @@ public class ProjectBlueprint {
 	 * Gets the required arguments.
 	 * @return the required arguments
 	 */
-	public ArrayList<StartArgument> getStartArguments() {
+	public ArrayList<StartArgument> getRequiredArguments() {
 		if (requiredArguments==null) {
 			requiredArguments=new ArrayList<StartArgument>();
 		}
@@ -147,7 +147,7 @@ public class ProjectBlueprint {
 	 * @param requiredArguments the required arguments
 	 */
 	public void addRequiredArguments(StartArgument requiredArgument) {
-		this.getStartArguments().add(requiredArgument);
+		this.getRequiredArguments().add(requiredArgument);
 	}
 	
 	public HashMap<String, String> getTextReplacements() {
