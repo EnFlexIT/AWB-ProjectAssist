@@ -18,12 +18,6 @@ import java.util.Map;
 
 public class AwbAssist {
 
-	// ------------------
-	// --- old arguments : -blueprint SampleAgent -bundleName "Sample agent project"
-	// -symBunName de.enflexit.awb.agentSample -targetDir D:
-	// --- new arguments : -bp --- in case the user wants to get the available blueprints
-	// ------------------
-
 	private ArrayList<ProjectBlueprint> projectBlueprints;
 
 	/**
@@ -43,9 +37,17 @@ public class AwbAssist {
 			availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 			for (int i = 0; i < availableBlueprints.size(); i++) {
 				System.out.println(availableBlueprints.get(i).getBaseFolder());
-				System.out.println("This blueprint requires the following arguments: \n" + availableBlueprints.get(i).getRequiredArguments() + "\n");
+				System.out.println("This blueprint requires the following arguments: \n" + availableBlueprints.get(i).getRequiredArguments());
+				System.out.println("Arguments should be provided as follows: \n");
+				System.out.print("-blueprint " + "\"" + availableBlueprints.get(i).getBaseFolder() + "\" ");
+				ArrayList<StartArgument> currentStartArguments = availableBlueprints.get(i).getRequiredArguments();
+				for (int j=0; j < currentStartArguments.size(); j++) {
+					System.out.print("-" + currentStartArguments.get(j).getArgumentName() + " \"type_here\" ");
+				}
+				System.out.println("\n \n");
 			}
 			return;
+			
 		}
 		AwbAssist assist = new AwbAssist();
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
@@ -60,37 +62,32 @@ public class AwbAssist {
 
 	private void createProjectFromBlueprint(String blueprintName, String[] args) {
 
-		// Check whether a blueprint template corresponds to the given blueprintName
-		// and load the blueprint template corresponding to the given blueprint name.
+		// Check whether a blueprint template corresponds to the given blueprintName and load it
 		ProjectBlueprint blueprintToBeUsed = this.getFoundProjectBlueprint(blueprintName);
 		if (blueprintToBeUsed == null) {
 			System.err.println("no blue print was found with the name " + blueprintName);
 			return;
 		}
 
-		// Required arguments and given arguments are transfered to the check method
-		// in order to see whether it is possible to associate a value for each required
-		// mandatory argument.
+		// Required arguments and given arguments are transfered to the check method in order 
+		// to see whether it is possible to associate a value for each required mandatory argument.
 		HashMap<String, String> arguments = ArgumentsChecker.check(args, blueprintToBeUsed);
 		if (arguments == null) {
-			System.out.println(
-					"[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
+			System.out.println("[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
 			return;
 		}
 
 		String symBunName = arguments.get("symBunName");
 		String targetDirectory = arguments.get("targetDir");
 
-		// A HashMap of replacement strings is generated
-		// keys are extracted from the blueprint template 
-		// values are extracted indirectly from the given arguments using the HashMap "arguments"
+		// A HashMap of replacement strings is generated. Keys are extracted from the blueprint template 
+		// and values are extracted indirectly from the given arguments using the HashMap "arguments"
 		HashMap<String, String> replacements = new HashMap<String, String>();
 		for (Map.Entry<String, String> entry : blueprintToBeUsed.getTextReplacements().entrySet()) {
 			replacements.put(entry.getKey(), arguments.get(entry.getValue()));
 		}
 
-		// The folder called symBundleName is to be replaced with a folder structure
-		// based on the given argument (symbolic bundle name)
+		// The folder called symBundleName is to be replaced with a folder structure based on the given argument (symbolic bundle name)
 		String folderToBeChanged = "symBundleName";
 		String folderAfterChangements = symBunName.replace(".", File.separator);
 
@@ -105,9 +102,8 @@ public class AwbAssist {
 			System.err.println(" the main folder couldn't be created");
 		}
 
-		// go through the list of paths, which stand for all files and folders that are present in the substructure
-		// and create them one by one in the the target directory, while renaming files and folders if required as well as performing text replacements
-		// in the files if needed.
+		// go through the list of paths, which stands for all files and folders that are present in the substructure and create them one by one in 
+		// the target directory, while renaming files and folders if required as well as performing text replacements in the files if needed.
 		int i = 0;
 		String currentLocalTargetDirectory = new String();
 		String currentLocalTargetDirectoryAfterRenameCheck = new String();
@@ -119,7 +115,7 @@ public class AwbAssist {
 				// we have a file
 				// extract to a specific directory and perform text replacements.
 				// The json file is not extracted
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,	folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources, folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
 				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
@@ -209,8 +205,7 @@ public class AwbAssist {
 		// use the blueprint name given as argument to look for the required blueprint
 		for (ProjectBlueprint pbp : availableBlueprints) {
 			if (pbp.getBaseFolder().equalsIgnoreCase(blueprintName) == true) {
-
-				return pbp;
+  				return pbp;
 			}
 		}
 		return null;
@@ -221,10 +216,9 @@ public class AwbAssist {
 	 * the folder is performed. The result of the try is returned as boolean.
 	 * 
 	 * @param projectPath the project path and returns whether the folder already
-	 *                    exists and whether a failure occurred while creating the
-	 *                    new folder
+	 * exists and whether a failure occurred while creating the new folder
 	 */
-	private boolean createTargetFolder(Path projectPath) {
+	public boolean createTargetFolder(Path projectPath) {
 		File folder = projectPath.toFile();
 		boolean success = true;
 		if (folder.exists() == false) {

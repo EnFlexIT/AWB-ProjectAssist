@@ -2,6 +2,8 @@ package de.enflexit.awbAssist.core;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +12,12 @@ import org.junit.jupiter.api.Test;
 
 class ArgumentsCheckerTest {
 	
-	//TODO format: after the method declaration an empty line should be inserted before starting with the content 
-
 	
 	// Here is the name of the blueprint to be used as reference
 	String nameOfBlueprintUsedFortesting = "featureBlueprint";
 
 	private ProjectBlueprint getBlueprintForTesting() {
+		
 		List<ProjectBlueprint> listOfBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 		for (int i = 0; i < listOfBlueprints.size(); i++) {
 			if (listOfBlueprints.get(i).getBaseFolder().equals(nameOfBlueprintUsedFortesting)) {
@@ -35,6 +36,7 @@ class ArgumentsCheckerTest {
 
 	@Test
 	void testing_Check_WithValidArguments() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "testBundle", "-symBunName", "test.sym", "-targetDir", "/test/dir"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		
@@ -49,12 +51,15 @@ class ArgumentsCheckerTest {
 	@Test
 	// in case a mandatory argument is missing the check method should return null
 	void testing_Check_WithAtLeastOneMandatoryArgumentEmpty() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "-symBunName", "test.sym", "-targetDir", "/test/dir"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		
 		HashMap<String, String> result = ArgumentsChecker.check(args, referenceBlueprint);
 		assertNull(result);
-	}
+		System.out.println(Path.of("src/main/resources/").toFile().getAbsolutePath());
+		System.out.println(new File ("src/main/resources/").getAbsolutePath());
+			}
 	
 	@Test
 	//---------------------------For which purpose is this method created -----------------------------------
@@ -62,6 +67,7 @@ class ArgumentsCheckerTest {
 	// supposed to be located under D:\Eclipse workspace, it was created under D:\EclipseWorkspace though
 	//------------------------------------------- end of comment --------------------------------------------
 	void testing_Check_TargetDirContainsSpace() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "testBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		
@@ -72,6 +78,7 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_Check_UsingFeatureBlueprint_And_bundleNameStartsWithCapitalLetter() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		
@@ -84,6 +91,7 @@ class ArgumentsCheckerTest {
 	@Test
 	// A non mandatory argument must not be given
 	void testing_Check_NonMandatoryArgumentIsNotGiven() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		ArrayList<StartArgument> requiredArguments = referenceBlueprint.getRequiredArguments();
@@ -92,7 +100,6 @@ class ArgumentsCheckerTest {
 				requiredArgument.setMandatory(false);
 			}
 		}
-		
 		HashMap<String, String> result = ArgumentsChecker.check(args, referenceBlueprint);
 		assertNotNull(result);
         assertEquals(null, result.get("targetDir"));
@@ -102,6 +109,7 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_CheckBlueprintArgument_WithValidArguments() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		String result = ArgumentsChecker.getBlueprintArgument(args);
 		assertNotNull(result);
@@ -110,6 +118,7 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_CheckBlueprintArgument_WithEmptyArgument() {
+		
 		String[] args = {"-blueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		String result = ArgumentsChecker.getBlueprintArgument(args);
         assertEquals(null, result);
@@ -117,6 +126,7 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_CheckBlueprintArgument_WithEmptyArray() {
+		
 		String[] args = {};
 		String result = ArgumentsChecker.getBlueprintArgument(args);
         assertEquals(null, result);
@@ -124,6 +134,7 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_CheckBlueprintArgument_BlueprintIsMissing() {
+		
 		String[] args = { "featureBlueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		String result = ArgumentsChecker.getBlueprintArgument(args);
         assertEquals(null, result);
@@ -131,6 +142,7 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_CheckBlueprintArgument_MultipleBlueprints() {
+		
 		String[] args = { "-blueprint", "firstBlueprint", "-blueprint", "secondBlueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		String result = ArgumentsChecker.getBlueprintArgument(args);
 		assertNotNull(result);
@@ -139,15 +151,16 @@ class ArgumentsCheckerTest {
 	
 	@Test
 	void testing_CheckBlueprintArgument_WithSpace() {
+		
 		String[] args = { "-blueprint", "   firstBlueprint   ", "-blueprint", "secondBlueprint", "-bundleName", "TestBundle", "-symBunName", "test.sym", "-targetDir", "D:\\Eclipse workspace"};
 		String result = ArgumentsChecker.getBlueprintArgument(args);
 		assertNotNull(result);
         assertEquals("   firstBlueprint   ", result);
 	}
 	
-	// TODO rename the two methods 
 	@Test
-	void testing_Check_WithMandatoryArgumentsEmpty() {
+	void testing_Check_WithMIssingValuesForTwoMandatoryArguments() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "-symBunName", "-targetDir", "/test/dir"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		
@@ -156,7 +169,8 @@ class ArgumentsCheckerTest {
 	}
 	
 	@Test
-	void testing_Check_WithMultipleMandatoryArgumentsEmpty() {
+	void testing_Check_WithMissingValuesAndMissingAMandatoryArgument() {
+		
 		String[] args = {"-blueprint", "featureBlueprint", "-bundleName", "-targetDir", "/test/dir"};
 		ProjectBlueprint referenceBlueprint = getBlueprintForTesting();
 		

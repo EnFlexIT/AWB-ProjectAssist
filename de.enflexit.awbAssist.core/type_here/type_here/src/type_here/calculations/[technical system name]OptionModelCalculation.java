@@ -1,4 +1,4 @@
-package [SymBundleName].calculations;
+package type_here.calculations;
 
 import energy.OptionModelController;
 import energy.calculations.AbstractOptionModelCalculation;
@@ -15,21 +15,18 @@ public class [technical system name]OptionModelCalculation extends AbstractOptio
 	}
 
 	@Override
-	public Duration getDuration(DurationType arg0, TechnicalSystemStateEvaluation arg1) {
-		// TODO Auto-generated method stub
+	public Duration getDuration(DurationType dt, TechnicalSystemStateEvaluation tsse) {
 		return null;
 	}
 
 	@Override
-	public EnergyFlowInWatt getEnergyFlowForLosses(TechnicalSystemStateEvaluation arg0) {
-		// TODO Auto-generated method stub
+	public EnergyFlowInWatt getEnergyFlowForLosses(TechnicalSystemStateEvaluation tsse) {
 		return null;
 	}
 
 	@Override
-	public AbstractInterfaceFlow getEnergyOrGoodFlow(TechnicalSystemStateEvaluation arg0, TechnicalInterface arg1,
-			boolean arg2) {
-		// TODO Auto-generated method stub
+	public AbstractInterfaceFlow getEnergyOrGoodFlow(TechnicalSystemStateEvaluation tsse, TechnicalInterface ti,
+			boolean isManualConfiguration) {
 		return null;
 	}
 

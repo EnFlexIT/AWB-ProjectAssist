@@ -1,4 +1,4 @@
-package [SymBundleName].staticModel;
+package type_here.staticModel;
 
 import java.awt.Window;
 import java.io.Serializable;

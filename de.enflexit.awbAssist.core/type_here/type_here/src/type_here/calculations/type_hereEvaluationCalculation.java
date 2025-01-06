@@ -1,4 +1,4 @@
-package [SymBundleName].calculations;
+package type_here.calculations;
 
 import energy.calculations.AbstractEvaluationCalculation;
 import energy.optionModel.Connectivity;
@@ -10,7 +10,7 @@ import energy.optionModel.TechnicalInterface;
 import energy.optionModel.TechnicalSystemState;
 import energy.optionModel.TechnicalSystemStateEvaluation;
 
-public class [technical system name]EvaluationCalculation extends AbstractEvaluationCalculation {
+public class type_hereEvaluationCalculation extends AbstractEvaluationCalculation {
 
 	@Override
 	public double getAmountCosts(TechnicalInterface arg0, Connectivity arg1, long arg2, long arg3, double arg4,	double arg5) {

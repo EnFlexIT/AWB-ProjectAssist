@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" factory="de.enflexit.common.classLoadService" name="[SymBundleName].classLoadService.EomClassLoadServiceImpl">
+   <implementation class="[SymBundleName].classLoadService.EomClassLoadServiceImpl"/>
+   <service>
+      <provide interface="energy.classLoadService.EomClassLoadService"/>
+      <provide interface="de.enflexit.common.classLoadService.BaseClassLoadService"/>
+   </service>
+</scr:component>

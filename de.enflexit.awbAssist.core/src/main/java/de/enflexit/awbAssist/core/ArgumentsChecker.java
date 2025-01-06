@@ -1,6 +1,5 @@
 package de.enflexit.awbAssist.core;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -36,29 +35,14 @@ public class ArgumentsChecker {
 					}
 				}
 				i++;
-//				if ( i == args.length) {
-//					System.err.println("(-" + currentReference.getArgumentName() + ") couldn't be found in the given arguments");
-//					return null;
-//				}
 			}
 		}
 		
 		// This loop checks whether all mandatory arguments are given. 
-		//TODO ---- question ---- should the default value used as value for non given mandatory arguments 
 		for (StartArgument currentReference : referenceBlueprint.getRequiredArguments()) {
 			if (currentReference.isMandatory() == true && arguments.containsKey(currentReference.getArgumentName()) == false) {
 				System.err.println("Missing required argument: " + currentReference.getArgumentName());
 				return null;
-//				if (arguments.get(currentReference.getArgumentName()) == null) {
-//					// Default values are checked if no value is given as argument. 
-//					if ( currentReference.getDefaultValue() != null) {
-//						arguments.put(currentReference.getArgumentName(), currentReference.getDefaultValue());
-//					} else {
-//						System.err.println("Missing required argument " + currentReference.getArgumentName());
-//						return null;
-//					}
-//					
-//				}
 			}
 		}
 		
@@ -85,6 +69,7 @@ public class ArgumentsChecker {
 	 * @return the string
 	 */
 	public static String getBlueprintArgument(String[] args) {
+		
 		int i = 0;
 		String bluePrint = "";
 		while (i < args.length) {
@@ -105,16 +90,17 @@ public class ArgumentsChecker {
 	 * @return
 	 */
 	public static boolean helper(String[] args) {
+		
 		int i = 0;
 		boolean helpNeeded = false;
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
-				System.out.println("The current file enables you to create a new project based on an existing blueprint (a template) through giving the name of the blueprint to be used and its required arguments \n "
-						+ "These have to be given in key/value sets in order to be recognized. Keys have to be preceeded by a - \n"
-						+ " An example on how the arguments should look like is given in the following line"
-						+ "\n -blueprint TestingAgent -bundleName \"FlexAqua Assistant Agent\" -symBunName de.enflexit.flexAqua.assistantAgent -targetDir D:"
+				System.out.println("The current file enables you to create a new project based on an existing blueprint (project template)"
+						+ "\n In order to do that certain parameters have to be given as arguments in key/value sets while preceeding each key with a - "
+						+ "\n An example on how the arguments should look like is given  in the following line"
+						+ "\n -blueprint \"TestingAgent\" -bundleName \"FlexAqua Assistant Agent\" -symBunName \"de.enflexit.flexAqua.assistantAgent\" -targetDir \"D:\""
 						+ "\n In this example bundlename, symBundleName and targetDir were needed to create a project with a similar structure to which of the blueprint TestingAgent"
-						+ "\n To get the list of available blueprints and the required arguments for each of them, please give -bp as argument");
+						+ "\n To get the list of available blueprints and the required arguments for each one of them, please give -bp as argument");
 				helpNeeded = true;
 				return helpNeeded;
 			}
@@ -129,6 +115,7 @@ public class ArgumentsChecker {
 	 * @return
 	 */
 	public static boolean callForBlueprints(String[] args) {
+		
 		int i = 0;
 		boolean blueprintsNeeded = false;
 		while (i < args.length) {

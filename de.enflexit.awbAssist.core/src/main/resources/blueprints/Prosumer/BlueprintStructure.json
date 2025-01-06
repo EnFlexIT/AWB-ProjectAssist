@@ -1,10 +1,9 @@
 {
-  "description": "This blueprint provides a basic structure for a eom model.",
-  "baseFolder": "eomModelBlueprint",
+  "description": "This blueprint provides a basic structure for a prosumer.",
+  "baseFolder": "Prosumer",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
-    "[BundleName]" : "bundleName",
-    "[technicalSystemName]" : "technicalSystemName"
+    "[BundleName]" : "bundleName"
   },
   "requiredArguments": [
     {
@@ -21,11 +20,6 @@
       "argumentName": "targetDir",
       "mandatory": true,
       "defaultValue": ""
-    },
-	{
-	  "argumentName": "technicalSystemName",
-	  "mandatory": true,
-	  "defaultValue": ""
-	}			
+    }
   ]
 }
