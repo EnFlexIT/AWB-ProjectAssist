@@ -144,14 +144,16 @@
         <ns2:GradientValue>0.0</ns2:GradientValue>
         <ns2:StateIdentifierPrecision>0.0</ns2:StateIdentifierPrecision>
     </ns2:SystemVariables>
-    <ns2:SystemVariables xsi:type="ns2:SystemVariableDefinitionBoolean" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns2:SystemVariables xsi:type="ns2:SystemVariableDefinitionStaticModel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <ns2:VariableID>StaticModel</ns2:VariableID>
-        <ns2:VariableDescription>Static model for MRB-Screen</ns2:VariableDescription>
+        <ns2:VariableDescription>Static model for [EomModelName]</ns2:VariableDescription>
         <ns2:SetPoint>false</ns2:SetPoint>
         <ns2:SetPointForUser>false</ns2:SetPointForUser>
         <ns2:StateIdentifier>false</ns2:StateIdentifier>
+        <ns2:StaticModelClass>de.enflexit.eom.toaster.staticModel.[EomModelName]StaticModel</ns2:StaticModelClass>
+        <ns2:StaticModelValue>de.enflexit.eom.toaster.staticModel.[EomModelName]StaticDataModel::{"motorPower":666.0}</ns2:StaticModelValue>
     </ns2:SystemVariables>
-    <ns2:CalculationClass>energy.samples.calculations.ATestCalculation</ns2:CalculationClass>
+    <ns2:CalculationClass>energy.samples.calculations.[EomModelName]OptionModelCalculation</ns2:CalculationClass>
     <ns2:EvaluationSettings>
         <ns2:RoundingPrecision>-1</ns2:RoundingPrecision>
         <ns2:DataRepetition>None</ns2:DataRepetition>
