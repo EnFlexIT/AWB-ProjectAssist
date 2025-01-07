@@ -89,10 +89,13 @@ public class ArgumentsChecker {
 	 * @param args
 	 * @return
 	 */
-	public static boolean helper(String[] args) {
+	public static boolean isHelpRequest(String[] args) {
 		
 		int i = 0;
 		boolean helpNeeded = false;
+
+		if (args==null || args.length==0) args = new String[] {"-?"};
+		
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
 				System.out.println("The current file enables you to create a new project based on an existing blueprint (project template)"

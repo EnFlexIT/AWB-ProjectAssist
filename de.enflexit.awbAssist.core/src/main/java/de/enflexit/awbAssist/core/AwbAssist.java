@@ -28,7 +28,7 @@ public class AwbAssist {
 	public static void main(String[] args) {
 
 		// Print the help instructions if requested
-		if (ArgumentsChecker.helper(args) == true) {
+		if (ArgumentsChecker.isHelpRequest(args) == true) {
 			return;
 		}
 		// Print the available blueprints if requested
@@ -49,15 +49,16 @@ public class AwbAssist {
 			return;
 			
 		}
-		AwbAssist assist = new AwbAssist();
+		
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
 		String bluePrint = ArgumentsChecker.getBlueprintArgument(args);
-		if (bluePrint.length() == 0) {
+		if (bluePrint==null || bluePrint.length() == 0) {
 			System.err.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
 			return;
 		}
 		// call the createProjectFromBlueprint method
-		assist.createProjectFromBlueprint(bluePrint, args);
+		new AwbAssist().createProjectFromBlueprint(bluePrint, args);
+		
 	}
 
 	private void createProjectFromBlueprint(String blueprintName, String[] args) {
