@@ -27,22 +27,20 @@ public class AwbAssist {
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
-
+		
 		// Print the help instructions if requested
-		if (ArgumentsChecker.isHelpRequest(args) == true) {
+		if (ArgumentsChecker.isHelpRequested(args) == true) {
 			return;
 		}
 		// Print the available blueprints if requested
 		if (ArgumentsChecker.isBlueprintRequested(args) == true) {
 			return;
 		}
-		AwbAssist assist = new AwbAssist();
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
 		String bluePrint = ArgumentsChecker.getBlueprintArgument(args);
 		// call the createProjectFromBlueprint method
-		assist.createProjectFromBlueprint(bluePrint, args);
+		new AwbAssist().createProjectFromBlueprint(bluePrint, args);
 	}
-
 	private void createProjectFromBlueprint(String blueprintName, String[] args) {
 
 		// Check whether a blueprint template corresponds to the given blueprintName and load it
@@ -77,12 +75,17 @@ public class AwbAssist {
 		// Generate the relative search path to be used as reference
 		String relativeSearchPath = "blueprints/" + blueprintToBeUsed.getBaseFolder();
 		List<String> blueprintRelativeResources = InternalResourceHandler.findResources(relativeSearchPath);
+		if (blueprintRelativeResources.isEmpty() || blueprintRelativeResources == null) {
+			System.err.println("No substructure was found under the " + blueprintToBeUsed.getBaseFolder() + " blueprint");
+			return;
+		}
 
 		// create the main folder that should contain the blueprint's substructure
 		String DirectoryOfMainFolder = (targetDirectory + File.separator + symbolicBundleName);
 		Boolean resultCreateMainFolder = this.createTargetFolder(Path.of(DirectoryOfMainFolder));
 		if (resultCreateMainFolder == false) {
 			System.err.println(" the main folder couldn't be created");
+			return;
 		}
 
 		// go through the list of paths, which stands for all files and folders that are present in the substructure and create them one by one in 
@@ -119,7 +122,7 @@ public class AwbAssist {
 			}
 			i++;
 		}
-	System.out.println("Project creation successful! You can find your project at:%n%s%n" + DirectoryOfMainFolder );	
+		System.out.printf("Project creation successful! You can find your project at:\t" + DirectoryOfMainFolder);
 	}
 
 	/**

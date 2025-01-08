@@ -92,7 +92,7 @@ public class ArgumentsChecker {
 	 * @param args
 	 * @return
 	 */
-	public static boolean isHelpRequest(String[] args) {
+	public static boolean isHelpRequested(String[] args) {
 		
 		int i = 0;
 		boolean helpNeeded = false;
@@ -101,12 +101,13 @@ public class ArgumentsChecker {
 		
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
-				System.out.println("Awb-Assist enables you to create a new project based on an existing blueprint"
-						+ "\n In order to do that certain parameters have to be given as arguments in key/value sets while preceeding each key with a - "
-						+ "\n An example on how the arguments should look like is given  in the following line"
-						+ "\n -blueprint \"TestingAgent\" -bundleName \"FlexAqua Assistant Agent\" -symBunName \"de.enflexit.flexAqua.assistantAgent\" -targetDir \"D:\""
-						+ "\n In this example bundlename, symBundleName and targetDir were needed to create a project with a similar structure to which of the blueprint TestingAgent"
-						+ "\n To get the list of available blueprints and the required arguments for each one of them, please give -bp as argument");
+				System.out.println("Awb-Assist enables you to create a new project using an existing blueprint as a reference structure." 
+//						+ "\n In order to do that certain parameters have to be given as arguments in key/value sets while preceeding each key with a - "
+//						+ "\n An example on how the arguments should look like is given  in the following line"
+//						+ "\n -blueprint \"TestingAgent\" -bundleName \"FlexAqua Assistant Agent\" -symBunName \"de.enflexit.flexAqua.assistantAgent\" -targetDir \"D:\""
+//						+ "\n In this example bundlename, symBundleName and targetDir were needed to create a project with a similar structure to which of the blueprint TestingAgent"
+						+ "\nTo get the list of available blueprints and the required arguments for each one of them type -bp as argument");
+//						isBlueprintRequested(new String[] {"-bp"});
 				helpNeeded = true;
 				return helpNeeded;
 			}

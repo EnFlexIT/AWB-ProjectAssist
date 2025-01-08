@@ -43,7 +43,6 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 		 *  ------------------------------------------------------------------------------------------------------------------------
 		 */
 
-		System.out.println("Project creation successful! You can find your project at:\t" + "Fleee" );
 		// First get the available blueprints
 		List<ProjectBlueprint> allAvailableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 		// Initialization of the List that should contain the texts found between brackets in the blueprint templates
