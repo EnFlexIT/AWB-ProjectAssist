@@ -19,6 +19,7 @@ import java.util.Map;
 public class AwbAssist {
 
 	private ArrayList<ProjectBlueprint> projectBlueprints;
+	static final String folderWithStructureModification = "[SymBunNameWithStructureChange]";
 
 	/**
 	 * The main method.
@@ -32,33 +33,14 @@ public class AwbAssist {
 			return;
 		}
 		// Print the available blueprints if requested
-		if (ArgumentsChecker.callForBlueprints(args) == true) {
-			List<ProjectBlueprint> availableBlueprints = new ArrayList<>();
-			availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
-			for (int i = 0; i < availableBlueprints.size(); i++) {
-				System.out.println(availableBlueprints.get(i).getBaseFolder());
-				System.out.println("This blueprint requires the following arguments: \n" + availableBlueprints.get(i).getRequiredArguments());
-				System.out.println("Arguments should be provided as follows: \n");
-				System.out.print("-blueprint " + "\"" + availableBlueprints.get(i).getBaseFolder() + "\" ");
-				ArrayList<StartArgument> currentStartArguments = availableBlueprints.get(i).getRequiredArguments();
-				for (int j=0; j < currentStartArguments.size(); j++) {
-					System.out.print("-" + currentStartArguments.get(j).getArgumentName() + " \"type_here\" ");
-				}
-				System.out.println("\n \n");
-			}
+		if (ArgumentsChecker.isBlueprintRequested(args) == true) {
 			return;
-			
 		}
-		
+		AwbAssist assist = new AwbAssist();
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
 		String bluePrint = ArgumentsChecker.getBlueprintArgument(args);
-		if (bluePrint==null || bluePrint.length() == 0) {
-			System.err.println("[" + AwbAssist.class.getSimpleName() + "] No blue print name is given in the arguments");
-			return;
-		}
 		// call the createProjectFromBlueprint method
-		new AwbAssist().createProjectFromBlueprint(bluePrint, args);
-		
+		assist.createProjectFromBlueprint(bluePrint, args);
 	}
 
 	private void createProjectFromBlueprint(String blueprintName, String[] args) {
@@ -74,11 +56,11 @@ public class AwbAssist {
 		// to see whether it is possible to associate a value for each required mandatory argument.
 		HashMap<String, String> arguments = ArgumentsChecker.check(args, blueprintToBeUsed);
 		if (arguments == null) {
-			System.out.println("[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
+//			System.out.println("[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
 			return;
 		}
 
-		String symBunName = arguments.get("symBunName");
+		String symbolicBundleName = arguments.get("symBunName");
 		String targetDirectory = arguments.get("targetDir");
 
 		// A HashMap of replacement strings is generated. Keys are extracted from the blueprint template 
@@ -88,9 +70,8 @@ public class AwbAssist {
 			replacements.put(entry.getKey(), arguments.get(entry.getValue()));
 		}
 
-		// The folder called symBundleName is to be replaced with a folder structure based on the given argument (symbolic bundle name)
-		String folderToBeChanged = "symBundleName";
-		String folderAfterChangements = symBunName.replace(".", File.separator);
+		// The folder called [SymBunNameWithStructureChange] is to be replaced with a folder structure based on the given input for the argument symbolic bundle name
+		String folderAfterChangements = symbolicBundleName.replace(".", File.separator);
 
 		// Get a list of relative paths that represent the substructure of the blueprint template
 		// Generate the relative search path to be used as reference
@@ -98,7 +79,8 @@ public class AwbAssist {
 		List<String> blueprintRelativeResources = InternalResourceHandler.findResources(relativeSearchPath);
 
 		// create the main folder that should contain the blueprint's substructure
-		Boolean resultCreateMainFolder = this.createTargetFolder(Path.of(targetDirectory + File.separator + symBunName));
+		String DirectoryOfMainFolder = (targetDirectory + File.separator + symbolicBundleName);
+		Boolean resultCreateMainFolder = this.createTargetFolder(Path.of(DirectoryOfMainFolder));
 		if (resultCreateMainFolder == false) {
 			System.err.println(" the main folder couldn't be created");
 		}
@@ -116,7 +98,7 @@ public class AwbAssist {
 				// we have a file
 				// extract to a specific directory and perform text replacements.
 				// The json file is not extracted
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources, folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources, folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
 				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
@@ -128,7 +110,7 @@ public class AwbAssist {
 			} else {
 				// we have a folder
 				// try creating the folder
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = this.renameCheck(currentLocalTargetDirectory, replacements);
 				Boolean resultCreateFolder = this.createTargetFolder(Path.of(currentLocalTargetDirectoryAfterRenameCheck));
 				if (resultCreateFolder == false) {
@@ -137,6 +119,7 @@ public class AwbAssist {
 			}
 			i++;
 		}
+	System.out.println("Project creation successful! You can find your project at:%n%s%n" + DirectoryOfMainFolder );	
 	}
 
 	/**
@@ -198,8 +181,7 @@ public class AwbAssist {
 	 * @return true, if is blueprint found
 	 */
 	private ProjectBlueprint getFoundProjectBlueprint(String blueprintName) {
-		// call the getProjectBlueprintsAvailable method to get the list of available
-		// local blueprints first
+		// call the getProjectBlueprintsAvailable method to get the list of available local blueprints first
 		List<ProjectBlueprint> availableBlueprints;
 		availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 

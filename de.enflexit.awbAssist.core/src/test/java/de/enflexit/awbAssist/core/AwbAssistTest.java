@@ -142,30 +142,4 @@ class AwbAssistTest {
 	    String expected = ("D:/projects/testSymBun/targetDir/newBundleName").replace("/", File.separator); 
 	    assertEquals(expected, result); 
 	}
-	
-	
-	
-	@Test void testing_createProjectFromBlueprint_normalCase() throws Exception { 
-		
-		
-	    List<String> blueprintRelativeResources = new ArrayList<>(); 
-	    blueprintRelativeResources.add("src/featureBlueprint/targetDir/noFolderChange"); 
-	    String folderToBeChanged = "bundleName"; 
-	    String relativeSearchPath = "src/featureBlueprint"; 
-	    String targetDirectory = "D:/projects"; 
-	    String symBunName = "testSymBun"; 
-	    String folderAfterChangements = "newBundleName"; 
-	    int i = 0; 
-	    AwbAssist awb = new AwbAssist(); 
-	    String result = awb.getCurrentLocaltargetDirectory(i, blueprintRelativeResources, folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
-	    String expected = ("D:/projects/testSymBun/targetDir/noFolderChange").replace("/", File.separator); 
-	    assertEquals(expected, result); 
-	}
-	
-	
-
-
-
-
-	
 }

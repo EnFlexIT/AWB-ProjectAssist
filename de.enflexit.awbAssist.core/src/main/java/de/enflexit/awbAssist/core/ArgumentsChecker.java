@@ -1,6 +1,8 @@
 package de.enflexit.awbAssist.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The Class ArgumentsChecker.
@@ -26,8 +28,8 @@ public class ArgumentsChecker {
 			int i=0;
 			while (i < args.length) {
 				String currentArg = args[i].substring(1);
-				if (currentArg.equalsIgnoreCase(currentReference.getArgumentName())) {
-					if ((i+1) < args.length && args[i+1].startsWith("-")==false) {
+				if (currentArg.equalsIgnoreCase(currentReference.getArgumentName()) && (i+1) < args.length && args[i+1].startsWith("-") == false) {
+					if (args[i+1] != null && args[i+1].isBlank() == false) {
 						arguments.put(currentReference.getArgumentName(), args[i+1]);
 						break;
 					} else { 
@@ -73,8 +75,9 @@ public class ArgumentsChecker {
 		int i = 0;
 		String bluePrint = "";
 		while (i < args.length) {
-			if (args[i].equalsIgnoreCase("-blueprint")) {
-				if (i + 1 < args.length && args[i+1].startsWith("-") == false ) {
+			if (args[i].equalsIgnoreCase("-blueprint") && i+1 < args.length && args[i+1].startsWith("-") == false) {
+				boolean isNullOrBlank = (args[i+1]==null || args[i+1].isBlank());
+				if(isNullOrBlank == false) {
 					bluePrint = args[i + 1];
 					return bluePrint;
 				}
@@ -98,7 +101,7 @@ public class ArgumentsChecker {
 		
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
-				System.out.println("The current file enables you to create a new project based on an existing blueprint (project template)"
+				System.out.println("Awb-Assist enables you to create a new project based on an existing blueprint"
 						+ "\n In order to do that certain parameters have to be given as arguments in key/value sets while preceeding each key with a - "
 						+ "\n An example on how the arguments should look like is given  in the following line"
 						+ "\n -blueprint \"TestingAgent\" -bundleName \"FlexAqua Assistant Agent\" -symBunName \"de.enflexit.flexAqua.assistantAgent\" -targetDir \"D:\""
@@ -117,18 +120,29 @@ public class ArgumentsChecker {
 	 * @param args
 	 * @return
 	 */
-	public static boolean callForBlueprints(String[] args) {
+	public static boolean isBlueprintRequested(String[] args) {
 		
 		int i = 0;
-		boolean blueprintsNeeded = false;
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-bp")) {
-				blueprintsNeeded = true;
-				return blueprintsNeeded;
+				List<ProjectBlueprint> availableBlueprints = new ArrayList<>();
+				availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
+				for (ProjectBlueprint currentBlueprint: availableBlueprints) {
+					System.out.println(currentBlueprint.getBaseFolder() + ": " + currentBlueprint.getDescription());
+					System.out.println("This blueprint requires the following arguments: " + currentBlueprint.getRequiredArguments());
+					System.out.println("Arguments should be provided as follows: ");
+					System.out.print("-blueprint " + "\"" + currentBlueprint.getBaseFolder() + "\" ");
+					ArrayList<StartArgument> currentStartArguments = currentBlueprint.getRequiredArguments();
+					for (int j=0; j < currentStartArguments.size(); j++) {
+						System.out.print("-" + currentStartArguments.get(j).getArgumentName() + " \"my"+ currentStartArguments.get(j).getArgumentName() + "\" ");
+					}
+					System.out.println("\n");
+				}
+				return true;
 			}
 			i++;
 		}
-		return blueprintsNeeded;
+		return false;
 	}
 	
 }

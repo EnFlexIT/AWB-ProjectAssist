@@ -13,16 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * The Class TestingBlueprintTemplates.
  *
  * @author Omar Ben Chobba - Enflex.IT GmbH
  */
-class CheckingBlueprintTemplates {
+class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 
 	public static void main(String[] args) {
 		
@@ -43,6 +43,7 @@ class CheckingBlueprintTemplates {
 		 *  ------------------------------------------------------------------------------------------------------------------------
 		 */
 
+		System.out.println("Project creation successful! You can find your project at:\t" + "Fleee" );
 		// First get the available blueprints
 		List<ProjectBlueprint> allAvailableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 		// Initialization of the List that should contain the texts found between brackets in the blueprint templates
@@ -57,12 +58,19 @@ class CheckingBlueprintTemplates {
 		
 		
 		// AwbAssist was manually used to generated projects using all blueprint templates and they were stored locally under D:\\testingAwbAssistOutputs
+		// ---------------------------  Below is a block that you can use to generate projects using AwbAssist ---------------------------  
 		
-		// --------------- This is optional ---------------
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("please enter the path under which your folder was generated");
-		String pathToGeneratedFolder = scanner.next();
-		// ------------------------------------------------
+//		 String[] argsForEOM = {"-blueprint", "eomModelBlueprint", "-bundleName", "Trousse", "-symBunName", "arbitraire.com.de.eomTrousse", "-targetDir",  "D:\\testingAwbAssistOutputs" , "-technicalSystemName", "TrousseSystem"};
+//		 String[] argsForProsumer = {"-blueprint", "Prosumer", "-bundleName", "toaster", "-symBunName", "twisting.de.com.prosumer",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
+//		 String[] argsForSampleAgent = {"-blueprint", "SampleAgent", "-bundleName", "tetris", "-symBunName", "lac.com.de.sampleAgent",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
+//		 String[] argsForFeature = {"-blueprint", "featureBlueprint", "-bundleName", "tatami", "-symBunName", "soleil.com.de.feature",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
+//		 
+//		 AwbAssist.main(argsForEOM);
+//		 AwbAssist.main(argsForProsumer);
+//		 AwbAssist.main(argsForSampleAgent);
+//		 AwbAssist.main(argsForFeature);
+		 
+		 // ---------------------------  The block ends here ---------------------------  
 		
 		
 		File generatedFolder = new File ("D:\\testingAwbAssistOutputs");
@@ -83,47 +91,75 @@ class CheckingBlueprintTemplates {
 		countOccurrencesAndFillListOfFoundTextsNonAssociatedToATextReplacement(foundSquareBracketsInGeneratedFiles, replacementTextsAndOccurrencesInGeneratedFiles, listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles);
 		
 		
-//		int commonElements = 0;
-//		int differentElements = 0;
-//		List<List<String>> listOfCommonElements = new ArrayList<>();
-//		List<List<String>> uniqueToBlueprint = new ArrayList<>();
-//		List<List<String>> uniqueToCreatedFolder = new ArrayList<>();
-//		
-//		for (List<String> sublist:listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates) {
-//			for (List<String> sublistTwo : listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles) {
-//				boolean sameBlueprint = sublist.get(0).equals(sublistTwo.get(0));
-//				boolean sameTextBetweenBrackets = sublist.get(1).equals(sublistTwo.get(1));
-//				String sublistFileName = (new File (sublist.get(3))).getName();
-//				String sublistTwoFileName = (new File(sublistTwo.get(3)).getName());
-//				boolean sameFileName = sublistFileName.equals(sublistTwoFileName);
-//				if (sameBlueprint && sameTextBetweenBrackets && sameFileName) {
-//					listOfCommonElements.add(List.of(sublist.get(0), sublist.get(1), sublist.get(2), sublistTwo.get(2)));
-//				}
-//			}
-//		}
+		// ------- Here we start to evaluate the results ------------
 		
-//		Set<List<String>> setOfFoundTextInBlueprintTemplates = new HashSet<>(); 
-//		Set<List<String>> setOfFoundTextInGeneratedFolder = new HashSet<>(); 
-//		for (List<String> list : listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates ) {
-//			String fileName = (new File(list.get(2))).getName();
-//			setOfFoundTextInBlueprintTemplates.add(List.of(list.get(0), list.get(1), fileName));
-//		}
-//		for (List<String> list : listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles ) {
-//			String fileName = (new File(list.get(2))).getName();
-//			setOfFoundTextInGeneratedFolder.add(List.of(list.get(0), list.get(1), fileName));
-//		}
-//		
-//		Set<List<String>> uniqueToBlueprintTemplates = new HashSet<>(setOfFoundTextInBlueprintTemplates); 
-//		Set<List<String>> uniqueToGeneratedFolder = new HashSet<>(setOfFoundTextInGeneratedFolder);
-//		Set<List<String>> commonElements = new HashSet<>(setOfFoundTextInBlueprintTemplates);
-//		
-//		uniqueToBlueprintTemplates.removeAll(setOfFoundTextInGeneratedFolder);
-//		uniqueToGeneratedFolder.removeAll(setOfFoundTextInBlueprintTemplates);
-//		commonElements.retainAll(setOfFoundTextInGeneratedFolder);
-		
+		// A check whether all replacement texts were replaced
 		boolean replacementTextInGeneratedFolder =isreplacementTextPresentInGeneratedFolder(replacementTextsAndOccurrencesInGeneratedFiles);
 		
+		// A check whether all replacement texts mentioned each blueprint json were present in the blueprint structure
+		boolean allBlueprintReplacementTextsWereFoundAndUsed  = allBlueprintReplacementTextsWerePresentInTheBlueprintTemplate(replacementTextsAndOccurrencesInBlueprintTemplates);
+		
+		// Print the list of texts found between brackets that are not associated to a text replacement string
+		System.out.println(" \n" + listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.size() +" texts were found between brackets which are not associated to a replacement text from a blueprint template, they are listed below:");
+		for (List<String> sublist : listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates) {
+			final String YELLOW = "\u001B[33m";
+			final String RESET = "\u001B[0m";
+			System.out.println("_ " + YELLOW + sublist.get(1) + RESET + ", found in the blueprint " + sublist.get(0) + " under the " + sublist.get(2));
+		}
+		
+		// Go through texts that are not supposed to be replaced and see whether they changed while generating projects using AwbAssist.
+		List<List<String>> listOfCommonElements = new ArrayList<>();
+		List<List<String>> uniqueToBlueprint = new ArrayList<>();
+		List<List<String>> uniqueToCreatedFolder = new ArrayList<>();
+		
+		for (List<String> sublist:listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates) {
+			for (int i=0 ; i< listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.size(); i++) {
+				boolean sameBlueprint = sublist.get(0).equals(listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.get(i).get(0));
+				boolean sameTextBetweenBrackets = sublist.get(1).equals(listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.get(i).get(1));
+				String sublistFileName = (new File (sublist.get(2))).getName();
+				String sublistTwoFileName = (new File(listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.get(i).get(2)).getName());
+				boolean sameFileName = sublistFileName.equals(sublistTwoFileName);
+				
+				if (sameBlueprint && sameTextBetweenBrackets && sameFileName) {
+					listOfCommonElements.add(List.of(sublist.get(0), sublist.get(1), sublist.get(2), listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.get(i).get(2)));
+					break;
+				} else if (i == (listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.size()-1)){
+					uniqueToBlueprint.add(sublist);
+				}
+			}
+		}
+		
+		for (List<String> sublist:listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles) {
+			for (int i=0 ; i< listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.size(); i++) {
+				boolean sameBlueprint = sublist.get(0).equals(listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.get(i).get(0));
+				boolean sameTextBetweenBrackets = sublist.get(1).equals(listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.get(i).get(1));
+				String sublistFileName = (new File (sublist.get(2))).getName();
+				String sublistTwoFileName = (new File(listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.get(i).get(2)).getName());
+				boolean sameFileName = sublistFileName.equals(sublistTwoFileName);
+				if (sameBlueprint && sameTextBetweenBrackets && sameFileName) {
+					List<String> toBeAdded = List.of(sublist.get(0), sublist.get(1), listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.get(i).get(2), sublist.get(2));
+					if (listOfCommonElements.contains(toBeAdded) == false) {
+						System.out.println("This is element is suposed to be found in " + listOfCommonElements);
+					}
+					break;
+				} else if (i == (listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.size()-1)){
+					uniqueToCreatedFolder.add(sublist);
+				}
+			}
+		}
+		int commonElements = listOfCommonElements.size();
+		int differentElements = uniqueToBlueprint.size() + uniqueToCreatedFolder.size();
+//		System.out.println("From " + (listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.size() + listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.size()) + " elements that are not assciated to a bluerint argument " + commonElements*2 + " elements where common " + uniqueToBlueprint.size() + " were unique to blueprint template and " + uniqueToCreatedFolder.size() + " were unique to the generated folder");
+//		System.out.println("\n Elements unique to blueprint template");  
+//		for (List<String> printList :uniqueToBlueprint) { 
+//			System.out.println(printList);
+//		}
+//		System.out.println("\n Elements unique to the generated folder");
+//		for (List<String> printList :uniqueToCreatedFolder) { 
+//			System.out.println(printList);
+//		}
 	}
+
 
 	/**
 	 * Look for texts written between brackets in the blueprints substructure and put them in a list
@@ -144,7 +180,6 @@ class CheckingBlueprintTemplates {
 			// Each element of the list of files/folders is checked: the searched strings are looked for in the names and in the contents of files
 			for (int j = 0; j < listOfFilesAndFoldersUnderTheCurrentBlueprint.size(); j++) {
 				URL fileURL = InternalResourceHandler.class.getResource("/" + listOfFilesAndFoldersUnderTheCurrentBlueprint.get(j));
-				if (fileURL.toString().contains("BlueprintStructure.json") == false) {
 					// use a method to look for texts between brackets in file/folder name
 					lookForBracketsInName(fileURL, foundTextsInSquareBrackets, nameOfCurrentBlueprint);
 					try {
@@ -156,7 +191,6 @@ class CheckingBlueprintTemplates {
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}
-				}
 			}
 			// Fill the list of replacement texts corresponding to each blueprint while looping in the blueprints
 			HashMap<String,String> replacementTextsOfTheCurrentBlueprint = ListOfProjectBlueprints.get(i).getTextReplacements();
@@ -204,7 +238,7 @@ class CheckingBlueprintTemplates {
 			}
 		}
 	}
-
+	
 	
 	/**
 	 * Use the list of found texts between to count the occurrences of replacements texts and put the found texts, which do not correspond to a replacement text in a separate list
@@ -226,7 +260,6 @@ class CheckingBlueprintTemplates {
 				listOfFoundTextsNonAssociatedToAReplacementText.add(element);
 			}
 		}
-		
 	}
 
 
@@ -241,35 +274,36 @@ class CheckingBlueprintTemplates {
 
 		// File path
 		String filePath = urlOfTheFileOrFolder.toString();
-	    try {
-	        // Convert the URL to a File object
-	        File file = new File(urlOfTheFileOrFolder.toURI());
-	        if (!file.isFile()) {
-	            return; // Skip directories or invalid files
-	        }
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			String line;
-			// Regular expression to match text between square brackets
-			Pattern pattern = Pattern.compile("\\[(.*?)]");
-			while ((line = reader.readLine()) != null) {
-				Matcher matcher = pattern.matcher(line);
-				while (matcher.find() == true) {
-					// Add the matched group (text inside the brackets) to the list
-					List<String> pair = new ArrayList<>();
-					pair.add(blueprintName);
-					pair.add(matcher.group(1)); 
-					pair.add(filePath); 
-					resultList.add(pair); // Add the sub-list to the main list
+		if (excludeThisFile(filePath) == false) {
+			try {
+				// Convert the URL to a File object
+				File file = new File(urlOfTheFileOrFolder.toURI());
+				if (!file.isFile()) {
+					return; // Skip directories or invalid files
 				}
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line;
+				// Regular expression to match text between square brackets
+				Pattern pattern = Pattern.compile("\\[(.*?)]");
+				while ((line = reader.readLine()) != null) {
+					Matcher matcher = pattern.matcher(line);
+					while (matcher.find() == true && excludeThisContent(matcher.group(1)) == false) {
+						// Add the matched group (text inside the brackets) to the list
+						List<String> pair = new ArrayList<>();
+						pair.add(blueprintName);
+						pair.add(matcher.group(1));
+						pair.add(filePath);
+						resultList.add(pair); 
+					}
+				}
+			} catch (URISyntaxException | IOException e) {
+				e.printStackTrace();
 			}
 		}
-	    } catch (URISyntaxException | IOException e) {
-			e.printStackTrace();
-		}
 	}
-
 	
-    /**
+
+	/**
      * Look for texts between brackets in a string.
      *
      * @param urlOfTheFileOrFolder the url of the file or folder
@@ -281,17 +315,19 @@ class CheckingBlueprintTemplates {
 		String fileName;
 		try {
 			fileName = Paths.get(urlOfTheFileOrFolder.toURI()).getFileName().toString();
-			// Regular expression to match text between square brackets
-			Pattern pattern = Pattern.compile("\\[(.*?)]");
+			if (excludeThisFile(fileName) == false) {
+				// Regular expression to match text between square brackets
+				Pattern pattern = Pattern.compile("\\[(.*?)]");
 
-			Matcher matcher = pattern.matcher(fileName);
-			while (matcher.find() == true) {
-				// Create a sub-list for the file name match
-				List<String> pair = new ArrayList<>();
-				pair.add(BlueprintName);
-				pair.add(matcher.group(1)); 
-				pair.add(fileName); 
-				resultList.add(pair); // Add to main list
+				Matcher matcher = pattern.matcher(fileName);
+				while (matcher.find() == true && excludeThisContent(matcher.group(1)) == false) {
+					// Create a sub-list for the file name match
+					List<String> pair = new ArrayList<>();
+					pair.add(BlueprintName);
+					pair.add(matcher.group(1));
+					pair.add(fileName);
+					resultList.add(pair); 
+				}
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -320,6 +356,50 @@ class CheckingBlueprintTemplates {
     }
     
     
+    /** Returns whether the file is to be excluded
+     * @param fileName
+     * @return
+     */
+    private static boolean excludeThisFile(String fileName) {
+    	List<String> exceptionalFiles = new ArrayList<>();
+    	exceptionalFiles.add(".json");
+    	exceptionalFiles.add(".jpeg");
+    	exceptionalFiles.add(".png");
+    	exceptionalFiles.add(".polyglot");
+    	exceptionalFiles.add(".gif");
+    	exceptionalFiles.add(".gitignore");
+    	exceptionalFiles.add(AwbAssist.folderWithStructureModification.substring(1, AwbAssist.folderWithStructureModification.length()-1));
+//    	boolean exclude = false;
+    	for (String exception: exceptionalFiles) {
+    		if (fileName.contains(exception) == true) {
+    			return true;
+//    			System.out.println("The file " + fileName + " is excluded");
+//    			exclude=true;
+    		}
+    	}
+//    	return exclude;
+    	return false;
+    }
+    
+    
+    /** Returns whether the string is to be excluded
+     * @param group
+     * @return
+     */
+    private static boolean excludeThisContent(String group) {
+    	if (group == null || group.isEmpty() || group.equals(AwbAssist.folderWithStructureModification)) {
+//    		System.out.println("The text " + group +  " is excluded");
+    		return true;
+    	}
+    	try {
+    		double d = Double.parseDouble(group);
+    		return true;
+    	} catch (NumberFormatException nfe) {
+    		return false;
+    	}
+    }
+    
+    
     /**
      * Checks if is replacement text present in generated folder.
      *
@@ -330,9 +410,33 @@ class CheckingBlueprintTemplates {
     	
     	for (Entry<List<String>, Integer> i : replacementTextsAndOccurrences.entrySet()) {
     		if (i.getValue() != 0 ) {
+    			System.out.println("A text replacement was not conducted for the following element : \n Blueprint: " +i.getKey().get(0) + " / Text to be replaced: " + i.getKey().get(1) + " / File path: " +i.getKey().get(2));
     			return true;
     		}
     	}
+    	System.out.println("No text requiring replacement was found in the generated folder");
     	return false;
+    	
     }
+    
+    
+    /**
+     * Checks whether all replacement texts mentioned in the json file of each blueprint was used
+     * @param replacementTextsAndOccurrencesInBlueprintTemplates
+     * @return
+     */
+    private static boolean allBlueprintReplacementTextsWerePresentInTheBlueprintTemplate( HashMap<List<String>, Integer> replacementTextsAndOccurrencesInBlueprintTemplates) {
+    	boolean result = true;
+    	for ( Entry <List<String>, Integer> i : replacementTextsAndOccurrencesInBlueprintTemplates.entrySet()) {
+    		if (i.getValue() == 0) {
+    			result = false;
+    			System.out.println("The replacement text " + i.getKey().get(1) + " of the blueprint " + i.getKey().get(0) + " is mentionned in the json file but hasn't been used");
+    		}
+    	}
+    	if (result == true) {
+    		System.out.println("All replacement texts mentionned in the json files were also found in the respective blueprint structure");
+    	}
+    	return result;
+    }
+    
 }

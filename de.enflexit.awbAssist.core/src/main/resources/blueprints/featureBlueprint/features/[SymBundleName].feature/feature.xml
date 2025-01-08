@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="[SymBundleName].feature"
-      label="[Project name]-Feature"
+      label="[Project Name]-Feature"
       version="1.0.0.qualifier"
       provider-name="EnFlex.IT"
       os="linux,macosx,win32"
