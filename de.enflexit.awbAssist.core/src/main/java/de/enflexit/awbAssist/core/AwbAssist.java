@@ -122,7 +122,7 @@ public class AwbAssist {
 			}
 			i++;
 		}
-		System.out.printf("Project creation successful! You can find your project at:\t" + DirectoryOfMainFolder);
+		System.out.println("Project creation successful! You can find your project at:\t" + DirectoryOfMainFolder);
 	}
 
 	/**
