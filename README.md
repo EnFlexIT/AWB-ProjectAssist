@@ -1,6 +1,3 @@
-# AWB-ProjectAssist
-Project to assist creating AWB projects # AWB-ProjectAssist
-Project to assist creating AWB projects 
 # Awb-ProjectAssist
 
 **Awb-Assist** enables you to create a new project based on an existing blueprint.  
