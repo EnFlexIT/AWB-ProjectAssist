@@ -59,15 +59,15 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 		// AwbAssist was manually used to generated projects using all blueprint templates and they were stored locally under D:\\testingAwbAssistOutputs
 		// ---------------------------  Below is a block that you can use to generate projects using AwbAssist ---------------------------  
 		
-		 String[] argsForEOM = {"-blueprint", "eomModelBlueprint", "-bundleName", "Titan", "-symBunName", "arbitraire.com.de.eomTitan", "-targetDir",  "D:\\testingAwbAssistOutputs" , "-technicalSystemName", "FoundingTitan"};
-		 String[] argsForProsumer = {"-blueprint", "Prosumer", "-bundleName", "toaster", "-symBunName", "twisting.de.com.prosumer",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
-		 String[] argsForSampleAgent = {"-blueprint", "SampleAgent", "-bundleName", "tetris", "-symBunName", "lac.com.de.sampleAgent",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
-		 String[] argsForFeature = {"-blueprint", "featureBlueprint", "-bundleName", "tatami", "-symBunName", "soleil.com.de.feature",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
-		 
-		 AwbAssist.main(argsForEOM);
-		 AwbAssist.main(argsForProsumer);
-		 AwbAssist.main(argsForSampleAgent);
-		 AwbAssist.main(argsForFeature);
+//		 String[] argsForEOM = {"-blueprint", "eomModelBlueprint", "-bundleName", "Titan", "-symBunName", "arbitraire.com.de.eomTitan", "-targetDir",  "D:\\testingAwbAssistOutputs" , "-technicalSystemName", "FoundingTitan"};
+//		 String[] argsForProsumer = {"-blueprint", "Prosumer", "-bundleName", "toaster", "-symBunName", "twisting.de.com.prosumer",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
+//		 String[] argsForSampleAgent = {"-blueprint", "SampleAgent", "-bundleName", "tetris", "-symBunName", "lac.com.de.sampleAgent",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
+//		 String[] argsForFeature = {"-blueprint", "featureBlueprint", "-bundleName", "tatami", "-symBunName", "soleil.com.de.feature",  "-targetDir",  "D:\\testingAwbAssistOutputs"};
+//		 
+//		 AwbAssist.main(argsForEOM);
+//		 AwbAssist.main(argsForProsumer);
+//		 AwbAssist.main(argsForSampleAgent);
+//		 AwbAssist.main(argsForFeature);
 		 
 		 // ---------------------------  The block ends here ---------------------------  
 		

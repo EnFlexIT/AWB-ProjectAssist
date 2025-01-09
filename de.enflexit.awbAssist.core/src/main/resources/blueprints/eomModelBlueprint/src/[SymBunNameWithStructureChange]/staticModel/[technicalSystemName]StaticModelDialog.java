@@ -249,11 +249,12 @@ public class [technicalSystemName]StaticModelDialog extends AbstractStaticModelD
 	 * Load the data model to the dialog.
 	 */
 	private void loadDataModelToDialog(){
+		this.getJTextFieldMotorPower().setText(""+this.getStaticDataModel().getMotorPower());
 	}
 	
-		private void setErrorMessage(String message) {
-			[technicalSystemName]StaticModelDialog.this.getJLabelErrorMessage().setText(message);
-		}
+	private void setErrorMessage(String message) {
+		[technicalSystemName]StaticModelDialog.this.getJLabelErrorMessage().setText(message);
+	}
 	
 	private JLabel getJLabelErrorMessage() {
 		if (jLabelErrorMessage == null) {
