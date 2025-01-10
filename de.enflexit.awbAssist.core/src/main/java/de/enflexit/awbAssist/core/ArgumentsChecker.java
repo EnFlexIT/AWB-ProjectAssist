@@ -130,8 +130,8 @@ public class ArgumentsChecker {
 				availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 				for (ProjectBlueprint currentBlueprint: availableBlueprints) {
 					System.out.println(currentBlueprint.getBaseFolder() + ": " + currentBlueprint.getDescription());
-					System.out.println("This blueprint requires the following arguments: " + currentBlueprint.getRequiredArguments());
-					System.out.println("Arguments should be provided as follows: ");
+					System.out.println("This blueprint requires the following arguments:\t" + currentBlueprint.getRequiredArguments());
+					System.out.println("Arguments should be provided as follows:\t");
 					System.out.print("-blueprint " + "\"" + currentBlueprint.getBaseFolder() + "\" ");
 					ArrayList<StartArgument> currentStartArguments = currentBlueprint.getRequiredArguments();
 					for (int j=0; j < currentStartArguments.size(); j++) {

@@ -69,7 +69,7 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 //		 AwbAssist.main(argsForSampleAgent);
 //		 AwbAssist.main(argsForFeature);
 		 
-		 // ---------------------------  The block ends here ---------------------------  
+		 // ----------------------------------------------------  The block ends here ----------------------------------------------------  
 		
 		
 		File generatedFolder = new File ("D:\\testingAwbAssistOutputs");

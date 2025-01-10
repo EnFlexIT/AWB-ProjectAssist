@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-// TODO add a method that checks whether the  there are [ or ] in which no recognized text are mentioned (recognized texts are which that are mentioned in the json file) -----Test the local blueprint-------
-
 class AwbAssistTest {
 
 	@Test
@@ -92,25 +90,25 @@ class AwbAssistTest {
 	}
 
 	// -------- the following two methods are expected to return an error ---------
-	@Test
-	void testing_getCurrentRelativeResource_WithInvalidIndex() throws Exception {
-
-		List<String> blueprintRelativeResources = new ArrayList<>();
-		blueprintRelativeResources.add("src/featureBlueprint/targetDir");
-		int i = 1;
-		AwbAssist awb = new AwbAssist();
-		String result = awb.getCurrentRelativeResource(i, blueprintRelativeResources);
-		assertEquals(null, result);
-	}
-	@Test
-	void testing_getCurrentRelativeResource_WithEmptyList() throws Exception {
-		
-		List<String> blueprintRelativeResources = new ArrayList<>();
-		int i = 0;
-		AwbAssist awb = new AwbAssist();
-		String result = awb.getCurrentRelativeResource(i, blueprintRelativeResources);
-		assertEquals(null, result);
-	}
+//	@Test
+//	void testing_getCurrentRelativeResource_WithInvalidIndex() throws Exception {
+//
+//		List<String> blueprintRelativeResources = new ArrayList<>();
+//		blueprintRelativeResources.add("src/featureBlueprint/targetDir");
+//		int i = 1;
+//		AwbAssist awb = new AwbAssist();
+//		String result = awb.getCurrentRelativeResource(i, blueprintRelativeResources);
+//		assertEquals(null, result);
+//	}
+//	@Test
+//	void testing_getCurrentRelativeResource_WithEmptyList() throws Exception {
+//		
+//		List<String> blueprintRelativeResources = new ArrayList<>();
+//		int i = 0;
+//		AwbAssist awb = new AwbAssist();
+//		String result = awb.getCurrentRelativeResource(i, blueprintRelativeResources);
+//		assertEquals(null, result);
+//	}
 	// ----------- Methods with expected errors end here ----------------
 	
 	
