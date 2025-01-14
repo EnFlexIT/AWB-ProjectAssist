@@ -175,10 +175,10 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 			String nameOfCurrentBlueprint = ListOfProjectBlueprints.get(i).getBaseFolder();
 			String searchPathOfTheCurrentBlueprint = "blueprints/" + nameOfCurrentBlueprint;
 			// The list that contains the files and folders under the current blueprint
-			List<String> listOfFilesAndFoldersUnderTheCurrentBlueprint = InternalResourceHandler.findResources(searchPathOfTheCurrentBlueprint);
+			List<InternalResource> listOfFilesAndFoldersUnderTheCurrentBlueprint = InternalResourceHandler.findResources(searchPathOfTheCurrentBlueprint);
 			// Each element of the list of files/folders is checked: the searched strings are looked for in the names and in the contents of files
 			for (int j = 0; j < listOfFilesAndFoldersUnderTheCurrentBlueprint.size(); j++) {
-				URL fileURL = InternalResourceHandler.class.getResource("/" + listOfFilesAndFoldersUnderTheCurrentBlueprint.get(j));
+				URL fileURL = InternalResourceHandler.class.getResource("/" + listOfFilesAndFoldersUnderTheCurrentBlueprint.get(j).getPath());
 					// use a method to look for texts between brackets in file/folder name
 					lookForBracketsInName(fileURL, foundTextsInSquareBrackets, nameOfCurrentBlueprint);
 					try {

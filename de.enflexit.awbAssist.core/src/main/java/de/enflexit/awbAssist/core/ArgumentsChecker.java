@@ -96,9 +96,7 @@ public class ArgumentsChecker {
 		
 		int i = 0;
 		boolean helpNeeded = false;
-
 		if (args==null || args.length==0) args = new String[] {"-?"};
-		
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
 				System.out.println("Awb-Assist enables you to create a new project using an existing blueprint as a reference structure." 

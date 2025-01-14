@@ -23,7 +23,6 @@ public class AwbAssist {
 
 	/**
 	 * The main method.
-	 * 
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
@@ -58,7 +57,6 @@ public class AwbAssist {
 		// to see whether it is possible to associate a value for each required mandatory argument.
 		HashMap<String, String> arguments = ArgumentsChecker.check(args, blueprintToBeUsed);
 		if (arguments == null) {
-//			System.out.println("[" + AwbAssist.class.getSimpleName() + "] Arguments are not correct / Arguments are missing");
 			return;
 		}
 
@@ -78,7 +76,7 @@ public class AwbAssist {
 		// Get a list of relative paths that represent the substructure of the blueprint template
 		// Generate the relative search path to be used as reference
 		String relativeSearchPath = "blueprints/" + blueprintToBeUsed.getBaseFolder();
-		List<String> blueprintRelativeResources = InternalResourceHandler.findResources(relativeSearchPath);
+		List<InternalResource> blueprintRelativeResources = InternalResourceHandler.findResources(relativeSearchPath);
 		if (blueprintRelativeResources.isEmpty() || blueprintRelativeResources == null) {
 			System.err.println("No substructure was found under the " + blueprintToBeUsed.getBaseFolder() + " blueprint");
 			return;
@@ -97,32 +95,25 @@ public class AwbAssist {
 		int i = 0;
 		String currentLocalTargetDirectory = new String();
 		String currentLocalTargetDirectoryAfterRenameCheck = new String();
-		String currentRelativeResource = new String();
 		while (i < blueprintRelativeResources.size()) {
 			
-//			boolean substructureIsFound = hasSubstructure(blueprintRelativeResources, i);
-			boolean isBundleFile = InternalResourceHandler.isBundleFile(getCurrentRelativeResource(i, blueprintRelativeResources)); 
-//			String currentElementOfTheBlueprintRelativeResources =blueprintRelativeResources.get(i);
-//			List<String> howManyResourcesAreHere = InternalResourceHandler.findResources(currentElementOfTheBlueprintRelativeResources);
-			// ---------- Attention please : will the real slim shady please stand up  ---------- 
-			// ------------------- EMPTY FOLDERS ARE RECOGNIZED AS FILES! ----------------------
-			if (isBundleFile == true) {
+			String currentElement = blueprintRelativeResources.get(i).getPath();
+			boolean isDirectory = blueprintRelativeResources.get(i).isDirectory();
+			if (isDirectory == false) {
 				// we have a file
-				// extract to a specific directory and perform text replacements.
-				// The json file is not extracted
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources, folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
+				// extract to a specific directory and perform text replacements except for the json file, which is ignored
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(currentElement, folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
-				currentRelativeResource = getCurrentRelativeResource(i, blueprintRelativeResources);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
 					File currentFilePath = new File(currentLocalTargetDirectoryAfterRenameCheck);
-					InternalResourceHandler.extractFromBundle(currentRelativeResource, currentFilePath);
+					InternalResourceHandler.extractFromBundle("/" + currentElement, currentFilePath);
 					doTextReplacement(currentFilePath, replacements);
 				}
 
 			} else {
 				// we have a folder
 				// try creating the folder
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(i, blueprintRelativeResources,folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(currentElement, folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = this.renameCheck(currentLocalTargetDirectory, replacements);
 				Boolean resultCreateFolder = this.createTargetFolder(Path.of(currentLocalTargetDirectoryAfterRenameCheck));
 				if (resultCreateFolder == false) {
@@ -135,33 +126,9 @@ public class AwbAssist {
 	}
 
 	
-	/** Checks in a list of directories, whether a substructure is found for a given directory
-	 * @param blueprintRelativeResources
-	 * @param i
-	 * @return
-	 */
-	private boolean hasSubstructure(List<String> blueprintRelativeResources, int i) {
-//		String currentRelativeResource = blueprintRelativeResources.get(i);
-//		for (String element : blueprintRelativeResources) {
-//			if (element.contains(currentRelativeResource) && element.length() > currentRelativeResource.length()) {
-//				return true;
-//			}
-//		}
-		// -------------------- Shorter alternative --------------------
-		// The list of relative resource is organized so that the path of each folder comes right before the the paths of its substructure
-		// it should be in this case enough to check whether the path of current element is part of the next one. It should be true for a folder
-		// as the path of the next element should be a file under that folder.
-		
-		if ((i+1)<(blueprintRelativeResources.size()) && blueprintRelativeResources.get(i+1).contains(blueprintRelativeResources.get(i))) {
-			return true;
-		}
-		return false;
-	}
-	
 	
 	/**
 	 * File rename check to rename the currentLocalTargetDirectory if it contains a string from the replacement list.
-	 *
 	 * @param currentLocalTargetDirectory the current local target directory
 	 * @param replacements the replacements
 	 * @return the string
@@ -175,22 +142,10 @@ public class AwbAssist {
 		return currentLocalTargetDirectory;
 	}
 
-	/**
-	 * Gets the relative resource of the element i of the given list.
-	 *
-	 * @param i                          the i
-	 * @param blueprintRelativeResources the blueprint relative resources
-	 * @return the current relative resource
-	 */
-	public String getCurrentRelativeResource(int i, List<String> blueprintRelativeResources) {
-			String currentRelativeResource = "/" + blueprintRelativeResources.get(i);
-		return currentRelativeResource;
-	}
 
 	/**
 	 * Gives back the target directory to copy the element i of the given list at.
 	 * The directory creation includes modifying the folder structure
-	 * 
 	 * @param i
 	 * @param blueprintRelativeResources
 	 * @param folderToBeChanged
@@ -200,12 +155,12 @@ public class AwbAssist {
 	 * @param folderAfterChangements
 	 * @return
 	 */
-	public String getCurrentLocaltargetDirectory(int i, List<String> blueprintRelativeResources, String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName,String folderAfterChangements) {
+	public String getCurrentLocaltargetDirectory(String resource, String folderToBeChanged, String relativeSearchPath, String targetDirectory, String symBunName,String folderAfterChangements) {
 		String currentLocalTargetDirectory = null;
-		if (blueprintRelativeResources.get(i).contains(folderToBeChanged)) {
-			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace(folderToBeChanged, folderAfterChangements).replace("/", File.separator);
+		if (resource.contains(folderToBeChanged)) {
+			currentLocalTargetDirectory = resource.replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace(folderToBeChanged, folderAfterChangements).replace("/", File.separator);
 		} else {
-			currentLocalTargetDirectory = blueprintRelativeResources.get(i).replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator);
+			currentLocalTargetDirectory = resource.replace(relativeSearchPath, targetDirectory + "/" + symBunName).replace("/", File.separator);
 		}
 		return currentLocalTargetDirectory;
 	}
@@ -213,7 +168,6 @@ public class AwbAssist {
 	/**
 	 * Checks if a blueprint template is found, that has the name given as argument
 	 * to the method and return it as ProjectBlueprint
-	 *
 	 * @param blueprintName the blueprint name
 	 * @return true, if is blueprint found
 	 */
@@ -234,7 +188,6 @@ public class AwbAssist {
 	/**
 	 * Creates the target folder. If the file doesn't already exist, a try to create
 	 * the folder is performed. The result of the try is returned as boolean.
-	 * 
 	 * @param projectPath the project path and returns whether the folder already
 	 * exists and whether a failure occurred while creating the new folder
 	 */
@@ -249,7 +202,6 @@ public class AwbAssist {
 
 	/**
 	 * Reads a file and do text replacement in it
-	 * 
 	 * @param file
 	 * @param targetText
 	 * @param replacementText
@@ -283,7 +235,6 @@ public class AwbAssist {
 
 	/**
 	 * Gets the project blueprints.
-	 * 
 	 * @return the project blueprints
 	 */
 	public ArrayList<ProjectBlueprint> getProjectBlueprints() {

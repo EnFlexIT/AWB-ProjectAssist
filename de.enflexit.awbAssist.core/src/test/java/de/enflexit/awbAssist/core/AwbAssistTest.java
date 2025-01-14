@@ -78,16 +78,6 @@ class AwbAssistTest {
 	}
 	
 	
-	@Test
-	void testing_getCurrentRelativeResource_WithValidIndex() throws Exception {
-		
-	    List<String> blueprintRelativeResources = new ArrayList<>();
-	    blueprintRelativeResources.add("src/featureBlueprint/targetDir");
-	    int i = 0;  
-	    AwbAssist awb = new AwbAssist();
-	    String result = awb.getCurrentRelativeResource(i, blueprintRelativeResources);
-	    assertEquals("/src/featureBlueprint/targetDir", result);  
-	}
 
 	// -------- the following two methods are expected to return an error ---------
 //	@Test
@@ -112,18 +102,6 @@ class AwbAssistTest {
 	// ----------- Methods with expected errors end here ----------------
 	
 	
-	@Test
-	void testing_getCurrentRelativeResource_WithMultipleResources() throws Exception {
-		
-	    List<String> blueprintRelativeResources = new ArrayList<>();
-	    blueprintRelativeResources.add("src/featureBlueprint/targetDir");
-	    blueprintRelativeResources.add("src/testBlueprint/targetDir");
-	    int i = 1;  
-	    AwbAssist awb = new AwbAssist();
-	    String result = awb.getCurrentRelativeResource(i, blueprintRelativeResources);
-	    assertEquals("/src/testBlueprint/targetDir", result); 
-	}
-	
 	
 	@Test void testing_getCurrentLocaltargetDirectory_WithFolderChange() throws Exception { 
 		
@@ -135,8 +113,9 @@ class AwbAssistTest {
 	    String symBunName = "testSymBun";
 	    String folderAfterChangements = "newBundleName"; 
 	    int i = 0;
+	    String currentElement = blueprintRelativeResources.get(i);
 	    AwbAssist awb = new AwbAssist();
-	    String result = awb.getCurrentLocaltargetDirectory(i, blueprintRelativeResources, folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
+	    String result = awb.getCurrentLocaltargetDirectory(currentElement, folderToBeChanged, relativeSearchPath, targetDirectory, symBunName, folderAfterChangements);
 	    String expected = ("D:/projects/testSymBun/targetDir/newBundleName").replace("/", File.separator); 
 	    assertEquals(expected, result); 
 	}
