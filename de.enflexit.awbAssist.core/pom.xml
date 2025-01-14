@@ -43,11 +43,6 @@
 			<version>3.6.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>maven-create-file-plugin</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>
