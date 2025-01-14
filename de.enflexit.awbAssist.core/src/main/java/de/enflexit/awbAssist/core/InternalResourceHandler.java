@@ -27,7 +27,7 @@ public class InternalResourceHandler {
 		
 		try {
 
-			List<String> ressourcesFound = InternalResourceHandler.findProjectBlueprintResources();
+			List<InternalResource> ressourcesFound = InternalResourceHandler.findProjectBlueprintResources();
 			ressourcesFound.forEach(ref -> System.out.println(ref));
 			
 			InternalResourceHandler.getProjectBlueprintsAvailable();
@@ -45,9 +45,9 @@ public class InternalResourceHandler {
 		
 		List<ProjectBlueprint> pbList = new ArrayList<>();
 		
-		List<String> pbResourcesList = findProjectBlueprintResources();
-		for (String pbResource : pbResourcesList) {
-			ProjectBlueprint pbp = ProjectBlueprint.load(pbResource);
+		List<InternalResource> pbResourcesList = findProjectBlueprintResources();
+		for (InternalResource pbResource : pbResourcesList) {
+			ProjectBlueprint pbp = ProjectBlueprint.load(pbResource.getPath());
 			if (pbp!=null) {
 				pbList.add(pbp);
 			}
@@ -59,14 +59,14 @@ public class InternalResourceHandler {
 	 * Finds project blueprint resources.
 	 * @return the list
 	 */
-	public static List<String> findProjectBlueprintResources() {
+	public static List<InternalResource> findProjectBlueprintResources() {
 		
-		List<String> pbResourcesList = new ArrayList<>();
+		List<InternalResource> pbResourcesList = new ArrayList<>();
 		
-		List<String> ressourcesFound = findResources("blueprints");
-		for (String resource : ressourcesFound) {
-			if (resource.toLowerCase().endsWith("BlueprintStructure.json".toLowerCase())) {
-				pbResourcesList.add(resource);
+		List<InternalResource> ressourcesFound = findResources("blueprints");
+		for (InternalResource intResource : ressourcesFound) {
+			if (intResource.getPath().toLowerCase().endsWith("BlueprintStructure.json".toLowerCase())) {
+				pbResourcesList.add(intResource);
 			}
 		}
 		return pbResourcesList;
@@ -78,10 +78,10 @@ public class InternalResourceHandler {
 	 * @param searchPath the search path
 	 * @return the list
 	 */
-	public static List<String> findResources(String searchPath) {
+	public static List<InternalResource> findResources(String searchPath) {
 
 		// --- Define result variable ---------------------
-		List<String> resoucesFound = new ArrayList<>();
+		List<InternalResource> resoucesFound = new ArrayList<>();
 		
 		try {
 			// --- Check where we are ---------------------
@@ -93,10 +93,12 @@ public class InternalResourceHandler {
 				JarFile jar = new JarFile(jarFileOrIDEPath);
 				Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
 				while (entries.hasMoreElements()) {
-					String name = entries.nextElement().getName();
+					
+					JarEntry jarEntry = entries.nextElement();
+					String path = jarEntry.getName();
 					// --- Filter according to searchPath -
-					if (name.equals(searchPath)==false && name.equals(searchPath + "/")==false  && name.startsWith(searchPath + "/")) { 
-						resoucesFound.add(name);
+					if (path.equals(searchPath)==false && path.equals(searchPath + "/")==false  && path.startsWith(searchPath + "/")) { 
+						resoucesFound.add(new InternalResource(path, jarEntry.isDirectory()));
 					}
 				}
 				jar.close();
@@ -134,10 +136,10 @@ public class InternalResourceHandler {
 	 * @param basePathForRelativization the base path for relativization
 	 * @return the directory resources
 	 */
-	private static List<String> getDirectoryResources(File searchDirectory, File basePathForRelativization) {
+	private static List<InternalResource> getDirectoryResources(File searchDirectory, File basePathForRelativization) {
 	
 		// --- Define result variable ---------------------
-		List<String> resoucesFound = new ArrayList<>();
+		List<InternalResource> resoucesFound = new ArrayList<>();
 
 		if (searchDirectory.exists()==false || searchDirectory.isDirectory()==false) return resoucesFound;
 		
@@ -145,7 +147,7 @@ public class InternalResourceHandler {
 			
 			String relativePath = basePathForRelativization.toPath().relativize(file.toPath()).toString();
 			relativePath = relativePath.replace(File.separator, "/");
-			resoucesFound.add(relativePath);
+			resoucesFound.add(new InternalResource(relativePath, file.isDirectory()));
 			if (file.isDirectory()==true) {
 				resoucesFound.addAll(InternalResourceHandler.getDirectoryResources(file, basePathForRelativization));
 			}
