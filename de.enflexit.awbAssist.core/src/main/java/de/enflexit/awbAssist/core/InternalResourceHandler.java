@@ -158,8 +158,8 @@ public class InternalResourceHandler {
 	 * @param internalPath the internal path
 	 * @param destinationPath the destination path
 	 */
-	public static void extractFromBundle(String internalPath, File destinationPath) {
-		
+	public static boolean extractFromBundle(String internalPath, File destinationPath) {
+		//TODO Omar if folder false if file true : use it along with isBundleFile to check whether the internal path a file or a folder 
 		boolean debug = false;
 
 		if (debug) {
@@ -179,6 +179,7 @@ public class InternalResourceHandler {
 				while ((len = is.read(buffer)) != -1) {
 					fos.write(buffer, 0, len);
 				}
+				return true;
 				
 			} else {
 				// --- Could not find fileURL -------------
@@ -199,6 +200,68 @@ public class InternalResourceHandler {
 				ioEx.printStackTrace();
 			}
 		}
+		return false;
+		
+	}
+
+	/**
+	 * Extracts a file from a bundle project.
+	 * @param internalPath the internal path
+	 * @param destinationPath the destination path
+	 */
+	public static boolean isBundleFile(String internalPath) {
+
+		InputStream is = null;
+//		FileOutputStream fos = null;
+		// TODO Omar : this should be discussed to decide what would be the best way to check whether a relative path is which of a folder or file
+		/*
+		 *  -------------------------------- Remarks --------------------------------
+		 * openStream works for folders inside the jar file so that the method returns true despite that the checked url is for a folder
+		 * The getProtocol returns file when operating in a fileSystem and gives a reliable result. However, it gets skipped when executed as maven plugin
+		 * since the getProtocol returns jar in that case
+		 *  -------------------------------------------------------------------------
+		 */
+		
+		try {
+			URL fileURL = InternalResourceHandler.class.getResource(internalPath);
+//			// Protection layer 
+//            if ("file".equalsIgnoreCase(fileURL.getProtocol())) {
+//                File file = new File(fileURL.toURI());
+//                boolean filenn = file.isFile();
+//                boolean foldernn = file.isDirectory();
+//                return file.isFile(); // Check explicitly if it's a file
+//            }
+//            String enaWin = fileURL.getProtocol();
+//            //end of protection layer
+			if (fileURL!=null) {
+				// --- Write file to directory ------------
+				is = fileURL.openStream();
+				byte[] buffer = new byte[1024];
+				int len;
+				while ((len = is.read(buffer)) != -1) {
+				}
+				return true;
+				
+			} else {
+				// --- Could not find fileURL -------------
+				System.err.println(InternalResourceHandler.class.getSimpleName() + " could not find resource for '" + internalPath + "'");
+			}
+			
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+		} finally {
+//			try {
+//				if (fos!=null) fos.close();
+//			} catch (IOException ioEx) {
+//				ioEx.printStackTrace();
+//			}
+			try {
+				if (is!=null) is.close();
+			} catch (IOException ioEx) {
+				ioEx.printStackTrace();
+			}
+		}
+		return false;
 		
 	}
 	

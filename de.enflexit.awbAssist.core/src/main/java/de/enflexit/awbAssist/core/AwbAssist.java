@@ -39,7 +39,11 @@ public class AwbAssist {
 		// a check is performed to verify that a blueprint name was mentioned in the arguments
 		String bluePrint = ArgumentsChecker.getBlueprintArgument(args);
 		// call the createProjectFromBlueprint method
-		new AwbAssist().createProjectFromBlueprint(bluePrint, args);
+		if (bluePrint == null) {
+			return;
+		} else {
+			new AwbAssist().createProjectFromBlueprint(bluePrint, args);
+		}
 	}
 	private void createProjectFromBlueprint(String blueprintName, String[] args) {
 
@@ -95,9 +99,14 @@ public class AwbAssist {
 		String currentLocalTargetDirectoryAfterRenameCheck = new String();
 		String currentRelativeResource = new String();
 		while (i < blueprintRelativeResources.size()) {
-			List<String> howManyResourcesAreHere = InternalResourceHandler.findResources(blueprintRelativeResources.get(i));
-			// ---------- empty folders are recognized as files! -------------
-			if (howManyResourcesAreHere.size() == 0) {
+			
+//			boolean substructureIsFound = hasSubstructure(blueprintRelativeResources, i);
+			boolean isBundleFile = InternalResourceHandler.isBundleFile(getCurrentRelativeResource(i, blueprintRelativeResources)); 
+//			String currentElementOfTheBlueprintRelativeResources =blueprintRelativeResources.get(i);
+//			List<String> howManyResourcesAreHere = InternalResourceHandler.findResources(currentElementOfTheBlueprintRelativeResources);
+			// ---------- Attention please : will the real slim shady please stand up  ---------- 
+			// ------------------- EMPTY FOLDERS ARE RECOGNIZED AS FILES! ----------------------
+			if (isBundleFile == true) {
 				// we have a file
 				// extract to a specific directory and perform text replacements.
 				// The json file is not extracted
@@ -125,6 +134,31 @@ public class AwbAssist {
 		System.out.println("Project creation successful! You can find your project at:\t" + DirectoryOfMainFolder);
 	}
 
+	
+	/** Checks in a list of directories, whether a substructure is found for a given directory
+	 * @param blueprintRelativeResources
+	 * @param i
+	 * @return
+	 */
+	private boolean hasSubstructure(List<String> blueprintRelativeResources, int i) {
+//		String currentRelativeResource = blueprintRelativeResources.get(i);
+//		for (String element : blueprintRelativeResources) {
+//			if (element.contains(currentRelativeResource) && element.length() > currentRelativeResource.length()) {
+//				return true;
+//			}
+//		}
+		// -------------------- Shorter alternative --------------------
+		// The list of relative resource is organized so that the path of each folder comes right before the the paths of its substructure
+		// it should be in this case enough to check whether the path of current element is part of the next one. It should be true for a folder
+		// as the path of the next element should be a file under that folder.
+		
+		if ((i+1)<(blueprintRelativeResources.size()) && blueprintRelativeResources.get(i+1).contains(blueprintRelativeResources.get(i))) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * File rename check to rename the currentLocalTargetDirectory if it contains a string from the replacement list.
 	 *
