@@ -222,10 +222,10 @@
             <ns2:SIPrefix>kilo, k, 3</ns2:SIPrefix>
             <ns2:TimeUnit>hour, h</ns2:TimeUnit>
         </ns2:CostModels>
-        <ns2:EvaluationClass>net.optiflex.optimizer.systemStrategies.RandomDecisionStrategy</ns2:EvaluationClass>
+        <ns2:EvaluationClass>[SymBundleName].strategies.RandomDecisionStrategy</ns2:EvaluationClass>
         <ns2:EvaluationClasses>
             <ns2:StrategyID>Random Strategy</ns2:StrategyID>
-            <ns2:ClassName>net.optiflex.optimizer.systemStrategies.RandomDecisionStrategy</ns2:ClassName>
+            <ns2:ClassName>[SymBundleName].strategies.RandomDecisionStrategy</ns2:ClassName>
             <ns2:Description>New strategy description</ns2:Description>
             <ns2:PlanningStrategy>false</ns2:PlanningStrategy>
         </ns2:EvaluationClasses>

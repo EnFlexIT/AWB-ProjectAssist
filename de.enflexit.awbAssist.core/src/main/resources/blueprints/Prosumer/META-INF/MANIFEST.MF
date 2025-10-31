@@ -18,7 +18,6 @@ Require-Bundle: de.enflexit.common,
  de.enflexit.ea.core.dataModel,
  de.enflexit.ea.core.validation,
  de.enflexit.jade.tools,
- org.agentgui.core,
- org.agentgui.lib.jade,
+ de.enflexit.jade,
  org.awb.env.networkModel
 Automatic-Module-Name: net.agenthygrid.prosumer

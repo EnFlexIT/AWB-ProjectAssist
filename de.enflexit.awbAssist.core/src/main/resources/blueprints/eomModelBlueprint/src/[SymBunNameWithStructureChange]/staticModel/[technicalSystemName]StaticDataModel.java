@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class [technicalSystemName]StaticDataModel implements Serializable {
 
-	private static final long serialVersionUID = 4944933489538553875L;
+	This error is intented to remind you about generating a serialVersion UID
 	
 	private double motorPower;
 

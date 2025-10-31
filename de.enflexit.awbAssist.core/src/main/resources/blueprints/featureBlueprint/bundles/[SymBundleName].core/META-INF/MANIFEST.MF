@@ -1,14 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: [BundleName]
-Bundle-SymbolicName: [SymBundleName]
+Bundle-SymbolicName: [SymBundleName].core
 Automatic-Module-Name: [SymBundleName]
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: de.enflexit.common,
- org.agentgui.lib.jade,
- org.agentgui.core
+ de.enflexit.jade
 Bundle-Vendor: EnFlex.IT
-Automatic-Module-Name: de.enflexit.awb.agentSample
+Automatic-Module-Name: [SymBundleName].core
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Service-Component: OSGI-INF/awbClassLoadService.xml
+Import-Package: de.enflexit.awb.core.classLoadService,
+ de.enflexit.awb.core.project,
+ de.enflexit.awb.core.project.plugins,
+ de.enflexit.awb.simulation.balancing,
+ de.enflexit.awb.simulation.environment.time
+

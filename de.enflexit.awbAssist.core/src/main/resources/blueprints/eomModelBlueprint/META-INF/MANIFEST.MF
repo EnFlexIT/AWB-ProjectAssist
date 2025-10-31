@@ -4,8 +4,8 @@ Bundle-Name: [BundleName]
 Bundle-SymbolicName: [SymBundleName]
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: de.enflexit.eom.core,
- org.agentgui.lib.jade,
- de.enflexit.common
+ de.enflexit.common,
+ de.enflexit.jade
 Bundle-Vendor: EnFlex.IT
 Automatic-Module-Name: [SymBundleName]
 Bundle-ActivationPolicy: lazy
