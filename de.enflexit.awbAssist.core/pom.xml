@@ -164,7 +164,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 						<version>3.12.0</version>
 						<configuration>
 							<doclint>none</doclint>
-							<source>$maven${maven.compiler.source}</source>
+							<source>${maven.compiler.source}</source>
 							<excludePackageNames>examples.*:test.*:demo.*</excludePackageNames>
 						</configuration>
 						<executions>
