@@ -122,6 +122,16 @@ public class AwbAssist {
 			}
 			i++;
 		}
+		if (blueprintName.equals("restServerBlueprint")) {
+			Path pathToBePassed = Path.of(DirectoryOfMainFolder + File.separator + "xCodgen");
+			try {
+				runMavenGenerateSources(pathToBePassed);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		System.out.println("Project creation successful! You can find your project at:\t" + DirectoryOfMainFolder);
 	}
 
@@ -243,4 +253,23 @@ public class AwbAssist {
 		}
 		return projectBlueprints;
 	}
+	
+	
+	
+	/**
+	 * @param projectDir
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static void runMavenGenerateSources(Path projectDir) throws IOException, InterruptedException {
+	    ProcessBuilder builder = new ProcessBuilder( "mvn.cmd", "clean", "generate-sources");
+	    builder.directory(projectDir.toFile());   
+	    builder.inheritIO();
+	    Process process = builder.start();
+	    int exitCode = process.waitFor();
+	    if (exitCode != 0) {
+	        throw new RuntimeException("Maven command failed with exit code: " + exitCode);
+	    }
+	}
+
 }

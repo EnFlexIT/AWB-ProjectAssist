@@ -12,7 +12,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  *
  * @author Omar Ben Chobba - Enflex.IT GmbH
  */
-@Mojo(name = "run-awb-assist") 
+@Mojo(name = "run-awb-assist", requiresProject = false) 
 public class AwbAssistMojo extends AbstractMojo {
 	
 	/**
@@ -39,28 +39,34 @@ public class AwbAssistMojo extends AbstractMojo {
 	 *  ---------------------------------------------------------------------------------------------------------------------------
 	 */
 
-    /**
-     * Arguments to be passed to the AWB Assist application.
-     */
-    @Parameter(property = "args", required = false)
+	@Parameter
     private String[] args;
 
     @Override
     public void execute() throws MojoExecutionException {
-        getLog().info("Running AWB Assist plugin...");
-
-//      String[] pluginArgs = args != null ? args : new String[]{};
-        String[] pluginArgs;
-        if (args != null) {
-            pluginArgs = args;
-        } else {
-            pluginArgs = new String[]{};
+    	
+        String[] finalArgs = buildFinalArgsArray();
+        
+        getLog().info("AWB Assist Plugin - Executing with arguments:");
+        for (String a : finalArgs) {
+            getLog().info("  " + a);
         }
-
         try {
-            AwbAssist.main(pluginArgs);
+            AwbAssist.main(finalArgs);
         } catch (Exception e) {
             throw new MojoExecutionException("Error running AWB Assist", e);
         }
+    }
+    
+    /**
+     * Build final String[] from the passed args:
+     */
+    private String[] buildFinalArgsArray() {
+
+        	if (args != null) {
+        		return args;
+        	} else {
+        		return new String[0];
+        	}
     }
 }

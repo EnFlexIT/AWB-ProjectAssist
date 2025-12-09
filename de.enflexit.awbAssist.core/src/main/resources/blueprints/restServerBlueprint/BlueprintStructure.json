@@ -1,0 +1,25 @@
+{
+  "description": "This blueprint provides a basic structure for a REST APi server model.",
+  "baseFolder": "restServerBlueprint",
+  "textReplacements": {
+    "[SymBundleName]": "symBunName",
+    "[BundleName]" : "bundleName"
+  },
+  "requiredArguments": [
+    {
+      "argumentName": "bundleName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "symBunName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "targetDir",
+      "mandatory": true,
+      "defaultValue": ""
+    }		
+  ]
+}
