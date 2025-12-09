@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -60,26 +60,26 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.11.0</version>
+			<version>2.13.2</version>
 		</dependency>
 		<!-- Dependency for testing-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.10.0</version>
+			<version>5.14.1</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Dependency for accessing the Maven Plugin API-->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
-			<version>3.6.3</version>
+			<version>3.9.11</version>
 		</dependency>
 		<!-- Dependency for defining MOJO annotations-->
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
-			<version>3.6.0</version>
+			<version>3.15.2</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -89,7 +89,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>3.13.1</version>
+				<version>3.15.2</version>
 				<configuration>
 					<goalPrefix>awb-assist</goalPrefix>
 				</configuration>
@@ -108,7 +108,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.8.0</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -132,7 +132,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.5.4</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -147,7 +147,7 @@
 						<!-- Generates Source files. Condition for MVN Central!-->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.2.1</version>
+						<version>3.4.0</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -161,10 +161,10 @@
 						<!-- Generates Javadoc. Condition for MVN Central!-->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.3.0</version>
+						<version>3.12.0</version>
 						<configuration>
 							<doclint>none</doclint>
-							<source>8</source>
+							<source>$maven${maven.compiler.source}</source>
 							<excludePackageNames>examples.*:test.*:demo.*</excludePackageNames>
 						</configuration>
 						<executions>
@@ -180,7 +180,7 @@
 						<!-- Signs the JAR with a GPG Key. Condition for MVN Central!-->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.0.1</version>
+						<version>3.2.8</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -201,11 +201,14 @@
 						<!-- Deploys the JAR to MVN Central-->
 						<groupId>org.sonatype.central</groupId>
 						<artifactId>central-publishing-maven-plugin</artifactId>
-						<version>0.1.2</version>
+						<version>0.9.0</version>
 						<extensions>true</extensions>
 						<configuration>
 							<publishingServerId>central</publishingServerId>
-							<tokenEnabled>true</tokenEnabled>
+							<!--
+							<autoPublish>true</autoPublish>
+							<waitUntil>published</waitUntil>
+							-->
 						</configuration>
 					</plugin>
 				</plugins>
