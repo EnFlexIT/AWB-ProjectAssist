@@ -8,13 +8,52 @@
 	<artifactId>de.enflexit.awbAssist.core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging> <!--Here it is specified that this is a plugin-->
-	<name>AWB-Assist Core</name>
 
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<bundle.vendor>EnFlex.IT</bundle.vendor>
 	</properties>
+
+	<!-- Some general information -->
+	<name>${project.artifactId}</name>
+	<description>Maven Plugin to assist utilizing Agent.Workbench for your own purpose.</description>
+	<url>https://github.com/EnFlexIT/AWB-ProjectAssist.git</url>
+
+	<!-- Repository information, needed for Deplyoment in Maven Central-->
+	<scm>
+	  <connection>scm:git:https://github.com/EnFlexIT/AWB-ProjectAssist.git</connection>
+	  <url>https://github.com/EnFlexIT/AWB-ProjectAssist/tree/master</url>
+	  <developerConnection>scm:https://github.com/EnFlexIT/AWB-ProjectAssist.git</developerConnection>
+	  <tag>HEAD</tag>
+	</scm>
+
+	<!-- License of the bundle-->
+	<licenses>
+		<license>
+			<name>EPL-2.0</name>
+			<url>https://www.eclipse.org/legal/epl-2.0/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- Some general information -->
+	<developers>
+		<developer>
+			<name>Omar Ben Chobba</name>
+			<email>obenchobba@enflex.it</email>
+			<organization>EnFlex.IT</organization>
+			<organizationUrl>https://www.enflex.it/</organizationUrl>
+		</developer>
+		<developer>
+			<name>Christian Derksen</name>
+			<email>cderksen@enflex.it</email>
+			<organization>EnFlex.IT</organization>
+			<organizationUrl>https://www.enflex.it/</organizationUrl>
+		</developer>
+	</developers>
+
 
 	<dependencies>
 		<!-- Dependency for Gson-->
