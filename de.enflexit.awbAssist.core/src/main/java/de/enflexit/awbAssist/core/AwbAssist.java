@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -262,14 +263,47 @@ public class AwbAssist {
 	 * @throws InterruptedException
 	 */
 	public static void runMavenGenerateSources(Path projectDir) throws IOException, InterruptedException {
-	    ProcessBuilder builder = new ProcessBuilder( "mvn.cmd", "clean", "generate-sources");
+	    ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", ".\\mvnw.cmd", "clean", "generate-sources");
 	    builder.directory(projectDir.toFile());   
 	    builder.inheritIO();
 	    Process process = builder.start();
 	    int exitCode = process.waitFor();
 	    if (exitCode != 0) {
 	        throw new RuntimeException("Maven command failed with exit code: " + exitCode);
+	    } else {
+	        try {
+				deleteFileOrDirectory(projectDir.resolve(".mvn"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	        Files.deleteIfExists(projectDir.resolve("mvnw"));
+	        Files.deleteIfExists(projectDir.resolve("mvnw.cmd"));
 	    }
+	}
+	
+	/**
+	 * @param path
+	 * @throws Exception
+	 */
+	public static void deleteFileOrDirectory(Path path) throws Exception {
+        File file = path.toFile();
+
+        if (file.exists() == false) {
+            return;
+        }
+
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    deleteFileOrDirectory(child.toPath());
+                }
+            }
+        }
+        boolean deleted = file.delete();
+        if (!deleted) {
+            System.out.println("Failed to delete: " + file.getAbsolutePath());
+        }
 	}
 
 }
