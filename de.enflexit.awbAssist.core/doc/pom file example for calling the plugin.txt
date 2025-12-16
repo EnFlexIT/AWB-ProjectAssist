@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.simpleProjectForTesting</groupId>
+  <artifactId>simpleProject</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>simpleProject</name>
+  <description>A simple simpleProject.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+ 	<pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                </plugin>
+            </plugins>
+	</pluginManagement>
+
+  	<plugins>
+    	<plugin>
+		    <groupId>de.enflexit.awbAssist</groupId>
+		    <artifactId>de.enflexit.awbAssist.core</artifactId>
+		    <version>0.0.1</version>
+		    <executions>
+		    	<execution>
+		            <id>run-awb-assist</id>
+		            <phase>generate-sources</phase> <!-- choose appropriate phase -->
+		            <goals>
+		                <goal>run-awb-assist</goal>
+		            </goals>
+		            <configuration>
+		                <args>
+		                    <arg>-blueprint</arg>
+		                    <arg>Prosumer</arg>
+		                    <arg>-bundleName</arg>
+		                    <arg>SafariBundle</arg>
+		                    <arg>-symBunName</arg>
+		                    <arg>MySafari</arg>
+		                    <arg>-targetDir</arg>
+		                    <arg>D:/output</arg>
+		                </args>
+		            </configuration>
+		        </execution>
+		    </executions>
+		</plugin>
+  	</plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
