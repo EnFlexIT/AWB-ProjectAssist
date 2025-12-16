@@ -8,6 +8,7 @@ Bundle-Vendor: EnFlex.IT
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Build-Jdk-Spec: 17
 Bundle-ActivationPolicy: lazy
+Require-Bundle: com.google.gson
 Export-Package: de.enflexit.awbAssist.core
 
 
