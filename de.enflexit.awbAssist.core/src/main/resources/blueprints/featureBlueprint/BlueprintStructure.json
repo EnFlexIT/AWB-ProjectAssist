@@ -1,6 +1,6 @@
 {
   "description": "This blueprint provides a basic structure for a main project.",
-  "baseFolder": "featureBlueprint",
+  "baseFolder": "FeatureBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName",

@@ -1,6 +1,6 @@
 {
   "description": "This blueprint provides a basic structure for a REST APi server model.",
-  "baseFolder": "restServerBlueprint",
+  "baseFolder": "RestServerBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName"

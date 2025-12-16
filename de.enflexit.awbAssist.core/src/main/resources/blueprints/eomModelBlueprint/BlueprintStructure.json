@@ -1,6 +1,6 @@
 {
   "description": "This blueprint provides a basic structure for a eom model.",
-  "baseFolder": "eomModelBlueprint",
+  "baseFolder": "EomModelBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName",
