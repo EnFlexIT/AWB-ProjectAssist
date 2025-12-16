@@ -6,7 +6,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 
 	<groupId>de.enflexit.awbAssist</groupId>
 	<artifactId>de.enflexit.awbAssist.core</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<packaging>maven-plugin</packaging> <!--Here it is specified that this is a Maven plugin-->
 
 	<properties>

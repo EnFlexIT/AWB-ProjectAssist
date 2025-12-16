@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Automatic-Module-Name: de.enflexit.awbAssist.core
 Bundle-SymbolicName: de.enflexit.awbAssist.core
 Bundle-Name: AWB-Assist Core
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.0.2
 Bundle-Vendor: EnFlex.IT
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Build-Jdk-Spec: 17
