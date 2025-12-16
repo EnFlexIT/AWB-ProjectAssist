@@ -21,5 +21,7 @@
       "mandatory": true,
       "defaultValue": ""
     }
-  ]
+  ],
+  "name": "Sample Agent Blueprint",
+  "number": 5 
 }

@@ -23,6 +23,38 @@ public class ProjectBlueprint {
 	private String baseFolder;
 	private HashMap<String, String> textReplacements;
 	private ArrayList<StartArgument> requiredArguments;
+	private String name;
+	private int number;
+	
+	
+
+	/**
+	 * gets the name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * sets the name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * gets the number
+	 */
+	public int getNumber() {
+		return number;
+	}
+	
+	/**
+	 * sets the number
+	 */
+	public void setNumber(int number) {
+		this.number = number;
+	}
 
 	/**
 	 * Gets the description.
