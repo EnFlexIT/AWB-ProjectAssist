@@ -20,7 +20,7 @@ import java.util.Map;
 public class AwbAssist {
 
 	private ArrayList<ProjectBlueprint> projectBlueprints;
-	static final String folderWithStructureModification = "[SymBunNameWithStructureChange]";
+	
 
 	/**
 	 * The main method.
@@ -61,9 +61,10 @@ public class AwbAssist {
 			return;
 		}
 
-		String symbolicBundleName = arguments.get("symBunName");
-		String targetDirectory = arguments.get("targetDir");
+		String symbolicBundleName = arguments.get(Arguments.SYMBOLIC_BUNDLE_NAME);
+		String targetDirectory = arguments.get(Arguments.TARGET_DIRECTORY);
 
+		
 		// A HashMap of replacement strings is generated. Keys are extracted from the blueprint template 
 		// and values are extracted indirectly from the given arguments using the HashMap "arguments"
 		HashMap<String, String> replacements = new HashMap<String, String>();
@@ -103,7 +104,7 @@ public class AwbAssist {
 			if (isDirectory == false) {
 				// we have a file
 				// extract to a specific directory and perform text replacements except for the json file, which is ignored
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(currentElement, folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(currentElement, Arguments.FOLDERWITHSTRUCTUREMODIFICATION, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
 					File currentFilePath = new File(currentLocalTargetDirectoryAfterRenameCheck);
@@ -114,7 +115,7 @@ public class AwbAssist {
 			} else {
 				// we have a folder
 				// try creating the folder
-				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(currentElement, folderWithStructureModification, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
+				currentLocalTargetDirectory = this.getCurrentLocaltargetDirectory(currentElement, Arguments.FOLDERWITHSTRUCTUREMODIFICATION, relativeSearchPath, targetDirectory, symbolicBundleName, folderAfterChangements);
 				currentLocalTargetDirectoryAfterRenameCheck = this.renameCheck(currentLocalTargetDirectory, replacements);
 				Boolean resultCreateFolder = this.createTargetFolder(Path.of(currentLocalTargetDirectoryAfterRenameCheck));
 				if (resultCreateFolder == false) {

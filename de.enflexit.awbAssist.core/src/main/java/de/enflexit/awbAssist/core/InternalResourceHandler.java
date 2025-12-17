@@ -30,7 +30,8 @@ public class InternalResourceHandler {
 			List<InternalResource> ressourcesFound = InternalResourceHandler.findProjectBlueprintResources();
 			ressourcesFound.forEach(ref -> System.out.println(ref));
 			
-			InternalResourceHandler.getProjectBlueprintsAvailable();
+			List<ProjectBlueprint> previous = InternalResourceHandler.getProjectBlueprintsAvailable();
+			System.err.println("just to check previous");
 			
 		} catch (Exception ioEx) {
 			ioEx.printStackTrace();

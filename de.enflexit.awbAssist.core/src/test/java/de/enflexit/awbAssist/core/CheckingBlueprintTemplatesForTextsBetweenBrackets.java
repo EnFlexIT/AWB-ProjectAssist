@@ -367,7 +367,7 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
     	exceptionalFiles.add(".polyglot");
     	exceptionalFiles.add(".gif");
     	exceptionalFiles.add(".gitignore");
-    	exceptionalFiles.add(AwbAssist.folderWithStructureModification.substring(1, AwbAssist.folderWithStructureModification.length()-1));
+    	exceptionalFiles.add(Arguments.FOLDERWITHSTRUCTUREMODIFICATION.substring(1,Arguments.FOLDERWITHSTRUCTUREMODIFICATION.length()-1));
 //    	boolean exclude = false;
     	for (String exception: exceptionalFiles) {
     		if (fileName.contains(exception) == true) {
@@ -386,7 +386,7 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
      * @return
      */
     private static boolean excludeThisContent(String group) {
-    	if (group == null || group.isEmpty() || group.equals(AwbAssist.folderWithStructureModification)) {
+    	if (group == null || group.isEmpty() || group.equals(Arguments.FOLDERWITHSTRUCTUREMODIFICATION)) {
 //    		System.out.println("The text " + group +  " is excluded");
     		return true;
     	}

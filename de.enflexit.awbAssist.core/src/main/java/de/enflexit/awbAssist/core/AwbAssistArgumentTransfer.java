@@ -4,11 +4,6 @@ import java.util.HashMap;
 
 public class AwbAssistArgumentTransfer {
 	
-	public static final String BLUEPRINT = "blueprint";
-	public static final String BUNDLE_NAME = "bundleName";
-	public static final String SYMBOLIC_BUNDLE_NAME = "symBunName";
-	public static final String TARGET_DIRECTORY = "targetDir";
-	public static final String TECHNICAL_SYSTEM_NAME = "technicalSystemName";
 	
 	/**
 	 * passes a Hashmap of arguments in a correct form to awb assist main method.

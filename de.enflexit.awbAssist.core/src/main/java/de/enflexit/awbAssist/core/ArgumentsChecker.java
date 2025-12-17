@@ -55,10 +55,10 @@ public class ArgumentsChecker {
 		// and added to the HashMap arguments in this part
 		// ----------------------------------------------------------------------------
 		if (referenceBlueprint.getBaseFolder().equals("featureBlueprint")) {
-			String currentBundleName = arguments.get("bundleName");
+			String currentBundleName = arguments.get(Arguments.BUNDLE_NAME);
 			String bundleNameStartWithSmallLetter = currentBundleName.substring(0,1).toLowerCase() + currentBundleName.substring(1);
 			String bundleNameStartWithCapitalLEtter = currentBundleName.substring(0,1).toUpperCase() + currentBundleName.substring(1);
-			arguments.replace("bundleName", currentBundleName, bundleNameStartWithSmallLetter);
+			arguments.replace(Arguments.BUNDLE_NAME, currentBundleName, bundleNameStartWithSmallLetter);
 			arguments.put("projectName", bundleNameStartWithCapitalLEtter);
 		}
 		return arguments;
@@ -75,7 +75,7 @@ public class ArgumentsChecker {
 		int i = 0;
 		String bluePrint = "";
 		while (i < args.length) {
-			if (args[i].equalsIgnoreCase("-blueprint") && i+1 < args.length && args[i+1].startsWith("-") == false) {
+			if (args[i].equalsIgnoreCase("-" + Arguments.BLUEPRINT) && i+1 < args.length && args[i+1].startsWith("-") == false) {
 				boolean isNullOrBlank = (args[i+1]==null || args[i+1].isBlank());
 				if(isNullOrBlank == false) {
 					bluePrint = args[i + 1];
@@ -96,9 +96,9 @@ public class ArgumentsChecker {
 		
 		int i = 0;
 		boolean helpNeeded = false;
-		if (args==null || args.length==0) args = new String[] {"-?"};
+		if (args==null || args.length==0) args = new String[] {Arguments.HELP_SIGN_2};
 		while (i < args.length) {
-			if (args[i].equalsIgnoreCase("-help") || args[i].equals("-?")) {
+			if (args[i].equalsIgnoreCase(Arguments.HELP_SIGN_1) || args[i].equalsIgnoreCase(Arguments.HELP_SIGN_2)) {
 				System.out.println("Awb-Assist enables you to create a new project using an existing blueprint as a reference structure." 
 //						+ "\n In order to do that certain parameters have to be given as arguments in key/value sets while preceeding each key with a - "
 //						+ "\n An example on how the arguments should look like is given  in the following line"
@@ -123,7 +123,7 @@ public class ArgumentsChecker {
 		
 		int i = 0;
 		while (i < args.length) {
-			if (args[i].equalsIgnoreCase("-bp")) {
+			if (args[i].equalsIgnoreCase(Arguments.LOOK_FOR_BLUEPRINT_SIGN)) {
 				List<ProjectBlueprint> availableBlueprints = new ArrayList<>();
 				availableBlueprints = InternalResourceHandler.getProjectBlueprintsAvailable();
 				for (ProjectBlueprint currentBlueprint: availableBlueprints) {
