@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.enflexit.awb.tools.feature"
+      label="Agent.Workbench IDE-Tools"
+      version="0.0.3.qualifier"
+      provider-name="EnFlex.IT"
+      plugin="de.enflexit.awb.tools.core"
+      os="linux,macosx,win32"
+      arch="x86_64">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <url>
+      <update label="EnFlex.IT - AWB IDE-Tools Update Site" url="https://www.enflex.it/awbTools/latest"/>
+   </url>
+
+   <plugin
+         id="de.enflexit.awb.tools.core"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.enflexit.awbAssist.core"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.google.gson"
+         version="0.0.0"/>
+
+</feature>

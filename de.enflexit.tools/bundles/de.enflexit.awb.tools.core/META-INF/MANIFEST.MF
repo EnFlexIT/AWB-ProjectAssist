@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IDE-Tools for AWB - Core
+Bundle-SymbolicName: de.enflexit.awb.tools.core;singleton:=true
+Bundle-Version: 0.0.3.qualifier
+Bundle-Vendor: EnFlex.IT
+Automatic-Module-Name: de.enflexit.awb.tools.core
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.core.runtime,
+ com.google.gson
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: de.enflexit.awb.tools.core.Activator
+Export-Package: de.enflexit.awb.tools.core,
+ de.enflexit.awb.tools.core.wizards
+Import-Package: de.enflexit.awbAssist.core,
+ org.eclipse.core.resources
+

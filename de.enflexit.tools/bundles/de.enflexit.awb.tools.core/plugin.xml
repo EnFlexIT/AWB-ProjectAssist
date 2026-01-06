@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="de.enflexit.awb.tools.core"
+            name="Agent.Workbench Tools">
+      </category>
+      <wizard
+            category="de.enflexit.awb.tools.core"
+            class="de.enflexit.awb.tools.core.wizards.AwbProjectWizard"
+            finalPerspective="org.eclipse.pde.ui.PDEPerspective"
+            icon="icons/awb32.png"
+            id="de.enflexit.awb.tools.core.wizards.NewAWBProjectWizard"
+            name="New AWB-Project"
+            project="true">
+      </wizard>
+   </extension>
+
+</plugin>

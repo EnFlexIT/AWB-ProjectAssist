@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target includeMode="feature" name="de.enflexit.awb.tools.target" sequenceNumber="1">
+<locations>
+	<location path="${eclipse_home}" type="Profile"/>
+	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<repository location="https://download.eclipse.org/releases/2025-12/"/>
+		<unit id="org.eclipse.sdk.feature.group" version="0.0.0"/>
+		<unit id="org.eclipse.emf.compare.egit.feature.group" version="0.0.0"/>
+	</location>
+	
+	<location includeDependencyDepth="none" includeSource="true" label="AWB-Tools Core" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>de.enflexit.awbAssist</groupId>
+				<artifactId>de.enflexit.awbAssist.core</artifactId>
+				<version>0.0.3</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.13.2</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+</locations>
+</target>
