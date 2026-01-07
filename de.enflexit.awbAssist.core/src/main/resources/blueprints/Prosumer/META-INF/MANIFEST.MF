@@ -4,7 +4,7 @@ Bundle-Name: [BundleName]
 Bundle-SymbolicName: [SymBundleName]
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: EnFlex.IT
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: [SymBundleName],
  [SymBundleName].classLoadService,
  [SymBundleName].validation

@@ -23,7 +23,7 @@ import [SymBundleName].gen.StateApi;
 public class RestApiConfiguration extends ResourceConfig {
 
 	public static final String APPLICATION_NAME = "AWB - Sample Rest API";
-	public static final String APPLICATION_CONTEXT_PATH = "sample-rest-api";
+	public static final String APPLICATION_CONTEXT_PATH = "[AppContextPath]";
 	
 	public static final String RESPONSE_ENCODING = "UTF-8";
 	public static final Locale RESPONSE_LOCALE= Locale.ENGLISH;

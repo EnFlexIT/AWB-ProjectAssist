@@ -31,7 +31,6 @@ package [SymBundleName].classLoadService;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import de.enflexit.awb.core.classLoadService.ClassLoadService;
 import de.enflexit.awb.core.project.Project;
 import de.enflexit.awb.core.project.plugins.PlugIn;

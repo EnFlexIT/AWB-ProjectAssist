@@ -3,7 +3,8 @@
   "baseFolder": "restServerBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
-    "[BundleName]" : "bundleName"
+    "[BundleName]" : "bundleName",
+	"[AppContextPath]" : "appContextPath"
   },
   "requiredArguments": [
     {
@@ -20,7 +21,12 @@
       "argumentName": "targetDir",
       "mandatory": true,
       "defaultValue": ""
-    }		
+    },
+	{
+	  "argumentName" :"appContextPath",
+	  "mandatory": true,
+      "defaultValue": ""
+	}
   ],
   "name": "REST-Server Bundle",
   "number": 2

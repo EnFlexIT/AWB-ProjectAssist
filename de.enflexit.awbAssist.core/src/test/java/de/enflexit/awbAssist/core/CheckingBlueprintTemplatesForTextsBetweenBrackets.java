@@ -274,13 +274,14 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 		// File path
 		String filePath = urlOfTheFileOrFolder.toString();
 		if (excludeThisFile(filePath) == false) {
+			BufferedReader reader = null;
 			try {
 				// Convert the URL to a File object
 				File file = new File(urlOfTheFileOrFolder.toURI());
 				if (!file.isFile()) {
 					return; // Skip directories or invalid files
 				}
-				BufferedReader reader = new BufferedReader(new FileReader(file));
+				reader = new BufferedReader(new FileReader(file));
 				String line;
 				// Regular expression to match text between square brackets
 				Pattern pattern = Pattern.compile("\\[(.*?)]");
@@ -297,6 +298,13 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 				}
 			} catch (URISyntaxException | IOException e) {
 				e.printStackTrace();
+			} finally {
+				if (reader!=null) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 		}
 	}

@@ -4,10 +4,8 @@
 <locations>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://p2.enflex.it/awb/latest/"/>
-		<unit id="de.enflexit.common.feature.feature.group" version="0.0.0"/>
-		<unit id="de.enflexit.common.feature.source.feature.group" version="0.0.0"/>
-		<unit id="org.agentgui.feature.feature.group" version="0.0.0"/>
-		<unit id="org.agentgui.feature.source.feature.group" version="0.0.0"/>
+		<unit id="de.enflexit.awb.desktop.feature.feature.group" version="0.0.0"/>
+		<unit id="de.enflexit.awb.desktop.feature.source.feature.group" version="0.0.0"/>
 	</location>
 </locations>
 </target>

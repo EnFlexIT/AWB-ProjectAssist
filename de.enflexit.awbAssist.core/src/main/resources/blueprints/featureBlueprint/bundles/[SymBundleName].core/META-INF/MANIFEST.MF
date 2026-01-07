@@ -7,7 +7,6 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: de.enflexit.common,
  de.enflexit.jade
 Bundle-Vendor: EnFlex.IT
-Automatic-Module-Name: [SymBundleName].core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Service-Component: OSGI-INF/awbClassLoadService.xml
