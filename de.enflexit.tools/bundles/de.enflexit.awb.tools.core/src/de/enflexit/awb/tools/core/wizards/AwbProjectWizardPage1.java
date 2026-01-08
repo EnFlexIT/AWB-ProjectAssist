@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 import de.enflexit.awb.tools.core.SWTResourceManager;
 import de.enflexit.awbAssist.core.ProjectBlueprint;
@@ -23,6 +24,8 @@ import de.enflexit.awbAssist.core.ProjectBlueprint;
 public class AwbProjectWizardPage1 extends WizardPage {
 
 	private AwbProjectWizard awbProjectWizard;
+	
+	private List<String> listOfBlueprintsThatAreFollowedBySeparator;
 	private List<Button> radioButtonList;
 	
 	/**
@@ -59,13 +62,25 @@ public class AwbProjectWizardPage1 extends WizardPage {
 	}
 	
 	/**
+	 * Returns the of blueprints that are followed by separator.
+	 * @return the of blueprints that are followed by separator
+	 */
+	private List<String> getListOfBlueprintsThatAreFollowedBySeparator() {
+		if (listOfBlueprintsThatAreFollowedBySeparator==null) {
+			listOfBlueprintsThatAreFollowedBySeparator = new ArrayList<String>();
+			listOfBlueprintsThatAreFollowedBySeparator.add("restServerBlueprint");
+			listOfBlueprintsThatAreFollowedBySeparator.add("featureBlueprint");
+		}
+		return listOfBlueprintsThatAreFollowedBySeparator;
+	}
+	/**
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
 	private void initializeUI(Composite parent) {
 		
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 3;
-		layout.verticalSpacing = 9;
+		layout.numColumns = 1;
+		layout.verticalSpacing = 10;
 
 		Composite container = new Composite(parent, SWT.NULL);
 		container.setLayout(layout);
@@ -74,8 +89,8 @@ public class AwbProjectWizardPage1 extends WizardPage {
 		Group rButtonGroup = new Group(container, SWT.NONE);
 		rButtonGroup.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		rButtonGroup.setText("Please, select the desired project type to create:");
-		rButtonGroup.setLayout(new GridLayout(1, false));
 		rButtonGroup.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		rButtonGroup.setLayout(new GridLayout(1, false));
 		
 		boolean isFistRadioButtonSelected = false;
 		List<ProjectBlueprint> bpSorted = this.awbProjectWizard.getBlueprintsAvailableSorted();
@@ -89,6 +104,13 @@ public class AwbProjectWizardPage1 extends WizardPage {
 				rButton.setSelection(true);
 				isFistRadioButtonSelected = true;
 			}
+
+			// --- Add a separator? ---------------------------------
+			if (this.getListOfBlueprintsThatAreFollowedBySeparator().contains(bp.getBaseFolder())==true) {
+				Label separator = new Label(rButtonGroup, SWT.SEPARATOR | SWT.SHADOW_OUT | SWT.HORIZONTAL);
+				separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 0, 3));
+			}
+			
 			// --- Remind this RadioButton --------------------------
 			this.getRadioButtonList().add(rButton);
 		}
