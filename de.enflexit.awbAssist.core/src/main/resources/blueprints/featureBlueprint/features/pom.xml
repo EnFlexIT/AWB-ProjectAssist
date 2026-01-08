@@ -19,20 +19,23 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-source-feature-plugin</artifactId>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
 				<version>${tycho-extras-version}</version>
+				<!--
 				<configuration>
 					<excludes>
-						<feature id="de.enflexit.eom.feature" />
+						<plugin id="org.agentgui.lib.jade" />
+						<feature id="org.eclipse.rcp" />
 					</excludes>
 				</configuration>
+				-->
 				<executions>
 					<execution>
-						<id>source-feature</id>
+						<id>feature-source</id>
 						<phase>package</phase>
 						<goals>
-							<goal>source-feature</goal>
+							<goal>feature-source</goal>
 						</goals>
 					</execution>
 				</executions>

@@ -4,7 +4,8 @@
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName",
-    "[technicalSystemName]" : "technicalSystemName"
+    "[technicalSystemName]" : "technicalSystemName",
+	"[technicalSystemNameCC]" : "technicalSystemNameCC"
   },
   "requiredArguments": [
     {
@@ -26,7 +27,7 @@
 	  "argumentName": "technicalSystemName",
 	  "mandatory": true,
 	  "defaultValue": ""
-	}			
+	}	
   ],
   "name": "EOM Model - Bundle",
   "number": 4

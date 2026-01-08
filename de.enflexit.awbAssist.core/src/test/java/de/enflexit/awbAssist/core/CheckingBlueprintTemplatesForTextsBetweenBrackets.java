@@ -93,9 +93,11 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 		// ------- Here we start to evaluate the results ------------
 		
 		// A check whether all replacement texts were replaced
+		@SuppressWarnings("unused")
 		boolean replacementTextInGeneratedFolder =isreplacementTextPresentInGeneratedFolder(replacementTextsAndOccurrencesInGeneratedFiles);
 		
 		// A check whether all replacement texts mentioned each blueprint json were present in the blueprint structure
+		@SuppressWarnings("unused")
 		boolean allBlueprintReplacementTextsWereFoundAndUsed  = allBlueprintReplacementTextsWerePresentInTheBlueprintTemplate(replacementTextsAndOccurrencesInBlueprintTemplates);
 		
 		// Print the list of texts found between brackets that are not associated to a text replacement string
@@ -146,7 +148,9 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
 				}
 			}
 		}
+		@SuppressWarnings("unused")
 		int commonElements = listOfCommonElements.size();
+		@SuppressWarnings("unused")
 		int differentElements = uniqueToBlueprint.size() + uniqueToCreatedFolder.size();
 //		System.out.println("From " + (listOfFoundTextsNonAssociatedToAnArgumentInBlueprintTemplates.size() + listOfFoundTextsNonAssociatedToAnArgumentInGeneratedFiles.size()) + " elements that are not assciated to a bluerint argument " + commonElements*2 + " elements where common " + uniqueToBlueprint.size() + " were unique to blueprint template and " + uniqueToCreatedFolder.size() + " were unique to the generated folder");
 //		System.out.println("\n Elements unique to blueprint template");  
@@ -399,7 +403,8 @@ class CheckingBlueprintTemplatesForTextsBetweenBrackets {
     		return true;
     	}
     	try {
-    		double d = Double.parseDouble(group);
+    		@SuppressWarnings("unused")
+			double d = Double.parseDouble(group);
     		return true;
     	} catch (NumberFormatException nfe) {
     		return false;

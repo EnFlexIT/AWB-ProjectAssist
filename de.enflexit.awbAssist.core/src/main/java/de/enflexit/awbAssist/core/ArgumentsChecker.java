@@ -61,6 +61,14 @@ public class ArgumentsChecker {
 			arguments.replace(Arguments.BUNDLE_NAME, currentBundleName, bundleNameStartWithSmallLetter);
 			arguments.put("projectName", bundleNameStartWithCapitalLEtter);
 		}
+		
+		
+		//----------- This part is designed for the blueprint N°4 "EOM model"-------------
+		if (referenceBlueprint.getBaseFolder().equals("eomModelBlueprint")) {
+			String currentTechnicalSysName = arguments.get(Arguments.TECHNICAL_SYSTEM_NAME);
+			String tSNameCC = toCapitalizedWords(currentTechnicalSysName);
+			arguments.put(Arguments.TECHNICAL_SYSTEM_NAME_CC, tSNameCC);
+		}
 		return arguments;
 	}
 	
@@ -143,5 +151,30 @@ public class ArgumentsChecker {
 		}
 		return false;
 	}
+	
+	/**
+	 * To capitalized words.
+	 *
+	 * @param input the input
+	 * @return the string
+	 */
+	public static String toCapitalizedWords(String input) {
+	    if (input == null) {
+	        return null;
+	    }
+
+	    String[] words = input.trim().split("\\s+");
+	    StringBuilder result = new StringBuilder();
+
+	    for (String word : words) {
+	        if (word.isEmpty() == false) {
+	            result.append(Character.toUpperCase(word.charAt(0)))
+	                  .append(word.substring(1).toLowerCase());
+	        }
+	    }
+
+	    return result.toString();
+	}
+
 	
 }

@@ -7,6 +7,7 @@ public class Arguments {
 	public static final String SYMBOLIC_BUNDLE_NAME = "symBunName";
 	public static final String TARGET_DIRECTORY = "targetDir";
 	public static final String TECHNICAL_SYSTEM_NAME = "technicalSystemName";
+	public static final String TECHNICAL_SYSTEM_NAME_CC = "technicalSystemNameCC";
 	public static final String FOLDERWITHSTRUCTUREMODIFICATION = "[SymBunNameWithStructureChange]";
 	public static final String HELP_SIGN_1 = "-help";
 	public static final String HELP_SIGN_2 = "-?";

@@ -22,5 +22,9 @@
    <url>
       <update label="Enflex.IT Update Site" url="https://p2.enflex.it/awb/latest/"/>
    </url>
+   
+   <plugin
+        id="[SymBundleName].core"
+        version="0.0.0"/>
 
 </feature>

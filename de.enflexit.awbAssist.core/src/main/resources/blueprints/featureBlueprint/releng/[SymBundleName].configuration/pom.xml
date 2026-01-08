@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>4.0.10</tycho-version>
+		<tycho-version>5.0.0</tycho-version>
 		<tycho-extras-version>${tycho-version}</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
@@ -21,6 +21,14 @@
 		<repository.domain>${url.repository.snapshotDomain}</repository.domain>
 		<repository.updateSite>${repository.domain}${repository.subDir}</repository.updateSite>
 	</properties>
+
+	<name>Enflex.IT Feature Blueprint</name>
+	<url>https://www.enflex.it</url>
+	<inceptionYear>2026</inceptionYear>
+	<organization>
+		<name>Enflex.IT GmbH</name>
+		<url>https://www.enflex.it</url>
+	</organization>
 
 	<build>
 		<plugins>
@@ -115,9 +123,9 @@
 					<version>${tycho-version}</version>
 					<dependencies>
 						<dependency>
-							<groupId>org.eclipse.tycho.extras</groupId>
+							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-buildtimestamp-jgit</artifactId>
-							<version>${tycho-extras-version}</version>
+							<version>${tycho-version}</version>
 						</dependency>
 					</dependencies>
 					<configuration>
@@ -148,12 +156,4 @@
 		</pluginManagement>
 
 	</build>
-
-	<organization>
-		<name>Peak project consortium</name>
-		<url>https://www.softec.wiwi.uni-due.de/forschung/smart-grids/peak/</url>
-	</organization>
-	<name>Enflexit.SSI</name>
-	<url>https://www.softec.wiwi.uni-due.de/forschung/smart-grids/peak/</url>
-	<inceptionYear>2021</inceptionYear>
 </project>

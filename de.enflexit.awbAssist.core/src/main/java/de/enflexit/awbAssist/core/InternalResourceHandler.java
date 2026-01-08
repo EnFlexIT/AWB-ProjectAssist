@@ -30,6 +30,7 @@ public class InternalResourceHandler {
 			List<InternalResource> ressourcesFound = InternalResourceHandler.findProjectBlueprintResources();
 			ressourcesFound.forEach(ref -> System.out.println(ref));
 			
+			@SuppressWarnings("unused")
 			List<ProjectBlueprint> previous = InternalResourceHandler.getProjectBlueprintsAvailable();
 			System.err.println("just to check previous");
 			
