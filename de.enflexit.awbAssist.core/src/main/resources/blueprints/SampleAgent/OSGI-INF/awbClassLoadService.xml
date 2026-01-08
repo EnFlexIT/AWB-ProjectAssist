@@ -3,6 +3,6 @@
    <implementation class="[SymBundleName].classLoadService.AWBClassLoadServiceImpl"/>
    <service>
       <provide interface="de.enflexit.common.classLoadService.BaseClassLoadService"/>
-      <provide interface="agentgui.core.classLoadService.ClassLoadService"/>
+      <provide interface="de.enflexit.awb.core.classLoadService.ClassLoadService"/>
    </service>
 </scr:component>
