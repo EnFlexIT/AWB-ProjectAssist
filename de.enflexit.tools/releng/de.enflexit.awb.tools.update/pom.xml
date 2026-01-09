@@ -11,12 +11,26 @@
 		<artifactId>de.enflexit.awb.tools.releng</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+	
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<createArtifactRepository>true</createArtifactRepository>
+					<includeAllDependencies>false</includeAllDependencies>
+					<compress>false</compress>
+				</configuration>
+			</plugin>
+		</plugins>
+			
 		<extensions>
 			<!-- Enabling upload via ssh -->
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh-external</artifactId>
+				<artifactId>wagon-ssh</artifactId>
 				<version>3.0.0</version>
 			</extension>
 		</extensions>
@@ -46,7 +60,8 @@
 										</repository>
 									</source>
 									<append>true</append>
-									<!-- <mirrorMetadataOnly>true</mirrorMetadataOnly> -->
+									<mirrorMetadataOnly>false</mirrorMetadataOnly>
+									<compress>false</compress>
 								</configuration>
 							</execution>
 						</executions>
@@ -65,17 +80,12 @@
 									<goal>upload</goal>
 								</goals>
 								<configuration>
+									<!-- Points to your "~/.m2/settings.xml", where the connection settings are stored -->
+									<serverId>p2EnFlexIT</serverId>
+									<url>scp://enflex.it</url> <!-- <url>scpexe://enflex.it</url> -->
 									<fromDir>${project.build.directory}/repository/</fromDir>
-									<includes>**</includes>
 									<toDir>/subDomains/p2.enflex.it${repository.subDir}</toDir>
-									<url>scpexe://enflex.it</url>
-									<serverId>update-site-enflexit</serverId>
-									<!-- Points to your "~/.m2/settings.xml", where the connection settings 
-										are stored as shown below <servers> <server> <id>update-site-enflexit</id> 
-										<username>admin.enflex.it</username> <privateKey>${user.home}/.ssh/id_YOURKEY</privateKey> 
-										<configuration> <sshExecutable>plink</sshExecutable> <scpExecutable>pscp</scpExecutable> 
-										<sshArgs></sshArgs> </configuration> </server> </servers> Also see: - https://maven.apache.org/plugins/maven-deploy-plugin/examples/deploy-ssh-external.html, 
-										- https://maven.apache.org/settings.html#Servers, - https://stackoverflow.com/questions/2733447/can-maven-wagon-plugin-use-a-private-key-for-scp -->
+									<includes>**</includes>
 								</configuration>
 							</execution>
 						</executions>
@@ -100,17 +110,12 @@
 									<goal>upload</goal>
 								</goals>
 								<configuration>
+									<!-- Points to your "~/.m2/settings.xml", where the connection settings are stored -->
+									<serverId>p2EnFlexIT</serverId>
+									<url>scp://enflex.it</url> <!-- <url>scpexe://enflex.it</url> -->
 									<fromDir>${project.build.directory}/repository/</fromDir>
-									<includes>**</includes>
 									<toDir>/subDomains/p2.enflex.it${repository.subDir}</toDir>
-									<url>scpexe://enflex.it</url>
-									<serverId>update-site-enflexit</serverId>
-									<!-- Points to your "~/.m2/settings.xml", where the connection settings 
-										are stored as shown below <servers> <server> <id>update-site-enflexit</id> 
-										<username>admin.enflex.it</username> <privateKey>${user.home}/.ssh/id_YOURKEY</privateKey> 
-										<configuration> <sshExecutable>plink</sshExecutable> <scpExecutable>pscp</scpExecutable> 
-										<sshArgs></sshArgs> </configuration> </server> </servers> Also see: - https://maven.apache.org/plugins/maven-deploy-plugin/examples/deploy-ssh-external.html, 
-										- https://maven.apache.org/settings.html#Servers, - https://stackoverflow.com/questions/2733447/can-maven-wagon-plugin-use-a-private-key-for-scp -->
+									<includes>**</includes>
 								</configuration>
 							</execution>
 						</executions>
