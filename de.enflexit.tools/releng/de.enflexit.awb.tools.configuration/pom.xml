@@ -14,7 +14,7 @@
 		
 		<target-platform-version>4.37.0-SNAPSHOT</target-platform-version>
 		
-		<url.repository.snapshotDir>/awbTools/snapshots/</url.repository.snapshotDir>
+		<url.repository.snapshotDir>/awbTools/</url.repository.snapshotDir>
 		<url.repository.snapshotDomain>https://p2.enflex.it</url.repository.snapshotDomain>
 		
 		<repository.subDir>${url.repository.snapshotDir}</repository.subDir>
