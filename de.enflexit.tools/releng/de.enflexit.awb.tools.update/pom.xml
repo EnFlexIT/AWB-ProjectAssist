@@ -26,8 +26,8 @@
 			</plugin>
 		</plugins>
 			
+		<!-- Enabling upload via ssh -->
 		<extensions>
-			<!-- Enabling upload via ssh -->
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
