@@ -5,7 +5,7 @@ pipeline {
       steps {
         echo 'Start Build and Deployment of the EnFlex.IT Eclipse-Tools ...'
         sh 'mvn --version'
-        sh 'mvn clean install -P p2Deploy -f de.enflexit.tools -Dtycho.localArtifacts=ignore -Dtycho.localArtifacts=ignore -Dtycho.p2.transport.min-cache-minutes=0'
+        sh 'mvn clean install -P p2DeployClean -f de.enflexit.tools -Dtycho.localArtifacts=ignore -Dtycho.localArtifacts=ignore -Dtycho.p2.transport.min-cache-minutes=0'
         echo 'Build & Deployment of the EnFlex.IT Eclipse-Tools is done!'
       }
     }

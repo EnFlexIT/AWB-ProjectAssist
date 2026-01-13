@@ -2,7 +2,7 @@
 <?pde version="3.8"?>
 <target includeMode="feature" name="de.enflexit.awb.tools.target" sequenceNumber="1">
 <locations>
-	<location path="${eclipse_home}" type="Profile"/>
+	<!-- <location path="${eclipse_home}" type="Profile"/> -->
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://download.eclipse.org/releases/2025-12/"/>
 		<unit id="org.eclipse.sdk.feature.group" version="0.0.0"/>
