@@ -1,5 +1,5 @@
 {
-  "description": "This blueprint provides a basic structure for a REST APi server model.",
+  "description": "Provides a structure to develop a REST API for the AWB web server using the Openapi-Generator.",
   "baseFolder": "restServerBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
@@ -29,5 +29,5 @@
 	}
   ],
   "name": "REST-Server Bundle",
-  "number": 2
+  "number": 4
 }

@@ -1,5 +1,5 @@
 {
-  "description": "This blueprint provides a basic structure for a prosumer.",
+  "description": "Will create a Plug-In that provides the base structure for a Prosumer Agent.",
   "baseFolder": "Prosumer",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
@@ -23,5 +23,5 @@
     }
   ],
   "name": "Prosumer Agent - Bundle",
-  "number": 5
+  "number": 7
 }

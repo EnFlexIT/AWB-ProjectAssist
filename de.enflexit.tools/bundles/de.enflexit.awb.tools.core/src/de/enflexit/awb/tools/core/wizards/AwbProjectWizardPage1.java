@@ -68,6 +68,7 @@ public class AwbProjectWizardPage1 extends WizardPage {
 	private List<String> getListOfBlueprintsThatAreFollowedBySeparator() {
 		if (listOfBlueprintsThatAreFollowedBySeparator==null) {
 			listOfBlueprintsThatAreFollowedBySeparator = new ArrayList<String>();
+			listOfBlueprintsThatAreFollowedBySeparator.add("dbBlueprint");
 			listOfBlueprintsThatAreFollowedBySeparator.add("restServerBlueprint");
 			listOfBlueprintsThatAreFollowedBySeparator.add("featureBlueprint");
 		}

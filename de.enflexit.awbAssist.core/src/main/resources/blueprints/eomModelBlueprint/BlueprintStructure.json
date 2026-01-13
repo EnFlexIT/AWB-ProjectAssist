@@ -1,5 +1,5 @@
 {
-  "description": "This blueprint provides a basic structure for a eom model.",
+  "description": "Base structure for a Technical System model using the Energy Option Model.",
   "baseFolder": "eomModelBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
@@ -30,5 +30,5 @@
 	}	
   ],
   "name": "EOM Model - Bundle",
-  "number": 4
+  "number": 6
 }

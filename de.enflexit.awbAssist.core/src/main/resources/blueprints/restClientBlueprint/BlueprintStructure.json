@@ -1,6 +1,6 @@
 {
-  "description": "This blueprint provides a basic structure for a REST APi client model.",
-  "baseFolder": "restServerBlueprint",
+  "description": "Provides a structure to develop a REST API-Client using the Openapi-Generator.",
+  "baseFolder": "restClientBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName"
@@ -23,5 +23,5 @@
     }
   ],
   "name": "REST-Client Bundle",
-  "number": 6
+  "number": 3
 }

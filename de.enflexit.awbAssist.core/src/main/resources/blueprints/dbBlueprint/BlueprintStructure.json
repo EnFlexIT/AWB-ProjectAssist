@@ -1,5 +1,5 @@
 {
-  "description": "This blueprint provides a basic structure for database.",
+  "description": "Provides a base structure for database bundle.",
   "baseFolder": "dbBlueprint",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
@@ -23,5 +23,5 @@
     }
   ],
   "name": "Database Project",
-  "number": 7 
+  "number": 2 
 }
