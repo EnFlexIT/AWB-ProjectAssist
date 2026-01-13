@@ -56,7 +56,7 @@
 								<configuration>
 									<source>
 										<repository>
-											<url>${repository.updateSite}</url>
+											<url>${repository.updateSite}/</url>
 										</repository>
 									</source>
 									<append>true</append>
