@@ -2,26 +2,32 @@
 <feature
       id="de.enflexit.awb.tools.feature"
       label="Agent.Workbench IDE-Tools"
-      version="0.0.3.qualifier"
+      version="0.0.4.qualifier"
+      include-sources="true"
       provider-name="EnFlex.IT"
       plugin="de.enflexit.awb.tools.core"
       os="linux,macosx,win32"
       arch="x86_64">
 
    <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+      The Agent.Workbench IDE-Tools provide tools and example blueprint
+projects to add further Plugin-Ins and Features to Agent.Workbench
+runtime environment.
    </description>
 
    <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+      Copyright (c) 2026 EnFlex.IT GmbH and others.
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="https://www.eclipse.org/legal/epl-2.0">
+      This program and the accompanying materials are made available under the
+terms of the Eclipse Public License 2.0 which is available at
+https://www.eclipse.org/legal/epl-2.0.
    </license>
 
    <url>
-      <update label="EnFlex.IT - AWB IDE-Tools Update Site" url="https://www.enflex.it/awbTools/latest"/>
+      <update label="EnFlex.IT - AWB IDE-Tools Update Site" url="https://p2.enflex.it/awbTools"/>
+      <discovery label="EnFlex.IT - Homepage" url="https://www.enflex.it"/>
    </url>
 
    <plugin
