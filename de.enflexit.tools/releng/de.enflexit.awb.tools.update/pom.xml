@@ -56,12 +56,13 @@
 								<configuration>
 									<source>
 										<repository>
-											<url>${repository.updateSite}/</url>
+											<url>${repository.updateSite}</url>
 										</repository>
 									</source>
 									<append>true</append>
 									<!--<mirrorMetadataOnly>false</mirrorMetadataOnly>
 									<compress>false</compress>-->
+									<targetPlatformAsSource>true</targetPlatformAsSource>
 								</configuration>
 							</execution>
 						</executions>
