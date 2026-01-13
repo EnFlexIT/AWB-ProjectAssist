@@ -1,0 +1,27 @@
+{
+  "description": "This blueprint provides a basic structure for database.",
+  "baseFolder": "dbBlueprint",
+  "textReplacements": {
+    "[SymBundleName]": "symBunName",
+    "[BundleName]" : "bundleName"
+  },
+  "requiredArguments": [
+    {
+      "argumentName": "bundleName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "symBunName",
+      "mandatory": true,
+      "defaultValue": ""
+    },
+    {
+      "argumentName": "targetDir",
+      "mandatory": true,
+      "defaultValue": ""
+    }
+  ],
+  "name": "Database Project",
+  "number": 7 
+}
