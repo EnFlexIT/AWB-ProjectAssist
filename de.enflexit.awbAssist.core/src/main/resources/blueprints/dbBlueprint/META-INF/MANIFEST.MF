@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: [BundleName]
+Bundle-SymbolicName: [SymBundleName]
+Automatic-Module-Name: [SymBundleName]
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: EnFlex.IT
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Eclipse-RegisterBuddy: de.enflexit.db.hibernate
+Export-Package: [SymBundleName],
+ [SymBundleName].dataModel
+Service-Component: OSGI-INF/HibernateDatabaseConnectionService.xml
+Require-Bundle: de.enflexit.db.hibernate,
+ org.eclipse.osgi
+Import-Package: jakarta.persistence
