@@ -62,7 +62,7 @@
 									<append>true</append>
 									<!--<mirrorMetadataOnly>false</mirrorMetadataOnly>
 									<compress>false</compress>-->
-									<targetPlatformAsSource>true</targetPlatformAsSource>
+									<ignoreErrors>true</ignoreErrors>
 								</configuration>
 							</execution>
 						</executions>
