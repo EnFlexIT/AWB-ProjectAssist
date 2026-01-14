@@ -11,6 +11,14 @@
 		<srcBasePackage>[SymBundleName].gen</srcBasePackage>
 	</properties>
 	
+	<dependencies>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+    </dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -28,7 +36,7 @@
 							<!-- <language>java</language> --> 
 
 							<!-- For server code -->	
-							<generatorName>jaxrs-jersey</generatorName>
+							<generatorName>java</generatorName>
 							<library>jersey3</library>
 							
 							<apiPackage>${srcBasePackage}</apiPackage>

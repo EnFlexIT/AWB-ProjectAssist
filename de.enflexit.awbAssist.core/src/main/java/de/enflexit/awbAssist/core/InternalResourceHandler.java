@@ -170,7 +170,6 @@ public class InternalResourceHandler {
 	 */
 	public static boolean extractFileFromBundle(String internalPath, File destinationPath) {
 
-	    boolean isJar = internalPath.toLowerCase().endsWith(".jar");
 
 	    if (internalPath == null || destinationPath == null) {
 	        System.err.println("Internal path or destination path is null");
@@ -182,15 +181,6 @@ public class InternalResourceHandler {
 
 	    try {
 	    	URL resource = InternalResourceHandler.class.getResource(internalPath);
-//	    	URL resource2;
-//	    	if (isJar == true) {
-//	    		resource = Thread.currentThread().getContextClassLoader().getResource(internalPath);
-//	    		resource2 = InternalResourceHandler.class.getResource(internalPath);
-//	    	
-//	    	} else {
-//	    		resource = InternalResourceHandler.class.getResource(internalPath);
-//	    		resource2 = Thread.currentThread().getContextClassLoader().getResource(internalPath);
-//	    	}
 
 	        if (resource == null) {
 	            System.err.println("Could not find resource: " + internalPath);
@@ -205,17 +195,12 @@ public class InternalResourceHandler {
 
 	        is = resource.openStream();
 
-	        if (isJar) {
-	            // copy using NIO 
-	            Files.copy( is, destinationPath.toPath(), StandardCopyOption.REPLACE_EXISTING );
-	        } else {
 	        	
-	        	fos = new FileOutputStream(destinationPath);
-	            byte[] buffer = new byte[1024];
-	            int len;
-	            while ((len = is.read(buffer)) != -1) {
-	                fos.write(buffer, 0, len);
-	            }
+	        fos = new FileOutputStream(destinationPath);
+	        byte[] buffer = new byte[1024];
+	        int len;
+	        while ((len = is.read(buffer)) != -1) {
+	        	fos.write(buffer, 0, len);
 	        }
 
 	        return true;
