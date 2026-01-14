@@ -108,7 +108,7 @@ public class AwbAssist {
 				currentLocalTargetDirectoryAfterRenameCheck = renameCheck(currentLocalTargetDirectory, replacements);
 				if (currentLocalTargetDirectoryAfterRenameCheck.contains("BlueprintStructure.json") == false) {
 					File currentFilePath = new File(currentLocalTargetDirectoryAfterRenameCheck);
-					InternalResourceHandler.extractFromBundle("/" + currentElement, currentFilePath);
+					InternalResourceHandler.extractFileFromBundle("/" + currentElement, currentFilePath);
 					doTextReplacement(currentFilePath, replacements);
 				}
 

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -157,55 +159,86 @@ public class InternalResourceHandler {
 		return resoucesFound;
 	}
 	
+	
+	
 	/**
-	 * Extracts a file from a bundle project.
+	 * Extract file from bundle.
+	 *
 	 * @param internalPath the internal path
 	 * @param destinationPath the destination path
+	 * @return true, if successful
 	 */
-	public static boolean extractFromBundle(String internalPath, File destinationPath) {
-		boolean debug = false;
+	public static boolean extractFileFromBundle(String internalPath, File destinationPath) {
 
-		if (debug) {
-			System.out.println("Extracting '" + internalPath + "' to " + destinationPath.toString());
-		}
-		
-		InputStream is = null;
-		FileOutputStream fos = null;
-		try {
-			URL fileURL = InternalResourceHandler.class.getResource(internalPath);
-			if (fileURL!=null) {
-				// --- Write file to directory ------------
-				is = fileURL.openStream();
-				fos = new FileOutputStream(destinationPath);
-				byte[] buffer = new byte[1024];
-				int len;
-				while ((len = is.read(buffer)) != -1) {
-					fos.write(buffer, 0, len);
-				}
-				return true;
-				
-			} else {
-				// --- Could not find fileURL -------------
-				System.err.println(InternalResourceHandler.class.getSimpleName() + " could not find resource for '" + internalPath + "'");
-			}
-			
-		} catch (IOException ioEx) {
-			ioEx.printStackTrace();
-		} finally {
-			try {
-				if (fos!=null) fos.close();
-			} catch (IOException ioEx) {
-				ioEx.printStackTrace();
-			}
-			try {
-				if (is!=null) is.close();
-			} catch (IOException ioEx) {
-				ioEx.printStackTrace();
-			}
-		}
-		return false;
-		
+	    boolean isJar = internalPath.toLowerCase().endsWith(".jar");
+
+	    if (internalPath == null || destinationPath == null) {
+	        System.err.println("Internal path or destination path is null");
+	        return false;
+	    }
+
+	    InputStream is = null;
+	    FileOutputStream fos = null;
+
+	    try {
+	    	URL resource = InternalResourceHandler.class.getResource(internalPath);
+//	    	URL resource2;
+//	    	if (isJar == true) {
+//	    		resource = Thread.currentThread().getContextClassLoader().getResource(internalPath);
+//	    		resource2 = InternalResourceHandler.class.getResource(internalPath);
+//	    	
+//	    	} else {
+//	    		resource = InternalResourceHandler.class.getResource(internalPath);
+//	    		resource2 = Thread.currentThread().getContextClassLoader().getResource(internalPath);
+//	    	}
+
+	        if (resource == null) {
+	            System.err.println("Could not find resource: " + internalPath);
+	            return false;
+	        }
+
+	        File parentDir = destinationPath.getParentFile();
+	        if (parentDir != null && parentDir.exists() == false  && parentDir.mkdirs() == false) {
+	            System.err.println("Could not create destination directory: " + parentDir);
+	            return false;
+	        }
+
+	        is = resource.openStream();
+
+	        if (isJar) {
+	            // copy using NIO 
+	            Files.copy( is, destinationPath.toPath(), StandardCopyOption.REPLACE_EXISTING );
+	        } else {
+	        	
+	        	fos = new FileOutputStream(destinationPath);
+	            byte[] buffer = new byte[1024];
+	            int len;
+	            while ((len = is.read(buffer)) != -1) {
+	                fos.write(buffer, 0, len);
+	            }
+	        }
+
+	        return true;
+
+	    } catch (IOException e) {
+	        System.err.println("Error extracting file: " + internalPath);
+	        System.err.println("Destination: " + destinationPath.getAbsolutePath());
+	        e.printStackTrace();
+	        return false;
+
+	    } finally {
+	    	try {
+	            if (fos != null) fos.close();
+	        } catch (IOException ioEx) {
+	            ioEx.printStackTrace();
+	        }
+	        try {
+	            if (is != null) is.close();
+	        } catch (IOException ioEx) {
+	            ioEx.printStackTrace();
+	        }
+	    }
 	}
-
+	
 	
 }
