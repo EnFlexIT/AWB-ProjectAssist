@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.enflexit.awb.tools</groupId>
+	
 	<artifactId>de.enflexit.awb.tools.features</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -22,13 +22,13 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-source-plugin</artifactId>
 				<version>${tycho-extras-version}</version>
+				<!-- 
 				<configuration>
 					<excludes>
-						<plugin id="de.enflexit.dlt.battery" />
-						<plugin id="net.insekt.lib.matrixCalculations" />
 						<feature id="de.enflexit.eom.feature" />
 					</excludes>
 				</configuration>
+				-->
 				<executions>
 					<execution>
 						<id>source-feature</id>
@@ -42,6 +42,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho-version}</version>
 				<executions>
 					<execution>
 						<id>attach-p2-metadata</id>
