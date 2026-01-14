@@ -1,6 +1,6 @@
 {
   "description": "Will create a Plug-In that provides the base structure for a Prosumer Agent.",
-  "baseFolder": "Prosumer",
+  "baseFolder": "prosumerAgent",
   "textReplacements": {
     "[SymBundleName]": "symBunName",
     "[BundleName]" : "bundleName"
