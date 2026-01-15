@@ -14,7 +14,7 @@
 			<dependency>
 				<groupId>de.enflexit.awbAssist</groupId>
 				<artifactId>de.enflexit.awbAssist.core</artifactId>
-				<version>0.0.4</version>
+				<version>0.0.5</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>

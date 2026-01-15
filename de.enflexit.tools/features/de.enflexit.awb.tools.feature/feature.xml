@@ -2,7 +2,7 @@
 <feature
       id="de.enflexit.awb.tools.feature"
       label="Agent.Workbench IDE-Tools"
-      version="0.0.4.qualifier"
+      version="0.0.5.qualifier"
       include-sources="true"
       provider-name="EnFlex.IT"
       plugin="de.enflexit.awb.tools.core"
