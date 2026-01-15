@@ -1,17 +1,8 @@
-# Awb-ProjectAssist
+# Development Tools for Agent.Workbench
 
-**Awb-Assist** enables you to create a new project based on an existing blueprint.  
-To do so, certain parameters must be provided as arguments in **key/value sets**, with each key preceded by a `-`.
-
-## Example Arguments
-Below is an example of how the arguments should look:
--blueprint "TestingAgent" -bundleName "FlexAqua Assistant Agent" -symBunName "de.enflexit.flexAqua.assistantAgent" -targetDir "D:"
-
-In this example:
-- **`bundleName`**, **`symBundleName`**, and **`targetDir`** were needed to create a project with a structure similar to the blueprint **TestingAgent**.
-
-## Get Help
-To get a list of available blueprints and the required arguments for each, use the following argument: -bp
-
-
-
+Here we manage the projects that - later on - serve as developer tools and thus should increase the development speed  
+for individual Agent.Workbench projects and its extensions. The projects available are:
+- ***de.enflexit.awbAssist.core:*** with this Maven Plugin, project bluprints will be used to produce new Plug-in Projects.  
+For further information visit the corresponding [README.md](/de.enflexit.awbAssist.core/README.md). 
+- ***de.enflexit.tools:*** with this Eclipse feature, project generation and other will be integrated into the Eclipse IDE.  
+For further information visit the corresponding [README.md](/de.enflexit.tools/README.md). 
