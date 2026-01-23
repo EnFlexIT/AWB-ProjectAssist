@@ -14,7 +14,7 @@ jobs:
       with: # running setup-java overwrites the settings.xml
             # For building java version 178, required by JADE
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
     - name: build artifact
       run: |
          cd de.enflexit.awbAssist.core
@@ -25,7 +25,7 @@ jobs:
             # java version needs to be 11, because it is required by sonatype plugin
             # https://github.com/actions/setup-java
         distribution: 'temurin' 
-        java-version: '17'
+        java-version: '21'
         server-id: central 
         server-username: MAVEN_USERNAME # env variable for username in deploy
         server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
