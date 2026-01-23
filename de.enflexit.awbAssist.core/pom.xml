@@ -5,7 +5,7 @@
 	<groupId>de.enflexit.awbAssist</groupId>
 	<artifactId>de.enflexit.awbAssist.core</artifactId>
 	<version>0.0.5</version>
-	<packaging>maven-plugin</packaging> <!--Here it is specified that this is a Maven plugin-->
+	<packaging>maven-plugin</packaging>
 
 	<properties>
 		<maven.compiler.source>21</maven.compiler.source>

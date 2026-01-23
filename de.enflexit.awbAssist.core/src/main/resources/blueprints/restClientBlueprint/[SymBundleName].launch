@@ -23,7 +23,7 @@
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true"/>
     <stringAttribute key="pde.version" value="3.3"/>
-    <stringAttribute key="product" value="de.enflexit.awb.ws.core.product"/>
+    <stringAttribute key="product" value="de.enflexit.awb.core.product"/>
     <setAttribute key="selected_target_bundles">
         <setEntry value="bcpg@default:default"/>
         <setEntry value="bcpkix@default:default"/>
@@ -32,10 +32,7 @@
         <setEntry value="com.fasterxml.jackson.core.jackson-annotations@default:default"/>
         <setEntry value="com.fasterxml.jackson.core.jackson-core@default:default"/>
         <setEntry value="com.fasterxml.jackson.core.jackson-databind@default:default"/>
-        <setEntry value="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml@default:default"/>
         <setEntry value="com.fasterxml.jackson.datatype.jackson-datatype-jsr310@default:default"/>
-        <setEntry value="com.fasterxml.jackson.jakarta.rs.jackson-jakarta-rs-base@default:default"/>
-        <setEntry value="com.fasterxml.jackson.jakarta.rs.jackson-jakarta-rs-json-provider@default:default"/>
         <setEntry value="com.fasterxml.jackson.module.jackson-module-jakarta-xmlbind-annotations@default:default"/>
         <setEntry value="com.github.weisj.jsvg@default:default"/>
         <setEntry value="com.google.gson@default:default"/>
@@ -48,20 +45,15 @@
         <setEntry value="de.enflexit.awb.baseUI@default:default"/>
         <setEntry value="de.enflexit.awb.bgSystem@default:default"/>
         <setEntry value="de.enflexit.awb.core@default:default"/>
-        <setEntry value="de.enflexit.awb.timeSeriesDataProvider@default:default"/>
+        <setEntry value="de.enflexit.awb.desktop.swt@default:default"/>
+        <setEntry value="de.enflexit.awb.desktop@default:default"/>
         <setEntry value="de.enflexit.awb.ws.client@default:default"/>
         <setEntry value="de.enflexit.awb.ws.core.db@default:default"/>
-        <setEntry value="de.enflexit.awb.ws.core.ui@default:default"/>
         <setEntry value="de.enflexit.awb.ws.core@default:default"/>
-        <setEntry value="de.enflexit.awb.ws.dynSiteApi@default:default"/>
-        <setEntry value="de.enflexit.awb.ws.restapi@default:default"/>
-        <setEntry value="de.enflexit.awb.ws.swagger2x@default:default"/>
         <setEntry value="de.enflexit.common.flatlaf@default:default"/>
         <setEntry value="de.enflexit.common@default:default"/>
         <setEntry value="de.enflexit.db.derby@default:default"/>
         <setEntry value="de.enflexit.db.hibernate@default:default"/>
-        <setEntry value="de.enflexit.expression@default:default"/>
-        <setEntry value="de.enflexit.geography@default:default"/>
         <setEntry value="de.enflexit.jade@default:default"/>
         <setEntry value="de.enflexit.jaxb.impl.binding@default:false"/>
         <setEntry value="de.enflexit.jfreechart@default:default"/>
@@ -85,7 +77,6 @@
         <setEntry value="jakarta.ws.rs-api@default:default"/>
         <setEntry value="jakarta.xml.bind-api@default:default"/>
         <setEntry value="javassist@default:default"/>
-        <setEntry value="org.agentgui.lib.jung@default:default"/>
         <setEntry value="org.apache.aries.spifly.dynamic.bundle@default:default"/>
         <setEntry value="org.apache.batik.constants@default:default"/>
         <setEntry value="org.apache.batik.css@default:default"/>
@@ -96,14 +87,11 @@
         <setEntry value="org.apache.commons.commons-io@default:default"/>
         <setEntry value="org.apache.commons.commons-logging@default:default"/>
         <setEntry value="org.apache.commons.lang3@default:default"/>
-        <setEntry value="org.apache.commons.text@default:default"/>
         <setEntry value="org.apache.felix.gogo.command@default:default"/>
         <setEntry value="org.apache.felix.gogo.runtime@default:default"/>
         <setEntry value="org.apache.felix.gogo.shell@default:default"/>
-        <setEntry value="org.apache.felix.scr@1:true"/>
+        <setEntry value="org.apache.felix.scr@2:true"/>
         <setEntry value="org.apache.xmlgraphics@default:default"/>
-        <setEntry value="org.awb.env.maps@default:default"/>
-        <setEntry value="org.awb.env.networkModel@default:default"/>
         <setEntry value="org.commonmark@default:default"/>
         <setEntry value="org.eclipse.core.commands@default:default"/>
         <setEntry value="org.eclipse.core.contenttype@default:default"/>
@@ -113,7 +101,7 @@
         <setEntry value="org.eclipse.core.expressions@default:default"/>
         <setEntry value="org.eclipse.core.jobs@default:default"/>
         <setEntry value="org.eclipse.core.net@default:default"/>
-        <setEntry value="org.eclipse.core.runtime@default:true"/>
+        <setEntry value="org.eclipse.core.runtime@1:true"/>
         <setEntry value="org.eclipse.e4.core.commands@default:default"/>
         <setEntry value="org.eclipse.e4.core.contexts@default:default"/>
         <setEntry value="org.eclipse.e4.core.di.annotations@default:default"/>
@@ -221,7 +209,6 @@
         <setEntry value="org.glassfish.hk2.osgi-resource-locator@default:default"/>
         <setEntry value="org.glassfish.hk2.utils@default:default"/>
         <setEntry value="org.glassfish.jersey.containers.jersey-container-servlet-core@default:default"/>
-        <setEntry value="org.glassfish.jersey.containers.jersey-container-servlet@default:default"/>
         <setEntry value="org.glassfish.jersey.core.jersey-client@default:default"/>
         <setEntry value="org.glassfish.jersey.core.jersey-common@default:default"/>
         <setEntry value="org.glassfish.jersey.core.jersey-server@default:default"/>
@@ -245,7 +232,6 @@
         <setEntry value="org.sat4j.core@default:default"/>
         <setEntry value="org.sat4j.pb@default:default"/>
         <setEntry value="org.tukaani.xz@default:default"/>
-        <setEntry value="org.yaml.snakeyaml@default:default"/>
         <setEntry value="wrapped.es.urjc.etsii.grafo.scimark@default:default"/>
         <setEntry value="wrapped.org.openapitools.jackson-databind-nullable@default:default"/>
     </setAttribute>
