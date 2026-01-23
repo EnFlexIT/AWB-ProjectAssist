@@ -124,7 +124,7 @@ public class AwbAssist {
 			}
 			i++;
 		}
-		if (blueprintName.equals("restServerBlueprint") || blueprintName.equals("restClientBlueprint")) {
+		if (blueprintName.equals("restServerBlueprint") || blueprintName.equals("restClientBlueprint") ) {
 			Path pathToBePassed = Path.of(DirectoryOfMainFolder + File.separator + "xCodgen");
 			try {
 				runMavenGenerateSources(pathToBePassed);
