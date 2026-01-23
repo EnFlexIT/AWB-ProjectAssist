@@ -12,19 +12,19 @@ import org.hibernate.query.Query;
  * 
  * @author Christian Derksen - DAWIS - ICB - University of Duisburg-Essen
  */
-public class ExampleDatabaseHandler {
+public class DatabaseHandler {
 	
 	private Session session;
 	
 	/**
 	 * Instantiates a new database handler.
 	 */
-	public ExampleDatabaseHandler() { }
+	public DatabaseHandler() { }
 	/**
 	 * Instantiates a new database handler.
 	 * @param session the session instance to use
 	 */
-	public ExampleDatabaseHandler(Session session) {
+	public DatabaseHandler(Session session) {
 		this.setSession(session);
 	}
 	
@@ -34,7 +34,7 @@ public class ExampleDatabaseHandler {
 	 */
 	public Session getSession() {
 		if (session==null) {
-			session = ExampleDatabaseConnectionService.getInstance().getNewDatabaseSession();
+			session = DatabaseConnectionService.getInstance().getNewDatabaseSession();
 		}
 		return session;
 	}

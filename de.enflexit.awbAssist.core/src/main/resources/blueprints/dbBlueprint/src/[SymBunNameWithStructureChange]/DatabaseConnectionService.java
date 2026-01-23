@@ -17,18 +17,20 @@ import de.enflexit.db.hibernate.HibernateUtilities;
 import de.enflexit.db.hibernate.connection.HibernateDatabaseConnectionService;
 
 /**
- * The Class ExampleDatabaseConnectionService provides static help functions 
+ * The Class DatabaseConnectionService provides static help functions 
  * to control the SessionFactory of the Background Systems Bundle.
  * 
  * @author Christian Derksen - DAWIS - ICB - University of Duisburg - Essen
  */
-public class ExampleDatabaseConnectionService implements HibernateDatabaseConnectionService {
+public class DatabaseConnectionService implements HibernateDatabaseConnectionService {
 
 	public static final String SESSION_FACTORY_ID = "[SymBundleName]";
 	
-	private static final String cfgFile = 				"/de/enflexit/awb/samples/db/cfg/hibernate.cfg.xml";
-	private static final String mappingFilesPackage = 	"/de/enflexit/awb/samples/db/mappings/";
-	private static final String modelClassesPackage = 	"/de/enflexit/awb/samples/db/dataModel/";
+	private static final String pathPrefix = "/" + SESSION_FACTORY_ID.replace(".", "/") + "/";
+	
+	private static final String cfgFile = 				pathPrefix + "cfg/hibernate.cfg.xml";
+	private static final String mappingFilesPackage = 	pathPrefix + "mappings/";
+	private static final String modelClassesPackage = 	pathPrefix + "dataModel/";
 	
 	private Bundle localBundle;
 	private Configuration configuration;
@@ -38,10 +40,10 @@ public class ExampleDatabaseConnectionService implements HibernateDatabaseConnec
 	
 	// ----------------------------------------------------
 	// --- Singleton access for the current instance ------
-	private static ExampleDatabaseConnectionService instance;
-	public static ExampleDatabaseConnectionService getInstance() {
+	private static DatabaseConnectionService instance;
+	public static DatabaseConnectionService getInstance() {
 		if (instance==null) {
-			instance = new ExampleDatabaseConnectionService();
+			instance = new DatabaseConnectionService();
 		}
 		return instance;
 	}
@@ -52,7 +54,7 @@ public class ExampleDatabaseConnectionService implements HibernateDatabaseConnec
 	 * Instantiates a new database session factory handler.
 	 * (Even we use a singleton here, for OSGI-service initiation a public construction is required)
 	 */
-	public ExampleDatabaseConnectionService() { 
+	public DatabaseConnectionService() { 
 		instance = this;
 	}
 	
@@ -85,7 +87,7 @@ public class ExampleDatabaseConnectionService implements HibernateDatabaseConnec
 	 */
 	public Bundle getLocalBundle() {
 		if (localBundle==null) {
-			localBundle = FrameworkUtil.getBundle(ExampleDatabaseConnectionService.class);
+			localBundle = FrameworkUtil.getBundle(DatabaseConnectionService.class);
 		}
 		return localBundle;
 	}
